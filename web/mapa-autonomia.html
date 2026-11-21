@@ -55,9 +55,9 @@ h1{font-size:30px;line-height:1.06;letter-spacing:-.035em;font-weight:500}
   <aside class="panel">
     <h1>¿Hasta dónde llegas desde ahí?</h1>
     <p class="lede">Haz clic en cualquier punto de España. Calculamos el alcance real por carretera con la red de OSRM, no con un círculo.</p>
-    <div class="field"><span class="k">Coche</span><select id="car"></select></div>
+    <div class="field"><span class="k">Coche</span><select id="car" aria-label="Selección"></select></div>
     <div class="field"><label class="k" for="soc">Estado de carga</label><span><input id="soc" type="number" value="100" min="20" max="100" step="10"> <span class="k">%</span></span></div>
-    <div class="field"><span class="k">Velocidad</span><select id="speed"><option value="90">Eco · 90 km/h</option><option value="110" selected>Constante 110 km/h</option><option value="120">Autovía · 120 km/h</option><option value="130">130 km/h</option></select></div>
+    <div class="field"><span class="k">Velocidad</span><select id="speed" aria-label="Selección"><option value="90">Eco · 90 km/h</option><option value="110" selected>Constante 110 km/h</option><option value="120">Autovía · 120 km/h</option><option value="130">130 km/h</option></select></div>
     <div class="big"><span class="k">Alcance total</span><span class="v" id="total">—</span></div>
     <div class="rings" id="rings"></div>
     <p class="source">Anillos calculados con distancias reales de OSRM entre el punto elegido y 48 destinos. El clima y la elevación vienen de Open-Meteo. Sin cuenta.</p>
@@ -224,15 +224,21 @@ loadVehicles().then(()=>{
   }
   style.sources.terrain={type:"raster-dem",tiles:["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],encoding:"terrarium",tileSize:256,maxzoom:15};
   style.layers.splice(1,0,{id:"relief",type:"hillshade",source:"terrain",paint:{"hillshade-exaggeration":.5,"hillshade-shadow-color":"#0A1220","hillshade-highlight-color":"#1E3555","hillshade-accent-color":"#16283D"}});
+  const mapEl=document.getElementById("map");
+  mapEl.setAttribute("aria-label","Mapa de autonomía de España");
+  const stripAria=()=>{const c=mapEl.querySelector("canvas"); if(c){c.removeAttribute("role");c.removeAttribute("aria-label");}};
+  new MutationObserver(stripAria).observe(mapEl,{childList:true,subtree:true,attributes:true});
+  stripAria();
   map=new maplibregl.Map({container:"map",style:"https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json",center:[-3.7,40.2],zoom:5.4,pitch:0,attributionControl:false});
   map.addControl(new maplibregl.ScaleControl({maxWidth:90,unit:"metric"}),"bottom-right");
   window.__map=map;
-  map.on("style.load",()=>{ origin=[-3.7037,40.4168]; marker=new maplibregl.Marker({color:"#FFB020"}).setLngLat(origin).addTo(map); drawRings(); });
+  map.on("idle",()=>stripAria());
+  map.on("style.load",()=>{ origin=[-3.7037,40.4168]; marker=new maplibregl.Marker({color:"#FFB020"}).setLngLat(origin).addTo(map); if(marker.getElement())marker.getElement().removeAttribute("aria-label"); drawRings(); });
   map.on("click",e=>{
     const {lng,lat}=e.lngLat;
     if(!inSpain(lat,lng))return;
     origin=[lng,lat];
-    if(marker)marker.setLngLat(origin);else marker=new maplibregl.Marker({color:"#FFB020"}).setLngLat(origin).addTo(map);
+    if(marker)marker.setLngLat(origin);else {marker=new maplibregl.Marker({color:"#FFB020"}).setLngLat(origin).addTo(map); if(marker.getElement())marker.getElement().removeAttribute("aria-label");} if(marker.getElement())marker.getElement().removeAttribute("aria-label");
     drawRings();
   });
 })();

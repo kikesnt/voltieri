@@ -57,7 +57,7 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
   <div class="workspace">
     <form class="panel controls" onsubmit="return false">
       <span class="k">Tu carga</span>
-      <div class="field"><label class="k" for="modelo">Modelo con curva real</label><select id="modelo"><option value="">— Personalizado —</option></select></div>
+      <div class="field"><label class="k" for="modelo">Modelo con curva real</label><select id="modelo" aria-label="Selección"><option value="">— Personalizado —</option></select></div>
       <div class="field"><label class="k" for="peak">Potencia punta</label><span><input id="peak" type="number" min="20" max="400" step="5" value="250"> <span class="k">kW</span></span></div>
       <div class="field"><label class="k" for="cap">Batería útil</label><span><input id="cap" type="number" min="20" max="150" step="1" value="75"> <span class="k">kWh</span></span></div>
       <div class="field"><label class="k" for="from">SoC inicial</label><span><input id="from" type="number" min="0" max="95" step="1" value="10"> <span class="k">%</span></span></div>

@@ -54,9 +54,9 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);display:
   <p class="lede">Autonomía WLTP, batería útil y potencia de carga de <b>113 modelos europeos</b>. La autonomía real se estima con el modelo declarado, no es una medición propia.</p>
 
   <form class="panel filters" onsubmit="return false">
-    <div class="group"><span class="k">Autonomía mínima</span><input id="minRange" type="number" value="300" step="20"></div>
-    <div class="group"><span class="k">Carga DC mínima</span><input id="minDc" type="number" value="0" step="10"></div>
-    <div class="group"><span class="k">Marca</span><select id="make"><option value="">Todas</option></select></div>
+    <div class="group"><span class="k">Autonomía mínima</span><input id="minRange" aria-label="Autonomía mínima en kilómetros" type="number" value="300" step="20"></div>
+    <div class="group"><span class="k">Carga DC mínima</span><input id="minDc" aria-label="Potencia DC mínima en kilovatios" type="number" value="0" step="10"></div>
+    <div class="group"><span class="k">Marca</span><select id="make" aria-label="Selección"><option value="">Todas</option></select></div>
     <button class="btn" type="button" id="apply">Filtrar coches</button>
   </form>
 

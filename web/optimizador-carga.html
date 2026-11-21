@@ -52,7 +52,7 @@ h1{font-size:clamp(34px,3.5vw,50px);line-height:1.04;letter-spacing:-.04em;font-
 <span class="k">Tu carga</span>
 <div class="field"><label class="k" for="kwh">Energía</label><span><input id="kwh" type="number" value="50" min="5" max="120" step="5"> <span class="k">kWh</span></span></div>
 <div class="field"><label class="k" for="kw">Potencia</label><span><input id="kw" type="number" value="11" min="3" max="250" step="1"> <span class="k">kW</span></span></div>
-<div class="field"><span class="k">Estrategia</span><select id="mode"><option value="best">Ventana más barata</option><option value="valle">Horas valle (00–07)</option><option value="now">Ahora mismo</option></select></div>
+<div class="field"><span class="k">Estrategia</span><select id="mode" aria-label="Selección"><option value="best">Ventana más barata</option><option value="valle">Horas valle (00–07)</option><option value="now">Ahora mismo</option></select></div>
 <button class="btn btn--wide" type="button" id="run" style="margin-top:18px">Calcular</button>
 <p class="source" style="margin-top:14px">Fuente: ESIOS archive 70 · <span id="date">—</span></p>
 </form>

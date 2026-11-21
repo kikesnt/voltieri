@@ -1,5 +1,5 @@
 // Voltieri — service worker: la web funciona sin cobertura.
-const CACHE = "voltieri-v2";
+const CACHE = "voltieri-v3";
 const CORE = [
   "index.html", "hoja.html", "herramientas.html", "productos.html", "aviso-legal.html", "privacidad.html", "afiliados.html", "planificador.html", "mapa-autonomia.html", "optimizador-carga.html", "carrera-ruta.html", "v2g-solar.html", "catalog.html", "compare.html", "finance.html", "sim.html", "routes.html", "service.html",
   "tool-shell.html", "range.html", "charge.html", "tco.html", "chargers.html", "components.html",
@@ -28,6 +28,21 @@ self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+
+  // Las páginas siempre a red primero: el HTML cambia con cada despliegue.
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).then(res => {
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(event.request, copy));
+        }
+        return res;
+      }).catch(() => caches.match(event.request).then(hit => hit || caches.match("index.html")))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(hit => hit || fetch(event.request).then(res => {
       if (res.ok) {
@@ -35,6 +50,6 @@ self.addEventListener("fetch", event => {
         caches.open(CACHE).then(c => c.put(event.request, copy));
       }
       return res;
-    }).catch(() => caches.match("hoja.html")))
+    }).catch(() => caches.match("index.html")))
   );
 });
