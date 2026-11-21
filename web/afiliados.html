@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es" data-skin="2027" data-theme="night">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Política de afiliados y configuración de enlaces propios.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Voltieri — Afiliados">
+<meta property="og:description" content="Política de afiliados y configuración de enlaces propios.">
+<meta property="og:url" content="https://kikesnt.github.io/voltieri/afiliados.html">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://kikesnt.github.io/voltieri/afiliados.html"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Afiliados</title>
+<meta name="description" content="Cómo funcionan las recomendaciones y dónde configurar tus programas.">
+<link rel="canonical" href="https://kikesnt.github.io/voltieri/afiliados.html">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css">
+<style>
+header{display:flex;align-items:center;gap:24px;padding:16px 30px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.2em}
+nav{margin-left:auto;display:flex;gap:18px;font-size:12px}nav a{color:var(--muted);text-decoration:none}
+main{max-width:760px;margin:0 auto;padding:60px 30px 100px}
+h1{font-size:clamp(32px,4vw,48px);letter-spacing:-.04em;font-weight:500;line-height:1.05}
+.lede{margin-top:16px;color:var(--muted);font-size:14px;line-height:1.6}
+section{margin-top:42px;padding-top:20px;border-top:1px solid var(--rule)}
+h2{font-size:14px;font-weight:600;letter-spacing:.01em;margin-bottom:10px}
+p,li{font-size:13px;line-height:1.7;color:var(--text);margin-bottom:10px}
+ul{padding-left:18px}
+a{color:var(--ion-2)}
+code{font-family:var(--font-data);font-size:12px;background:var(--paper-deep);padding:2px 5px}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);font-family:var(--font-data);font-size:9px;color:var(--muted);display:flex;gap:18px;flex-wrap:wrap}
+@media(max-width:700px){header{padding:16px 18px}main{padding:40px 18px 70px}nav{display:none}}
+</style>
+</head>
+<body>
+<header><span class="brand">VOLTIERI</span><nav><a href="index.html">Inicio</a><a href="aviso-legal.html">Legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></nav></header>
+<main>
+<h1>Afiliados</h1>
+<p class="lede">Cómo funcionan las recomendaciones y dónde configurar tus programas.</p>
+
+<section><h2>Transparencia</h2><p>Algunas recomendaciones de equipamiento pueden convertirse en enlaces de afiliado. Si ganamos una comisión, <strong>el precio para ti no cambia</strong>. La recomendación no depende de la comisión: se muestra solo cuando encaja con el coche o la ruta que estás consultando.</p></section>
+<section><h2>Cómo se identifican</h2><p>Todo enlace de afiliado lleva el aviso «Enlace de afiliado · el precio no cambia» y la etiqueta <code>rel="sponsored nofollow"</code>. Nunca ocultamos la relación comercial.</p></section>
+<section><h2>Programas propios</h2><p>Todavía no tenemos cuentas en programas de afiliado. Hasta tenerlas, las tarjetas de equipamiento enlazan a webs de fabricantes o tiendas <strong>sin código de seguimiento</strong>. Cuando actives tus programas, introduce tus identificadores en <code>web/data/affiliates.json</code>; el renderizador los usará automáticamente.</p></section>
+<section><h2>Configuración</h2><p>El archivo <code>affiliates.json</code> contiene un objeto por producto con <code>label</code>, <code>url</code> y <code>program</code>. Sustituye <code>url</code> por tu enlace con parámetros y añade el nombre del programa. No hace falta tocar el código.</p></section>
+
+<footer><a href="index.html">Volver al inicio</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></footer>
+</main>
+</body>
+</html>

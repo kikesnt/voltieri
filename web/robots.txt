@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kikesnt.github.io/voltieri/sitemap.xml

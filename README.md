@@ -23,6 +23,7 @@
 - [x] Fase 3: simuladores, PWA, contenido, SEO programático y afiliados.
 - [x] Motor de rutas real (OSRM + Open-Meteo) y mapa de autonomía con anillos isócronos por clic.
 - [x] **56 herramientas**: optimizador PVPC, carrera en ruta, V2G solar y 7 herramientas nuevas en el hub.
+- [x] SEO (meta, canonical, OG, JSON-LD, sitemap, robots, llms.txt), páginas legales, afiliados configurables y PWA.
 - [x] PWA instalable, API JSON pública y alertas sin cuenta.
 
 Las herramientas están en `web/`: seis con página propia y cuarenta en el hub de cinco páginas por categoría (`tools-data.js` + `tools.js`). Cada una tiene URL compartible y funciona sin cuenta.

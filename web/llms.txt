@@ -1,0 +1,8 @@
+# Voltieri
+
+> Copiloto de coches eléctricos con datos abiertos. Sin cuentas.
+
+- [Inicio](https://kikesnt.github.io/voltieri/): mapa de autonomía y ruta Madrid-Barcelona.
+- [Catálogo](https://kikesnt.github.io/voltieri/catalog.html): 113 modelos y precios de España.
+- [API pública](https://kikesnt.github.io/voltieri/api/data.json): modelos, cargadores y PVPC en JSON.
+- [Datos y licencias](https://github.com/kikesnt/voltieri/blob/main/docs/DATA.md)
