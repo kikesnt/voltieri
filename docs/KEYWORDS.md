@@ -4,7 +4,28 @@
 
 `data/keywords.txt` contiene **200 keywords reales en español** extraídas de **Google Suggest** (`suggestqueries.google.com`, parámetro `hl=es`), a partir de 25 semillas del sector. Se recogieron el 21/11/2026.
 
-**No hay volumen de búsqueda ni dificultad**: Google Suggest solo revela sugerencias reales, no métricas. Para volumen y CPC haría falta una cuenta de DataForSEO, Ahrefs o SEMrush, o conectar Google Search Console cuando el sitio tenga tráfico. No inventamos cifras de volumen.
+**Actualización (21/11/2026):** con la cuenta de Ubersuggest ya hemos extraído **métricas reales de 40 keywords** a `data/keywords-metrics.txt`: volumen, dificultad (KD), intención y CPC para España. Ya no hay que estimar nada.
+
+Lo más relevante:
+
+| Keyword | Volumen | KD | Intención | CPC |
+|---|---|---|---|---|
+| coche eléctrico | 22,2K | 37 | Transaccional | 1,01 € |
+| cargador coche eléctrico | 22,2K | 17 | Transaccional | 1,48 € |
+| wallbox | 14,8K | 66 | Comercial | 1,33 € |
+| coches eléctricos baratos | 12,1K | 35 | Comercial | 0,94 € |
+| coche eléctrico barato | 8,1K | 37 | Transaccional | 0,86 € |
+| coche eléctrico segunda mano | 3,6K | 14 | Transaccional | 0,41 € |
+| cargador en casa | 1,3K | 19 | Transaccional | 1,57 € |
+| autonomía coche eléctrico | 480 | 36 | Informacional | 0,48 € |
+| tarifa luz coche eléctrico | 390 | 16 | Informacional | 1,66 € |
+| mantenimiento coche eléctrico | 390 | 19 | Comercial | 1,89 € |
+| planificador ruta coche eléctrico | 210 | 17 | Comercial | 1,32 € |
+| coche eléctrico 7 plazas | 260 | 34 | Transaccional | 0,48 € |
+
+**Prioridad editorial revisada**: 1) coche eléctrico barato (8,1K + catálogo con 45 precios ES); 2) cargador coche eléctrico (22,2K, KD 17); 3) wallbox (14,8K aunque KD 66, con afiliados); 4) mantenimiento (CPC 1,89 €, el más caro); 5) planificador (KD 17, baja competencia y herramienta propia).
+
+Las keywords marcadas con `-` en `data/keywords-metrics.txt` no tienen volumen en Ubersuggest: no se inventa cifra.
 
 ## Repos evaluados
 

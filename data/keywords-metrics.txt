@@ -1,0 +1,40 @@
+coche electrico|22.2K|37|Transactional|1.01
+coche electrico barato|8.1K|37|Transactional|0.86
+coches electricos baratos|12.1K|35|Commercial|0.94
+coche electrico mas barato en españa|880|16|Commercial|0.72
+coche electrico chino|1.6K|16|Transactional|0.78
+coche electrico segunda mano|3.6K|14|Transactional|0.41
+coches electricos con mas autonomia|880|15|Commercial|0.78
+autonomia coche electrico|480|36|Informational|0.48
+autonomia coche electrico a 120 km h|70|15|Informational|0.66
+planificador ruta coche electrico|210|17|Commercial|1.32
+mejor planificador ruta coche electrico|-|4|Unknown|0.00
+bateria coche electrico precio|320|15|Commercial|0.66
+bateria coche electrico capacidad|10|10|Informational|0.00
+bateria coche electrico lfp|-|4|Unknown|0.00
+bateria coche electrico duracion|-|4|Unknown|0.00
+ayudas coche electrico 2026|70|9|Informational|0.57
+ayudas coche electrico españa|50|17|Informational|0.52
+ayudas coche electrico 2027|10|14|Informational|1.09
+seguro coche electrico precio|-|4|Unknown|0.00
+seguro coche electrico barato|-|4|Unknown|0.00
+wallbox|14.8K|66|Commercial|1.33
+cargador coche electrico|22.2K|17|Transactional|1.48
+cargador coche electrico en casa|1.3K|19|Transactional|1.57
+cargador coche electrico parking comunitario|40|28|Informational|1.04
+carga coche electrico precio|50|27|Informational|0.80
+tarifa luz coche electrico|390|16|Informational|1.66
+mejor tarifa luz coche electrico 2026|-|4|Unknown|0.00
+neumaticos coche electrico|110|15|Commercial|0.55
+mejores neumaticos coche electrico|30|34|Commercial|0.40
+mantenimiento coche electrico|390|19|Commercial|1.89
+mantenimiento coche electrico vs diesel|-|4|Unknown|0.00
+mejor coche electrico familiar|40|36|Commercial|0.70
+coche electrico familiar barato|-|4|Unknown|0.00
+coche electrico 7 plazas|260|34|Transactional|0.48
+coche electrico 7 plazas barato|-|4|Unknown|0.00
+maletero coche electrico|-|12|Unknown|0.00
+maletero delantero coche electrico|-|4|Unknown|0.00
+precio recarga publica coche electrico|-|4|Unknown|0.00
+recarga publica coche electrico|-|4|Unknown|0.00
+vehiculo electrico mas barato españa|10|35|Unknown|0.53
