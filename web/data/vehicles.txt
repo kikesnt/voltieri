@@ -1,113 +1,113 @@
-Audi|A6 e-tron|2025|94.9|700|270|350|4.5|li-ion
-Audi|e-tron GT|2025|85|488|270|390|4.1|li-ion
-Audi|Q4 e-tron|2025|48|341|125|125|9|li-ion
-Audi|Q6 e-tron|2025|94.9|625|270|285|5.9|li-ion
-Audi|Q8 e-tron|2025|89|491|150|230|6.8|li-ion
-BMW|i4|2025|67.1|492|180|210|5.8|nmc
-BMW|i5|2025|81.2|582|205|250|5.7|nmc
-BMW|i7|2025|101.7|560|195|485|3.5|nmc
-BMW|iX|2025|105.2|561|195|455|3.6|nmc
-BMW|iX1|2025|64.7|438|130|230|5.6|nmc
-BMW|iX2|2025|64.7|449|130|230|5.6|nmc
-BMW|iX3|2024|74|461|155|210|6.8|nmc
-BYD|Dolphin|2025|44|310|60|130|7.5|lfp
-BYD|Han|2025|85.4|521|120|380|3.9|lfp
+Audi|A6 e-tron|2024|94.9|700|270|350|4.5|li-ion
+Audi|e-tron GT|2023|85|488|270|390|4.1|li-ion
+Audi|Q4 e-tron|2023|48|341|125|125|9|li-ion
+Audi|Q6 e-tron|2024|94.9|625|270|285|5.9|li-ion
+Audi|Q8 e-tron|2023|89|491|150|230|6.8|li-ion
+BMW|i4|2023|66|483|180|210|5.8|nmc
+BMW|i5|2024|81.2|582|205|250|5.7|nmc
+BMW|i7|2023|101.7|560|195|485|3.5|nmc
+BMW|iX|2023|105.2|561|195|455|3.6|nmc
+BMW|iX1|2023|64.7|438|130|230|5.6|nmc
+BMW|iX2|2024|64.7|449|130|230|5.6|nmc
+BMW|iX3|2023|74|461|155|210|6.8|nmc
+BYD|Dolphin|2023|60|427|80|150|7|lfp
+BYD|Han|2023|85.4|521|120|380|3.9|lfp
 BYD|King|2024|71|520|90|160|7.9|lfp
-BYD|Seal|2025|61.44|460|110|150|7.5|lfp
-BYD|Song Plus|2025|71.8|420|115|160|9.3|lfp
-BYD|Tang|2025|108.8|530|170|380|4.9|lfp
-BYD|Yuan Plus|2025|60.48|420|88|150|7.3|lfp
-Chery|Tansuo 06|2025|18|120|50|115||lfp
-Citroën|ë-Berlingo|2025|46|275|100|100|11.2|li-ion
-Citroën|ë-C3|2025|42|320|100|83|11|lfp
-Citroën|ë-C4|2025|46|350|100|100|9.7|li-ion
-Citroën|ë-C4 X|2025|46|360|100|100|9.7|li-ion
-Citroën|ë-Jumpy|2025|46|230|100|100|12|li-ion
-Citroën|ë-Spacetourer|2025|46|230|100|100|12.5|li-ion
-Cupra|Born|2025|58|430|135|150|7.3|li-ion
+BYD|Seal|2023|82.56|570|150|230|5.9|lfp
+BYD|Song Plus|2023|71.8|420|115|160|9.3|lfp
+BYD|Tang|2023|108.8|530|170|380|4.9|lfp
+BYD|Yuan Plus|2023|49|320|70|150|7.3|lfp
+Chery|Tansuo 06|2023|18|88|50|115||lfp
+Citroën|ë-Berlingo|2023|46|275|100|100|11.2|li-ion
+Citroën|ë-C3|2024|42|320|100|83|11|lfp
+Citroën|ë-C4|2023|46|350|100|100|9.7|li-ion
+Citroën|ë-C4 X|2023|46|360|100|100|9.7|li-ion
+Citroën|ë-Jumpy|2023|46|230|100|100|12|li-ion
+Citroën|ë-Spacetourer|2023|46|230|100|100|12.5|li-ion
+Cupra|Born|2023|58|420|135|150|7.3|li-ion
 Cupra|Raval|2025|55|440|125|166|6.9|li-ion
-Cupra|Tavascan|2025|77|455|175|210|6.5|li-ion
-Dacia|Spring|2025|24.3|220|30|51|14|lfp
-Fiat|500e|2025|37.3|320|85|87|9|li-ion
-Fiat|600e|2025|51|400|100|115|9|li-ion
-Ford|Capri EV|2025|72|600|135|220|5.8|li-ion
+Cupra|Tavascan|2024|77|450|175|210|6.5|li-ion
+Dacia|Spring|2023|26.8|230|30|33|19.1|li-ion
+Fiat|500e|2023|37.3|320|85|87|9|li-ion
+Fiat|600e|2023|51|400|100|115|9|li-ion
+Ford|Capri EV|2024|72|600|135|220|5.8|li-ion
 Ford|E-Tourneo Courier|2025|51|350|100|100|8.5|li-ion
-Ford|E-Transit|2025|64|317|115|198||li-ion
+Ford|E-Transit|2023|64|317|115|198||li-ion
 Ford|E-Transit Courier|2025|51|350|100|100||li-ion
-Ford|Explorer EV|2025|75|500|150|250|6.5|li-ion
-Ford|Mustang Mach-E|2025|91|610|150|258|5.2|li-ion
-Ford|Puma Gen-E|2025|51|376|100|100|8|li-ion
-GAC Aion|Aion ES|2025|55.2|314|68|100||lfp
-GAC Aion|Aion V|2025|75.2|450|100|150|7.9|lfp
-GAC Aion|Aion Y|2025|63.2|340|75|150|8.5|lfp
-Hyundai|IONIQ 5|2025|72.6|480|220|239|5.2|li-ion
-Hyundai|IONIQ 6|2025|72.6|583|220|239|5.1|li-ion
+Ford|Explorer EV|2024|75|500|150|250|6.5|li-ion
+Ford|Mustang Mach-E|2023|91|610|150|258|5.2|li-ion
+Ford|Puma Gen-E|2024|51|376|100|100|8|li-ion
+GAC Aion|Aion ES|2024|55.2|314|68|100||lfp
+GAC Aion|Aion V|2024|75.3|450|180|150|7.9|lfp
+GAC Aion|Aion Y|2024|63.2|340|75|150|8.5|lfp
+Hyundai|IONIQ 5|2023|72.6|480|220|239|5.2|li-ion
+Hyundai|IONIQ 6|2023|72.6|583|220|239|5.1|li-ion
 Hyundai|IONIQ 9|2025|99.5|620|350|283|5|li-ion
-Hyundai|Kona Electric|2025|58|484|100|150|7.9|li-ion
-Jaguar|I-PACE|2024|84.7|470|100|294|4.8|li-ion
+Hyundai|Kona Electric|2023|58|484|100|150|7.9|li-ion
+Jaguar|I-PACE|2023|84.7|470|100|294|4.8|li-ion
 Leapmotor|C10|2025|64|420|150|170|7|lfp
-Leapmotor|C16|2025|95|520|200|400|4.3|nmc
+Leapmotor|C16|2024|95|520|200|400|4.3|nmc
 Lexus|ES 350e|2025|66|600|150|165|7.8|li-ion
 Lexus|ES 500e|2025|66|600|150|252|5.8|li-ion
-Lexus|RZ 450e|2025|65.1|470|150|230|5.3|li-ion
-Lexus|UX 300e|2025|50.3|315|50|150|7.5|li-ion
+Lexus|RZ 450e|2023|65.1|470|150|230|5.3|li-ion
+Lexus|UX 300e|2023|50.3|315|50|150|7.5|li-ion
 Mercedes-Benz|CLA EV|2025|82|792|200|175|6|li-ion
-Mercedes-Benz|EQA|2025|60|426|100|140|8.9|li-ion
-Mercedes-Benz|EQB|2025|60|419|100|140|8|li-ion
-Mercedes-Benz|EQE|2025|84|590|170|180|7.3|li-ion
-Mercedes-Benz|EQE SUV|2025|84|550|170|215|6.1|li-ion
-Mercedes-Benz|EQS|2025|110|799|200|245|6.2|li-ion
-Mercedes-Benz|EQS SUV|2025|110|675|200|265|6|li-ion
-Mercedes-Benz|EQV|2025|55|365|110|90|12.1|li-ion
+Mercedes-Benz|EQA|2023|60|426|100|140|8.9|li-ion
+Mercedes-Benz|EQB|2023|60|419|100|140|8|li-ion
+Mercedes-Benz|EQE|2023|84|590|170|180|7.3|li-ion
+Mercedes-Benz|EQE SUV|2023|84|550|170|215|6.1|li-ion
+Mercedes-Benz|EQS|2023|100|784|200|245|6.2|li-ion
+Mercedes-Benz|EQS SUV|2023|100|660|200|265|6|li-ion
+Mercedes-Benz|EQV|2023|55|365|110|90|12.1|li-ion
 Mercedes-Benz|G 580 EQ|2025|108|470|200|426|4.7|li-ion
-Mini|Cooper SE|2025|51|303|95|160|6.7|li-ion
-Mini|Countryman|2025|64.7|462|130|150|8.6|li-ion
-Nissan|Ariya|2025|63|430|130|160|7.5|li-ion
+Mini|Cooper SE|2023|28.9|234|50|135|7.3|li-ion
+Mini|Countryman|2024|64.7|462|130|150|8.6|li-ion
+Nissan|Ariya|2023|63|430|130|160|7.5|li-ion
 Nissan|Ariya Nismo|2025|66|420|130|270|5|li-ion
-Nissan|LEAF|2024|40|270|50|110|7.9|li-ion
+Nissan|LEAF|2023|40|270|50|110|7.9|li-ion
 Nissan|Micra EV|2025|40|309|80|70|9|li-ion
-Peugeot|e-2008|2025|50|406|100|115|8.5|li-ion
-Peugeot|e-208|2025|50|410|100|115|8.1|li-ion
-Peugeot|e-3008|2025|70|525|160|157|8.7|li-ion
-Peugeot|e-408|2025|70|453|160|157|8.5|li-ion
-Peugeot|e-5008|2025|70|500|160|157|9|li-ion
-Polestar|Polestar 2|2025|75|540|150|200|7.4|li-ion
-Polestar|Polestar 3|2025|107|610|250|360|5|li-ion
-Polestar|Polestar 4|2025|100|600|200|400|3.8|li-ion
+Peugeot|e-2008|2023|46|345|100|100|8.5|li-ion
+Peugeot|e-208|2023|46|362|100|100|8.1|li-ion
+Peugeot|e-3008|2023|70|525|160|157|8.7|li-ion
+Peugeot|e-408|2024|70|453|160|157|8.5|li-ion
+Peugeot|e-5008|2024|70|500|160|157|9|li-ion
+Polestar|Polestar 2|2023|75|540|150|300|4.7|li-ion
+Polestar|Polestar 3|2024|107|610|250|360|5|li-ion
+Polestar|Polestar 4|2024|100|600|200|400|3.8|li-ion
 Polestar|Polestar 5|2025|100|670|350|550|3.2|li-ion
 Porsche|718 Boxster|2025|75|500|270|320|4.5|li-ion
 Porsche|718 Cayman|2025|75|500|270|320|4.5|li-ion
-Porsche|Macan|2025|95|613|270|300|5.2|li-ion
-Porsche|Taycan|2025|83.7|463|270|390|4|li-ion
+Porsche|Macan|2024|95|613|270|300|5.2|li-ion
+Porsche|Taycan|2023|83.7|463|270|390|4|li-ion
 Renault|4 E-Tech|2025|50|400|100|90|8.5|li-ion
-Renault|5 E-Tech|2025|50|400|100|90|8|li-ion
-Renault|Kangoo E-Tech|2025|43|300|50|90||li-ion
-Renault|Megane E-Tech Electric|2025|57|470|130|160|7.4|li-ion
-Renault|Scenic E-Tech|2025|84|620|150|160|8.4|li-ion
+Renault|5 E-Tech|2024|50|400|100|90|8|li-ion
+Renault|Kangoo E-Tech|2023|43|300|50|90||li-ion
+Renault|Megane E-Tech Electric|2023|57|470|130|160|7.4|li-ion
+Renault|Scenic E-Tech|2024|84|620|150|160|8.4|li-ion
 Škoda|Elroq|2025|77|581|185|150||li-ion
 Škoda|Elroq RS|2025|77|550|185|250|5.4|li-ion
-Škoda|Enyaq Coupé iV|2025|77|570|135|150||li-ion
-Škoda|Enyaq iV|2025|58|410|135|150||li-ion
-Smart|#1|2025|62|440|150|200|6.7|li-ion
-Smart|#3|2025|62|440|150|200|6.7|li-ion
-Tesla|Model 3|2025|75|678|250|366|4.4|nmc
+Škoda|Enyaq Coupé iV|2023|77|545|125|150||li-ion
+Škoda|Enyaq iV|2023|58|400|125|150||li-ion
+Smart|#1|2023|62|440|150|200|6.7|li-ion
+Smart|#3|2024|62|440|150|200|6.7|li-ion
+Tesla|Model 3|2024|75|678|250|366|4.4|nmc
 Tesla|Model S|2025|95|634|250|493|3.1|nmc
 Tesla|Model X|2025|95|560|250|493|3.9|nmc
-Tesla|Model Y|2025|79|719|250|366|4.8|nmc
-Toyota|bZ4X|2025|71.4|516|150|150|7.5|li-ion
+Tesla|Model Y|2024|79|719|250|366|4.8|nmc
+Toyota|bZ4X|2023|71.4|516|150|150|7.5|li-ion
 Toyota|C-HR+|2025|70|600|150|160|7|li-ion
 Toyota|Urban Cruiser|2025|48|402|100|122|9|li-ion
-Volkswagen|ID. Buzz|2025|77|423|135|150|10.2|li-ion
-Volkswagen|ID.3|2025|77|600|175|240|5.6|li-ion
-Volkswagen|ID.4|2025|77|480|135|220|6.2|li-ion
-Volkswagen|ID.5|2025|77|480|135|220|6.2|li-ion
-Volkswagen|ID.7|2025|86|700|175|210|6.5|li-ion
-Volvo|EC40|2025|69|420|150|175|7.4|nmc
-Volvo|EX30|2025|49|344|153|200|5.7|lfp
-Volvo|EX40|2025|69|425|150|175|7.4|nmc
-Volvo|EX90|2025|107|600|250|380|4.9|nmc
-Zeekr|001|2025|95|606|360|400|3.8|nmc
-Zeekr|007|2025|95|710|200|475|2.84|nmc
-Zeekr|009|2025|102|604|200|400|4.5|nmc
-Zeekr|7X|2025|72|495|200|475|3.9|lfp
-Zeekr|X|2025|62|440|150|315|3.7|nmc
+Volkswagen|ID.3|2023|58|428|135|150|7.3|li-ion
+Volkswagen|ID.4|2023|77|480|135|220|6.2|li-ion
+Volkswagen|ID.5|2023|77|480|135|220|6.2|li-ion
+Volkswagen|ID.7|2024|86|700|175|210|6.5|li-ion
+Volkswagen|ID. Buzz|2023|77|423|135|150|10.2|li-ion
+Volvo|EC40|2023|69|420|150|175|7.4|nmc
+Volvo|EX30|2023|49|344|153|200|5.7|lfp
+Volvo|EX40|2023|69|425|150|175|7.4|nmc
+Volvo|EX90|2024|107|600|250|380|4.9|nmc
+Zeekr|001|2023|95|606|200|400|3.8|nmc
+Zeekr|007|2023|95|710|200|475|2.84|nmc
+Zeekr|009|2024|102|604|200|400|4.5|nmc
+Zeekr|7X|2024|72|495|200|475|3.9|lfp
+Zeekr|X|2023|62|440|150|315|3.7|nmc
