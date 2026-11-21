@@ -61,8 +61,7 @@ async function token(){
   return d.access_token;
 }
 
-async function getItems(accessToken, asins){
-  // ItemInfo e Images son gratuitos. OffersV2 (precio/disponibilidad) exige License Key.
+async function getItemsPage(accessToken, asins){
   const resources = cfg.license
     ? ["itemInfo.title","images.primary.medium","offersV2.listings.price","offersV2.listings.availability","customerReviews.starRating"]
     : ["itemInfo.title","images.primary.medium"];
@@ -75,15 +74,28 @@ async function getItems(accessToken, asins){
       ...(cfg.license ? { "x-license-key":cfg.license } : {})
     },
     body:JSON.stringify({
-      partnerTag:cfg.partnerTag,
-      partnerType:"Associates",
       itemIds:asins,
+      itemIdType:"ASIN",
+      marketplace:cfg.marketplace,
+      partnerTag:cfg.partnerTag,
       resources
     })
   });
   const t = await r.text();
-  if(!r.ok) throw new Error(`GetItems HTTP ${r.status}`);
+  if(!r.ok) {
+    const safe = t.replace(new RegExp(cfg.clientId,"g"),"[ID]").replace(new RegExp(cfg.secret,"g"),"[SECRET]").slice(0,600);
+    throw new Error(`GetItems HTTP ${r.status}: ${safe}`);
+  }
   return JSON.parse(t);
+}
+
+async function getItems(accessToken, asins){
+  // GetItems acepta como máximo 10 identificadores por llamada.
+  const all = [];
+  for(let i=0;i<asins.length;i+=10){
+    all.push(...await getItemsPage(accessToken, asins.slice(i,i+10)));
+  }
+  return all;
 }
 
 function sanitizeError(e){
@@ -109,8 +121,8 @@ if(cfg.mode !== "api" || !cfg.clientId || !cfg.secret){
 try {
   const access = await token();
   const asins = data.categories.flatMap(c=>c.products.map(p=>p.asin));
-  const response = await getItems(access, asins);
-  const items = response.Items || response.items || [];
+  const itemSets = await getItems(access, asins);
+  const items = itemSets.flatMap(r => r.itemsResult?.items || r.Items || r.items || []);
   const byAsin = new Map(items.map(i=>[i.ASIN || i.asin, i]));
   let updated = 0, priced = 0;
   for(const cat of data.categories) for(const p of cat.products){

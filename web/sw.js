@@ -1,12 +1,15 @@
 // Voltieri — service worker: la web funciona sin cobertura.
-const CACHE = "voltieri-v1";
+const CACHE = "voltieri-v2";
 const CORE = [
   "index.html", "hoja.html", "herramientas.html", "productos.html", "aviso-legal.html", "privacidad.html", "afiliados.html", "planificador.html", "mapa-autonomia.html", "optimizador-carga.html", "carrera-ruta.html", "v2g-solar.html", "catalog.html", "compare.html", "finance.html", "sim.html", "routes.html", "service.html",
   "tool-shell.html", "range.html", "charge.html", "tco.html", "chargers.html", "components.html",
+  "comparativas.html", "comparativa-cables-tipo2.html", "comparativa-wallbox-7400.html", "comparativa-adaptadores-ccs2.html", "comparativa-cargador-portatil.html", "comparativa-estaciones-22kw.html", "comparativa-v2l.html",
+  "blog/index.html", "blog/coches-electricos-baratos-espana-2026.html",
   "tokens.css", "components.css", "tools.css",
-  "tools-data.js", "tools.js", "data-live.js", "routing.js", "car3d.js",
+  "tools-data.js", "tools.js", "data-live.js", "routing.js", "car3d.js", "affiliate.js",
   "data/vehicles.txt", "data/specs.txt", "data/curves.txt", "data/chargers.txt",
   "data/pvpc.txt", "data/fuel.txt", "data/news.txt", "data/workshops.txt", "data/safety.txt", "api/data.json",
+  "data/amazon-products.json", "data/affiliate-config.json", "data/amazon-api-status.json",
   "icon.svg", "manifest.webmanifest"
 ];
 

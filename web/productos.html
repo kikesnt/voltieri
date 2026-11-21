@@ -6,7 +6,8 @@
 <meta name="description" content="Cables Tipo 2, wallbox, adaptadores CCS2 y cargadores portátiles con precios reales de Amazon.es y tag de afiliado volteri-21.">
 <link rel="canonical" href="https://kikesnt.github.io/voltieri/productos.html">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://m.media-amazon.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css">
 <style>
@@ -39,7 +40,7 @@ footer a{color:var(--muted)}
 </main>
 <script type="module">
 const data=await (await fetch("data/amazon-products.json")).json();
-const files={"cables-tipo2":"comparativa-cables-tipo2.html","wallbox":"comparativa-wallbox-7400.html","adaptadores-ccs2":"comparativa-adaptadores-ccs2.html","cargador-portatil":"comparativa-cargador-portatil.html"};
+const files={"cables-tipo2":"comparativa-cables-tipo2.html","wallbox":"comparativa-wallbox-7400.html","adaptadores-ccs2":"comparativa-adaptadores-ccs2.html","cargador-portatil":"comparativa-cargador-portatil.html","estaciones-22kw":"comparativa-estaciones-22kw.html","v2l":"comparativa-v2l.html"};
 document.getElementById("cats").innerHTML=data.categories.map(c=>`<div class="cat"><h2>${c.name}</h2><p>${c.intro}</p><span class="source">${c.products.length} productos · desde ${c.products.map(p=>parseFloat(p.price.replace(/[^\d,]/g,'').replace(',','.'))).sort((a,b)=>a-b)[0].toFixed(2)} €</span><a class="compare" href="${files[c.id]}">Ver comparativa →</a></div>`).join("");
 </script>
 </body>

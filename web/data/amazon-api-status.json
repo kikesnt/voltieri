@@ -2,8 +2,8 @@
   "mode": "local",
   "api": "Amazon Creators API",
   "eligible": false,
-  "reason": "Credenciales pendientes de rotación y aprobación",
-  "message": "Amazon aún no ha aprobado el acceso a Creators API. Se muestran precios de la instantánea del 21/11/2026.",
-  "next": "Pega credenciales nuevas en .env.local y ejecuta node scripts/update-amazon-products.mjs",
-  "checkedAt": "2026-11-21T00:00:00.000Z"
+  "reason": "GetItems HTTP 403: {\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}",
+  "message": "No se pudo consultar Creators API. Se conserva la instantánea local.",
+  "next": "Revisa Secrets, versión de credencial y licencia de precios.",
+  "checkedAt": "2026-11-21T15:54:56.902Z"
 }

@@ -59,6 +59,32 @@ const META = {
       "¿Puedo llevarlo en el coche? Sí. ¿Carga igual que un wallbox? No, suele ir a 3,7 kW."
     ]
   }
+  ,"estaciones-22kw": {
+    file:"comparativa-estaciones-22kw.html",
+    title:"Mejores estaciones 22 kW para coche eléctrico (2026)",
+    desc:"Comparativa de wallbox trifásicos 22 kW con precios y valoraciones reales de Amazon.es.",
+    h2:["Cómo elegir una estación 22 kW","Acometida trifásica: el requisito clave","Potencia real frente a potencia nominal","Certificaciones y precio","Preguntas frecuentes"],
+    body:[
+      "Una estación de 22 kW solo acelera la carga si la instalación dispone de tres fases y el vehículo admite esa potencia. Sin esas dos condiciones, el mismo aparato se comporta como uno de 7,4 kW.",
+      "La acometida trifásica suele exigir contrato y cuadro adaptados. Antes de comprar, pide a un electricista que revise la potencia disponible y la sección del cable.",
+      "El rango de precios va de 207,57 € a 594,15 €. La diferencia no siempre es velocidad: también cuenta la app, el lector RFID, la longitud del cable y la certificación.",
+      "Los modelos con CE y TÜV ofrecen una garantía documentada. El Wallbox Pulsar MAX es la opción más cara de la comparativa, pensada para un uso exigente.",
+      "¿Necesito 22 kW? Solo si tu coche y tu acometida lo aprovechan. ¿Puedo instalarlo yo? No: debe hacerlo un profesional autorizado."
+    ]
+  },
+  "v2l": {
+    file:"comparativa-v2l.html",
+    title:"Mejores adaptadores V2L para coche eléctrico (2026)",
+    desc:"Comparativa de adaptadores V2L para alimentar enchufes desde el coche, con precios reales.",
+    h2:["Cómo elegir un adaptador V2L","Qué puedes alimentar con 3,5 kW","Compatibilidad por marca","Protección y uso responsable","Preguntas frecuentes"],
+    body:[
+      "Un adaptador V2L convierte la batería del coche en una fuente de corriente alterna. Sirve para herramientas, iluminación o emergencias, siempre dentro de los 3,5 kW habituales.",
+      "No todos los coches ofrecen esta función. BYD, MG y XPeng la han popularizado en algunos modelos; consulta el manual antes de asumir que tu coche la tiene.",
+      "La compatibilidad importa más que el precio. Un adaptador específico para Atto 3 puede no servir en un MG4, aunque ambos usen conector Tipo 2.",
+      "Antes de usarlo, revisa la potencia total de lo que conectas y evita prolongadores largos. La protección IP54 es útil si lo usas al aire libre.",
+      "¿Descarga mucha batería? Depende del consumo conectado. ¿Sirve para cargar otro coche? No: un V2L no es un cargador EV."
+    ]
+  }
 };
 
 const tpl = (cat, meta) => `<!doctype html>
