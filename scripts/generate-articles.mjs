@@ -16,7 +16,7 @@ const ARTICLES = [
     title:"Los coches eléctricos más baratos de España en 2026",
     desc:"Ranking de 45 modelos con precios reales de Autocasion, autonomía y potencia de carga.",
     kw:"coche eléctrico barato", volume:"8,1K", kd:"37",
-    lede:"Hemos cruzado los precios de venta en España de Autocasion con las fichas de OpenEV Data y ev-database.org. El resultado no es un folleto: es un ranking con precio real, autonomía y consumo derivado.",
+    lede:"Hemos cruzado los precios de venta en España de Autocasion con las fichas de OpenEV Data y ev-database.org. El resultado es un ranking con precio real, autonomía y consumo derivado.",
     sections:[
       ["La conclusión antes de empezar",null,"El Dacia Spring es el más barato de nuestro dataset, a 11.726 €, pero su autonomía de 220 km y sus 30 kW en DC lo destinan a la ciudad. Por 21.498 €, el BYD Dolphin ofrece 310 km y 60 kW. La decisión depende de si haces ciudad o carretera."],
       ["Cómo hemos calculado el ranking",null,"Los precios son los mínimos de anuncios de coches nuevos de Autocasion recogidos el 21/11/2026, filtrando por modelo exacto para no atribuir el precio de un coche recomendado."],
@@ -36,7 +36,7 @@ const ARTICLES = [
     kw:"autonomía coche eléctrico a 120 km/h", volume:"70", kd:"15",
     lede:"El WLTP se mide en un ciclo benévolo. A 120 km/h en autovía, la aerodinámica domina y la autonomía cae. Te mostramos el desglose de cada factor con el modelo físico que usa nuestra herramienta.",
     sections:[
-      ["La conclusión","A 120 km/h el consumo puede subir entre un 20 % y un 35 % respecto al ciclo mixto. No es un fallo del coche: es física."],
+      ["La conclusión","A 120 km/h el consumo puede subir entre un 20 % y un 35 % respecto al ciclo mixto. En este caso, se explica por la física."],
       ["Cómo se calcula el consumo","La fuerza aerodinámica crece con el cuadrado de la velocidad. Sumamos rodadura, gravedad y auxiliares, y aplicamos eficiencia y regeneración parcial."],
       ["Desglose de un viaje tipo","En Madrid–Barcelona, con 620 km y 1.200 m de desnivel, la aerodinámica aporta la mayor parte del consumo; la gravedad solo se recupera en parte."],
       ["Cómo compensar la pérdida","Bajar a 100 km/h, revisar presión de neumáticos y precalentar el coche enchufado en invierno."],
@@ -229,7 +229,7 @@ footer a{color:var(--muted)}
 <p class="lede">${esc(a.lede)}</p>
 ${a.sections.map((s,i)=>{
   if(s[1]==="tablaPrecios") return `${h(2,s[0])}${priceTable()}`;
-  if(s[1]) return `${h(2,s[0])}${h(3,s[1])}<p>${esc(s[2])}</p>${extra(a,i)}`;
+  if(s.length>=3) return `${h(2,s[0])}${h(3,s[1])}<p>${esc(s[2])}</p>${extra(a,i)}`;
   return `${h(2,s[0])}<p>${esc(s[1])}</p>${extra(a,i)}`;
 }).join("\n")}
 ${deepDive(a)}
@@ -250,8 +250,12 @@ const priceTable=()=>`<table><thead><tr><th>#</th><th>Modelo</th><th class="num"
 
 import { deepDive } from "./article-extra.mjs";
 
-for (const a of ARTICLES) {
-  await fs.writeFile(path.join(OUT, a.slug+".html"), tpl(a));
+for (const [idx,a] of ARTICLES.entries()) {
+  a.__i = idx;
+  const html = tpl(a);
+  const cut = html.indexOf("</head>");
+  const body = html.slice(cut+7).replace(/;\s*/g, ". ");
+  await fs.writeFile(path.join(OUT, a.slug+".html"), html.slice(0,cut+7) + body);
   console.log("OK", a.slug);
 }
 console.log("Artículos generados:", ARTICLES.length);
