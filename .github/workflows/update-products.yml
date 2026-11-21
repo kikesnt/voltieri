@@ -1,0 +1,41 @@
+name: Actualizar productos Amazon
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Actualizar desde Creators API si hay credenciales
+        env:
+          AMAZON_DATA_MODE: ${{ secrets.AMAZON_DATA_MODE || 'local' }}
+          CREATORSAPI_CLIENT_ID: ${{ secrets.CREATORSAPI_CLIENT_ID }}
+          CREATORSAPI_CLIENT_SECRET: ${{ secrets.CREATORSAPI_CLIENT_SECRET }}
+          CREATORSAPI_VERSION: ${{ secrets.CREATORSAPI_VERSION || '3.2' }}
+          CREATORSAPI_MARKETPLACE: ${{ secrets.CREATORSAPI_MARKETPLACE || 'www.amazon.es' }}
+          CREATORSAPI_PARTNER_TAG: ${{ secrets.CREATORSAPI_PARTNER_TAG || 'volteri-21' }}
+          CREATORSAPI_LICENSE_KEY: ${{ secrets.CREATORSAPI_LICENSE_KEY }}
+        run: node scripts/update-amazon-products.mjs
+
+      - name: Publicar cambios
+        run: |
+          git config user.name "voltieri-bot"
+          git config user.email "bot@voltieri.example"
+          git add web/data/amazon-products.json web/data/amazon-api-status.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios en productos"
+          else
+            git commit -m "data: actualizar productos Amazon Creators API"
+            git push
+          fi

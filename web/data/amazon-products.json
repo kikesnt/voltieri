@@ -7,12 +7,48 @@
       "name": "Cables Tipo 2",
       "intro": "Cables Mode 3 Tipo 2 a Tipo 2 para cargar en puntos públicos. Longitud, trifásico y protección IP marcan la diferencia.",
       "products": [
-        {"asin":"B0CN2Q246Y","title":"GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico","price":"94,99 €","rating":"4,6","best":"Mejor precio"},
-        {"asin":"B0CKSG4G98","title":"bokman EV Cable Tipo 2 22 kW · 5 m","price":"94,99 €","rating":"4,7","best":"Mejor valoración"},
-        {"asin":"B0CRR369BM","title":"Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m","price":"99,99 €","rating":"4,7","best":"Alternativa"},
-        {"asin":"B0DT6WYJH4","title":"bokman EV Cable Tipo 2 7,4 kW · 5 m","price":"90,24 €","rating":"4,7","best":"Monofásico"},
-        {"asin":"B0BNBR336V","title":"LAPP Mobility Cable Tipo 2 22 kW · 32 A","price":"168,52 €","rating":"4,6","best":"Gama alta"},
-        {"asin":"B0BNBQ8THM","title":"Lapp Mobility Cable Tipo 2 22 kW · trifásico","price":"151,64 €","rating":"4,6","best":"Gama alta"}
+        {
+          "asin": "B0CN2Q246Y",
+          "title": "GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico",
+          "price": "94,99 €",
+          "rating": "4,6",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B0CKSG4G98",
+          "title": "bokman EV Cable Tipo 2 22 kW · 5 m",
+          "price": "94,99 €",
+          "rating": "4,7",
+          "best": "Mejor valoración"
+        },
+        {
+          "asin": "B0CRR369BM",
+          "title": "Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m",
+          "price": "99,99 €",
+          "rating": "4,7",
+          "best": "Alternativa"
+        },
+        {
+          "asin": "B0DT6WYJH4",
+          "title": "bokman EV Cable Tipo 2 7,4 kW · 5 m",
+          "price": "90,24 €",
+          "rating": "4,7",
+          "best": "Monofásico"
+        },
+        {
+          "asin": "B0BNBR336V",
+          "title": "LAPP Mobility Cable Tipo 2 22 kW · 32 A",
+          "price": "168,52 €",
+          "rating": "4,6",
+          "best": "Gama alta"
+        },
+        {
+          "asin": "B0BNBQ8THM",
+          "title": "Lapp Mobility Cable Tipo 2 22 kW · trifásico",
+          "price": "151,64 €",
+          "rating": "4,6",
+          "best": "Gama alta"
+        }
       ]
     },
     {
@@ -20,12 +56,48 @@
       "name": "Wallbox 7,4 kW",
       "intro": "Puntos de recarga domésticos monofásicos. Fija la potencia, la longitud del cable y si incluye protección RCD.",
       "products": [
-        {"asin":"B0G7WY45P6","title":"Wallbox 7,4 kW · 7 m · 6–32 A","price":"169,99 €","rating":"4,4","best":"Precio"},
-        {"asin":"B0DTHYC2RD","title":"dé Wallbox 7,4 kW con app · 6 m","price":"169,95 €","rating":"4,6","best":"Equilibrio"},
-        {"asin":"B0GLFKVHFK","title":"Wallbox 7,4 kW monofásico con app","price":"224,19 €","rating":"4,3","best":"App"},
-        {"asin":"B0DJTYBY2W","title":"dé Wallbox 7,4 kW · cable 7,5 m","price":"246,95 €","rating":"4,6","best":"Cable largo"},
-        {"asin":"B0CTCL7RRB","title":"Wallbox 7,4 kW con RCD tipo A + 6 mA CC","price":"246,72 €","rating":"4,4","best":"Protección"},
-        {"asin":"B0GLP11DQQ","title":"Wallbox 22 kW trifásico · app · 6 m","price":"284,05 €","rating":"4,8","best":"Trifásico"}
+        {
+          "asin": "B0G7WY45P6",
+          "title": "Wallbox 7,4 kW · 7 m · 6–32 A",
+          "price": "169,99 €",
+          "rating": "4,4",
+          "best": "Precio"
+        },
+        {
+          "asin": "B0DTHYC2RD",
+          "title": "dé Wallbox 7,4 kW con app · 6 m",
+          "price": "169,95 €",
+          "rating": "4,6",
+          "best": "Equilibrio"
+        },
+        {
+          "asin": "B0GLFKVHFK",
+          "title": "Wallbox 7,4 kW monofásico con app",
+          "price": "224,19 €",
+          "rating": "4,3",
+          "best": "App"
+        },
+        {
+          "asin": "B0DJTYBY2W",
+          "title": "dé Wallbox 7,4 kW · cable 7,5 m",
+          "price": "246,95 €",
+          "rating": "4,6",
+          "best": "Cable largo"
+        },
+        {
+          "asin": "B0CTCL7RRB",
+          "title": "Wallbox 7,4 kW con RCD tipo A + 6 mA CC",
+          "price": "246,72 €",
+          "rating": "4,4",
+          "best": "Protección"
+        },
+        {
+          "asin": "B0GLP11DQQ",
+          "title": "Wallbox 22 kW trifásico · app · 6 m",
+          "price": "284,05 €",
+          "rating": "4,8",
+          "best": "Trifásico"
+        }
       ]
     },
     {
@@ -33,11 +105,41 @@
       "name": "Adaptadores CCS2",
       "intro": "Adaptadores para combinar conectores CCS2, Tipo 2, CCS1 y NACS. Revisa corriente continua, tensión y compatibilidad real.",
       "products": [
-        {"asin":"B0FK2JJKDF","title":"Adaptador CCS2 a Tipo 2 para Tesla","price":"98,00 €","rating":"2,6","best":"Barato · valorar reseñas"},
-        {"asin":"B0CJ536JSN","title":"Adaptador CCS2 a CCS1 · 1000 V · 500 A","price":"139,99 €","rating":"4,7","best":"DC"},
-        {"asin":"B0HKJ6MC58","title":"Adaptador CCS2 a NACS · 250 A","price":"155,13 €","rating":"","best":"NACS"},
-        {"asin":"B0FL25Z4P4","title":"MCEVKELN CCS2 a Tesla 250 kW","price":"159,99 €","rating":"4,1","best":"Tesla"},
-        {"asin":"B0G5X3LZ95","title":"Adaptador CCS1 a CCS2 · 1000 V · 400 A","price":"109,86 €","rating":"4,8","best":"CCS1"}
+        {
+          "asin": "B0FK2JJKDF",
+          "title": "Adaptador CCS2 a Tipo 2 para Tesla",
+          "price": "98,00 €",
+          "rating": "2,6",
+          "best": "Barato · valorar reseñas"
+        },
+        {
+          "asin": "B0CJ536JSN",
+          "title": "Adaptador CCS2 a CCS1 · 1000 V · 500 A",
+          "price": "139,99 €",
+          "rating": "4,7",
+          "best": "DC"
+        },
+        {
+          "asin": "B0HKJ6MC58",
+          "title": "Adaptador CCS2 a NACS · 250 A",
+          "price": "155,13 €",
+          "rating": "",
+          "best": "NACS"
+        },
+        {
+          "asin": "B0FL25Z4P4",
+          "title": "MCEVKELN CCS2 a Tesla 250 kW",
+          "price": "159,99 €",
+          "rating": "4,1",
+          "best": "Tesla"
+        },
+        {
+          "asin": "B0G5X3LZ95",
+          "title": "Adaptador CCS1 a CCS2 · 1000 V · 400 A",
+          "price": "109,86 €",
+          "rating": "4,8",
+          "best": "CCS1"
+        }
       ]
     },
     {
@@ -45,12 +147,132 @@
       "name": "Cargadores portátiles",
       "intro": "Cargadores Tipo 2 con enchufe Schuko para llevar en el coche. Útiles como respaldo, no como sustituto de un wallbox.",
       "products": [
-        {"asin":"B0H33CGXZM","title":"Junsun Cargador EV portátil 3,6 kW · 6–16 A","price":"89,99 €","rating":"4,6","best":"Precio"},
-        {"asin":"B0FKGT9Q5M","title":"Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A","price":"99,99 €","rating":"4,5","best":"Ajustable"},
-        {"asin":"B0G7XK241Q","title":"Cargador 3,7 kW · 7 m · 6–16 A con LCD","price":"109,99 €","rating":"4,4","best":"Pantalla"},
-        {"asin":"B0FPM7K4TF","title":"GONEO Schuko 3,68 kW · sensor de temperatura","price":"113,99 €","rating":"4,5","best":"Protección"},
-        {"asin":"B0DGT8PRHH","title":"dé Cargador Schuko 3,7 kW · 7 m con app","price":"118,70 €","rating":"4,6","best":"App"},
-        {"asin":"B0C8SFXJHM","title":"dé Cargador Schuko 3,7 kW · 6 m","price":"119,95 €","rating":"4,7","best":"Cable corto"}
+        {
+          "asin": "B0H33CGXZM",
+          "title": "Junsun Cargador EV portátil 3,6 kW · 6–16 A",
+          "price": "89,99 €",
+          "rating": "4,6",
+          "best": "Precio"
+        },
+        {
+          "asin": "B0FKGT9Q5M",
+          "title": "Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A",
+          "price": "99,99 €",
+          "rating": "4,5",
+          "best": "Ajustable"
+        },
+        {
+          "asin": "B0G7XK241Q",
+          "title": "Cargador 3,7 kW · 7 m · 6–16 A con LCD",
+          "price": "109,99 €",
+          "rating": "4,4",
+          "best": "Pantalla"
+        },
+        {
+          "asin": "B0FPM7K4TF",
+          "title": "GONEO Schuko 3,68 kW · sensor de temperatura",
+          "price": "113,99 €",
+          "rating": "4,5",
+          "best": "Protección"
+        },
+        {
+          "asin": "B0DGT8PRHH",
+          "title": "dé Cargador Schuko 3,7 kW · 7 m con app",
+          "price": "118,70 €",
+          "rating": "4,6",
+          "best": "App"
+        },
+        {
+          "asin": "B0C8SFXJHM",
+          "title": "dé Cargador Schuko 3,7 kW · 6 m",
+          "price": "119,95 €",
+          "rating": "4,7",
+          "best": "Cable corto"
+        }
+      ]
+    },
+    {
+      "id": "estaciones-22kw",
+      "name": "Estaciones 22 kW",
+      "intro": "Wallbox trifásicos de alta potencia para quienes tienen acometida y coche compatibles. Precios de 207,57 € a 594,15 €.",
+      "products": [
+        {
+          "asin": "B0GLP11DQQ",
+          "title": "Wallbox 22 kW · 6–32 A trifásico · app · 6 m",
+          "price": "284,05 €",
+          "rating": "4,8",
+          "best": "Mejor valoración"
+        },
+        {
+          "asin": "B0DZX5W94K",
+          "title": "Wallbox 22 kW trifásico · 7 m · 6–32 A con app",
+          "price": "207,57 €",
+          "rating": "4,1",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B0DHQXPM78",
+          "title": "dé Wallbox 22 kW app · 7,5 m · RFID",
+          "price": "319,95 €",
+          "rating": "4,5",
+          "best": "RFID"
+        },
+        {
+          "asin": "B0C8H7YR6V",
+          "title": "Tera EV Wallbox 22 kW · 32 A · CE y TÜV",
+          "price": "409,01 €",
+          "rating": "4,3",
+          "best": "Certificado"
+        },
+        {
+          "asin": "B0BPDGY9ZV",
+          "title": "Wallbox Pulsar MAX 22 kW · cable 5 m",
+          "price": "594,15 €",
+          "rating": "4,0",
+          "best": "Gama alta"
+        }
+      ]
+    },
+    {
+      "id": "v2l",
+      "name": "Adaptadores V2L",
+      "intro": "Descarga desde el coche a un enchufe Schuko útiles para camping o emergencias. Comprueba potencia, compatibilidad y protección.",
+      "products": [
+        {
+          "asin": "B0DYV2BG8D",
+          "title": "JULIK Adaptador V2L Atto 3, Dolphin, Seal · 3,5 kW",
+          "price": "49,99 €",
+          "rating": "4,7",
+          "best": "Mejor valoración"
+        },
+        {
+          "asin": "B0GX5ZPSK1",
+          "title": "Adaptador V2L XPeng · 3,5 kW · 16 A · IP54",
+          "price": "41,99 €",
+          "rating": "5,0",
+          "best": "IP54"
+        },
+        {
+          "asin": "B0HN4CNXTX",
+          "title": "Adaptador V2L Tipo 2 a Schuko para MG",
+          "price": "45,19 €",
+          "rating": "",
+          "best": "MG"
+        },
+        {
+          "asin": "B0H82NMG21",
+          "title": "BOROCO V2L Tipo 2 a Schuko · 3,5 kW · 16 A",
+          "price": "36,49 €",
+          "rating": "",
+          "best": "Precio"
+        },
+        {
+          "asin": "B0DPLZ29YL",
+          "title": "Adaptador descarga 3,5 kW · 220 V para Atto 3 y ZS EV",
+          "price": "58,98 €",
+          "rating": "3,5",
+          "best": "Alternativa"
+        }
       ]
     }
   ]
