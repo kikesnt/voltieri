@@ -167,7 +167,30 @@ async function safety(){
   await save("safety.txt", rows.join("\n"));
 }
 
-// 8. API pública — JSON estático servido desde el CDN
+// 8b. Precios de coches nuevos en España — Autocasion (scraping con Scrapling como referencia)
+async function pricesES(){
+  const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
+  const vehicles = (await fs.readFile(path.join(OUT,"vehicles.txt"),"utf8")).trim().split("\n");
+  const out=[]; let i=0;
+  const worker=async()=>{
+    while(i<vehicles.length){
+      const line=vehicles[i++], c=line.split("|"), name=`${c[0]} ${c[1]}`, tok=norm(name).split(" ");
+      const slug=`${tok[0]}/${tok.slice(1).join("-")}`;
+      try{
+        const html=await (await get(`https://www.autocasion.com/coches-nuevos/${slug}`)).text();
+        const items=[...html.matchAll(/itemprop="name">\s*([^<]{1,90})\s*<\/h2>[\s\S]{0,400}?<p class="precio">\s*(?:<span>[^<]*<\/span>)?\s*([\d.,]+)\s*€/gi)]
+          .map(m=>({name:norm(m[1]),price:+m[2].replace(/\./g,"").replace(",",".")}));
+        const model=tok.slice(1).join(" ");
+        const good=items.filter(a=>a.name.includes(tok[0])&&a.name.includes(model)&&a.price>10000);
+        if(good.length) out.push(`${name}|${Math.min(...good.map(a=>a.price))}`);
+      }catch(e){ /* un modelo no rompe el lote */ }
+    }
+  };
+  await Promise.all(Array.from({length:10},worker));
+  await save("prices-es.txt", out.join("\n"));
+}
+
+// 9. API pública — JSON estático servido desde el CDN
 async function api(){
   const read = n => fs.readFile(path.join(OUT,n),"utf8");
   const [v, c, p] = await Promise.all([read("vehicles.txt"), read("chargers.txt"), read("pvpc.txt")]);
@@ -189,5 +212,5 @@ async function api(){
 }
 
 const vehiclesLines = await vehicles();
-await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api()]);
+await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api(), pricesES()]);
 console.log("Datos actualizados.");

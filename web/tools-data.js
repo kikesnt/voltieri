@@ -15,10 +15,16 @@ const nd = v => (v === null || v === undefined || v === "" ? "Sin dato" : v);
 async function loadVehicles() {
   const txt = await (await fetch("data/vehicles.txt")).text();
   const specsTxt = await (await fetch("data/specs.txt")).text();
+  const esTxt = await (await fetch("data/prices-es.txt")).text();
   const specs = {};
   for (const line of specsTxt.trim().split("\n")) {
     const [name, len, wid, hei, boot, price, real] = line.split("|");
-    specs[name] = { len:+len||null, wid:+wid||null, hei:+hei||null, boot:+boot||null, price:+price||null, real:+real||null };
+    specs[name] = { len:+len||null, wid:+wid||null, hei:+hei||null, boot:+boot||null, priceDe:+price||null, real:+real||null };
+  }
+  const pricesES = {};
+  for (const line of esTxt.trim().split("\n")) {
+    const [name, price] = line.split("|");
+    pricesES[name] = +price;
   }
   for (const line of txt.trim().split("\n")) {
     const [make, model, year, net, wltp, dc, power, accel, chem] = line.split("|");
@@ -27,6 +33,7 @@ async function loadVehicles() {
     CAR_NAMES.push(name);
     const battery = +net, wltpKm = +wltp;
     const s = specs[name] || {};
+    const price = pricesES[name] || null;
     CARS[name] = {
       wltp: wltpKm,
       range: s.real || Math.round(wltpKm * 0.85),
@@ -34,7 +41,8 @@ async function loadVehicles() {
       use: +(battery / (wltpKm / 100)).toFixed(1),
       dc: +dc, power: +power, accel: accel ? +accel : null,
       chem, battery, year: +year,
-      price: s.price || null, priceCountry: s.price ? "Alemania RRP" : null,
+      price, priceSource: price ? "Autocasion España" : (s.priceDe ? "RRP Alemania ev-database" : "Sin dato"),
+      priceDe: s.priceDe || null,
       len: s.len, wid: s.wid, hei: s.hei, boot: s.boot, ncap: null, adas: null
     };
   }
@@ -185,11 +193,11 @@ const TOOLS = [
     desc:"Compara la tarifa que pagas con el PVPC real del día.",
     inputs:[num("kwh","Energía",50,"kWh",10,100,5),num("tarifa","Tu tarifa",0.55,"€/kWh",0.1,1,0.01)],
     calc:v=>{
-      const live=(typeof LIVE!=="undefined")?LIVE:{};
-      const pvpc=live.pvpcAvg||0.212;
-      const cost=v.kwh*v.tarifa, ref=v.kwh*pvpc;
-      return {out:[{l:"Tu tarifa",v:eur2(v.tarifa)+"/kWh"},{l:"PVPC real",v:eur2(pvpc)+"/kWh"},{l:"Coste carga",v:eur2(cost)},{l:"Sobre PVPC",v:eur2(cost-ref)}],
-        note:`PVPC real de ${live.pvpcDate||"snapshot"} desde ESIOS. Las redes de carga no publican tarifas en una fuente abierta verificable: introduce la tuya para compararla con el precio de la electricidad.`};
+      const pvpc=(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?LIVE.pvpcAvg:.212;
+      const ref=0.39;
+      const casa=v.kwh*pvpc, ionity=v.kwh*ref, calle=v.kwh*v.tarifa;
+      return {out:[{l:"Tu tarifa",v:eur2(v.tarifa)+"/kWh"},{l:"PVPC real",v:eur2(pvpc)+"/kWh"},{l:"IONITY",v:eur2(ref)+"/kWh"},{l:"Coste carga",v:eur2(calle)}],
+        note:`PVPC de ${typeof LIVE!=="undefined"?LIVE.pvpcDate:"snapshot"} desde ESIOS. IONITY 0,39 €/kWh con plan según su web. El resto de operadores no publican tarifa abierta: introduce la tuya.`};
     }},
 
   // ---------- SIMULADORES ----------
@@ -413,7 +421,7 @@ const TOOLS = [
     inputs:[car("a"),num("km","Km al año",15000,"km",5000,40000,1000)],
     calc:v=>{
       const c=CARS[v.a];
-      const txt=`VOLTIERI · INFORME DE DECISIÓN\n\nModelo: ${v.a} (${c.year})\nAutonomía real: ${c.range} km (${c.rangeSource})\nWLTP: ${c.wltp} km · Batería: ${c.battery} kWh\nConsumo derivado: ${c.use} kWh/100\nCarga DC: ${c.dc} kW · Maletero: ${nd(c.boot)} L\nPrecio RRP Alemania: ${c.price?eur(c.price):"Sin dato"}\nUso anual: ${v.km} km\n\nFuentes: OpenEV Data v1.24.0, ev-database.org, ESIOS, MITECO.`;
+      const txt=`VOLTIERI · INFORME DE DECISIÓN\n\nModelo: ${v.a} (${c.year})\nAutonomía real: ${c.range} km (${c.rangeSource})\nWLTP: ${c.wltp} km · Batería: ${c.battery} kWh\nConsumo derivado: ${c.use} kWh/100\nCarga DC: ${c.dc} kW · Maletero: ${nd(c.boot)} L\nPrecio España: ${c.price?eur(c.price)+" ("+c.priceSource+")":"Sin dato"}\nUso anual: ${v.km} km\n\nFuentes: OpenEV Data v1.24.0, ev-database.org, Autocasion, ESIOS, MITECO.`;
       return {out:[{l:"Modelo",v:v.a},{l:"Autonomía",v:c.range+" km"},{l:"Consumo",v:c.use+" kWh/100"},{l:"Fuentes",v:"4"}],
         html:`<pre class="mono" style="margin-top:16px;padding:14px;border:1px solid var(--rule);white-space:pre-wrap">${txt}</pre>`,
         note:"Informe generado con datos verificados. Se puede copiar y compartir sin cuenta."};

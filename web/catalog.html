@@ -59,10 +59,10 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);display:
       <span class="k" id="count">—</span>
     </div>
     <table class="table">
-      <thead><tr><th>Modelo</th><th>Autonomía real</th><th>Consumo*</th><th>Carga DC</th><th>Maletero</th><th>Precio DE**</th></tr></thead>
+      <thead><tr><th>Modelo</th><th>Autonomía real</th><th>Consumo*</th><th>Carga DC</th><th>Maletero</th><th>Precio ES**</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
-    <p class="source" style="margin-top:12px">Autonomía real de ev-database.org cuando existe; si no, WLTP × 0,85 (modelo declarado). * Consumo derivado de batería útil y WLTP. ** Precio de venta recomendado en Alemania, no en España; sin dato cuando la fuente no lo publica.</p>
+    <p class="source" style="margin-top:12px">Autonomía real de ev-database.org cuando existe; si no, WLTP × 0,85 (modelo declarado). * Consumo derivado de batería útil y WLTP. ** Precio de venta en España de Autocasion; si no hay dato, RRP de Alemania o “Sin dato”.</p>
   </section>
 
   <footer>
@@ -80,6 +80,7 @@ document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click"
 applyTheme();mql.addEventListener?.("change",applyTheme);
 
 function init(){
+  const money=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
   const makes=[...new Set(CAR_NAMES.map(n=>n.split(" ")[0]))].sort((a,b)=>a.localeCompare(b,"es"));
   document.getElementById("make").innerHTML='<option value="">Todas</option>'+makes.map(m=>`<option>${m}</option>`).join("");
   const render=()=>{
@@ -92,14 +93,14 @@ function init(){
     }).sort((a,b)=>CARS[b].range-CARS[a].range);
     document.getElementById("rows").innerHTML=list.map(n=>{
       const c=CARS[n];
-      return `<tr><td><span class="model"><strong>${n}</strong><span>${c.year} · ${c.battery} kWh · ${c.power} kW</span></span></td><td class="num">${c.range} km</td><td class="num">${c.use.toLocaleString("es-ES")} kWh/100</td><td class="num">${c.dc} kW</td><td class="num">${c.boot?c.boot+" L":"Sin dato"}</td><td class="num">${c.price?new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(c.price):"Sin dato"}</td></tr>`;
+      return `<tr><td><span class="model"><strong>${n}</strong><span>${c.year} · ${c.battery} kWh · ${c.power} kW</span></span></td><td class="num">${c.range} km</td><td class="num">${c.use.toLocaleString("es-ES")} kWh/100</td><td class="num">${c.dc} kW</td><td class="num">${c.boot?c.boot+" L":"Sin dato"}</td><td class="num">${c.price?money.format(c.price):"Sin dato"}</td></tr>`;
     }).join("");
     document.getElementById("count").textContent=`${list.length} de ${CAR_NAMES.length} modelos`;
   };
   document.getElementById("apply").addEventListener("click",render);
   render();
 }
-loadVehicles().then(init);
+loadVehicles().then(init).catch(e=>{document.getElementById("count").textContent="Error al cargar datos";});
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
 </body>
