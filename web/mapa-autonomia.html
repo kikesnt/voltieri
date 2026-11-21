@@ -111,7 +111,7 @@ async function drawRings(){
   const near=CHARGERS.filter(ch=>{
     const dy=(ch.lat-origin[1])*111, dx=(ch.lon-origin[0])*111*Math.cos(origin[1]*Math.PI/180);
     return Math.hypot(dx,dy)<520;
-  }).slice(0,40);
+  }).slice(0,80);
   const all=[origin,...coords,...near.map(ch=>[ch.lon,ch.lat])].map(p=>p.join(",")).join(";");
   let road=[];
   try{
@@ -151,15 +151,16 @@ async function drawRings(){
     const terrain=1-Math.max(-.12,Math.min(.12,dh/1200*.10));
     const range=base*terrain;
     const cands=near.map((ch,j)=>({ch,d:roadCh[j],b:bearing(origin,[ch.lon,ch.lat])}))
-      .filter(x=>angDiff(x.b,i*7.5)<=22.5&&x.d>5&&x.d<range*.95).sort((a,b)=>a.d-b.d);
+      .filter(x=>angDiff(x.b,i*7.5)<=22.5&&x.d>5&&x.d<range*1.9).sort((a,b)=>a.d-b.d);
     const r100=range, r80=range*.8;
     let r1=range, r2=range;
-    if(cands.length){
-      const best1=cands.reduce((best,x)=>(x.d+range*window)>(best.d+range*window)?x:best,cands[0]);
+    const first=cands.filter(x=>x.d<range*.95);
+    if(first.length){
+      const best1=first.reduce((best,x)=>(x.d+range*window)>(best.d+range*window)?x:best,first[0]);
       r1=best1.d+range*window;
       used.s1.push(best1.ch.name);
       let best2=null;
-      for(const a of cands) for(const b of cands){
+      for(const a of first) for(const b of cands){
         if(b.d<=a.d+20) continue;
         if(b.d>a.d+range*window*.95) continue;
         const score=b.d+range*window;
@@ -173,7 +174,7 @@ async function drawRings(){
     rings.forEach(ring=>{
       const real=roadRay[i]||R;
       let rad=R*(vals[ring.id]/real);
-      rad=Math.max(25,Math.min(R*1.8,rad));
+      rad=Math.max(25,Math.min(R*3.2,rad));
       const polyPoint=destination(origin[1],origin[0],i*7.5,rad);
       const id="ring-"+ring.id;
       let src=map.getSource(id);

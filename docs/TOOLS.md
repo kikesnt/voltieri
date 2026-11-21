@@ -29,6 +29,8 @@ Motor real: `web/routing.js` usa **OSRM** para la geometría, **Open-Meteo** par
 
 **Mapa de autonomía** (`web/mapa-autonomia.html`): reproduce y supera la función estrella de nogas. Clic en cualquier punto de España → 48 destinos a 240 km consultados a OSRM `table` → anillos isócronos deformados por la red vial para 100 %, 80 %, 1 y 2 paradas, con desglose de km. No son círculos: la forma depende de la distancia real por carretera en cada dirección.
 
+Las paradas **no son multiplicadores**: se apoyan en los 2.500 cargadores DC reales del registro MITECO. Para cada dirección se buscan cargadores en un cono de ±22,5°, se comprueba que el primero esté dentro del alcance de la batería, que el segundo esté dentro de la ventana posterior a la primera carga (10→80 %), y se toma la combinación que maximiza la distancia. La autonomía base se ajusta con temperatura y elevación de Open-Meteo. El desglose indica cuántas direcciones tienen cobertura real y qué cargador se usa más (en Barcelona, 29 de 48; en Madrid, 48 de 48).
+
 **Deuda consciente:** los estilos de mapa están duplicados entre `index.html` y `chargers.html`; se extraerán a `web/map-base.js` antes de la herramienta de mapas número dos.
 
 ## Hub de herramientas (las 40 restantes)
