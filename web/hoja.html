@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-skin="2027" data-theme="night">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Herramientas de movilidad eléctrica con datos abiertos y sin cuentas.">
@@ -13,7 +13,7 @@
 <title>Voltieri — Tu coche eléctrico, medido en la carretera</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
@@ -188,8 +188,8 @@ const PROFILE = [[0,667],[15,590],[30,596],[45,615],[60,734],[75,930],[90,1024],
 })();
 
 const PALETTE = {
-  day:  { bg:"#EFE7D5", water:"#B7CFCB", line:"#C9B79A", hill:{s:"#6B5A44",h:"#FFF8E6",a:"#8A7355"} },
-  night:{ bg:"#080B09", water:"#143830", line:"#2E4E45", hill:{s:"#14221D",h:"#454032",a:"#6A9B81"} }
+  day:  { bg:"#080B10", water:"#143830", line:"#2E3B4C", hill:{s:"#0A1220",h:"#1E3555",a:"#16283D"}, route:"#FFB020" },
+  night:{ bg:"#080B10", water:"#143830", line:"#2E3B4C", hill:{s:"#0A1220",h:"#1E3555",a:"#16283D"}, route:"#FFB020" }
 };
 let map;
 
@@ -224,7 +224,7 @@ function applyTheme(){
   const resolved = resolveTheme();
   const pref = localStorage.getItem(KEY) || "auto";
   document.documentElement.dataset.theme = resolved;
-  window.__routeColor = resolved === "night" ? "#E0953A" : "#B23A17";
+  window.__routeColor = PALETTE[resolved]?.route || "#FFB020";
   for (const b of document.querySelectorAll(".modes button")) {
     const on = b.dataset.mode === pref;
     b.classList.toggle("active", on);
