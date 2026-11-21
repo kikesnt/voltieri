@@ -72,6 +72,7 @@
   --amber:#FFB020;
   --mint:#3DDC97;
   --font-display:"Geist",sans-serif;
+  --font-map:"Instrument Serif",serif;
 }
 :root[data-skin="2027"][data-theme="day"]{
   --paper:#101720;
@@ -80,6 +81,7 @@
   --text:#F4F7FB;
   --muted:#A3AEBE;
   --rule:rgba(244,247,251,.14);
+  --font-map:"Instrument Serif",serif;
 }
 
 /* Superficies del navegador: señal barata de que el tema está diseñado */
