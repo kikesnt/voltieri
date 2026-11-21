@@ -1,5 +1,7 @@
 # Voltieri
 
+**Repo:** https://github.com/kikesnt/voltieri · **Demo:** https://kikesnt.github.io/voltieri/
+
 **Copiloto EV para España y Europa.** Autonomía real, rutas con orografía, cargadores oficiales, costes y equipamiento. Sin cuentas, sin cookies, sin ruido.
 
 > **Voltieri** — de *volt*, con sonoridad italiana de casa de ingeniería. Se pronuncia igual en español, inglés, alemán, francés e italiano.
