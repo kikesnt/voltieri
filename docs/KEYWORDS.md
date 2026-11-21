@@ -4,7 +4,7 @@
 
 `data/keywords.txt` contiene **200 keywords reales en español** extraídas de **Google Suggest** (`suggestqueries.google.com`, parámetro `hl=es`), a partir de 25 semillas del sector. Se recogieron el 21/11/2026.
 
-**No hay volumen de búsqueda ni dificultad**: Google Sugger solo revela sugerencias reales, no métricas. Para volumen y CPC haría falta una cuenta de DataForSEO, Ahrefs o SEMrush, o conectar Google Search Console cuando el sitio tenga tráfico. No inventamos cifras de volumen.
+**No hay volumen de búsqueda ni dificultad**: Google Suggest solo revela sugerencias reales, no métricas. Para volumen y CPC haría falta una cuenta de DataForSEO, Ahrefs o SEMrush, o conectar Google Search Console cuando el sitio tenga tráfico. No inventamos cifras de volumen.
 
 ## Repos evaluados
 
