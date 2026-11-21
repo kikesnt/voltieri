@@ -355,6 +355,79 @@ const TOOLS = [
     inputs:[num("anos","Años",8,"",1,15,1)],
     calc:v=>({out:[{l:"EV (modelo)",v:eur(v.anos*210)},{l:"Gasolina (modelo)",v:eur(v.anos*480)},{l:"Ahorro",v:eur(v.anos*270)},{l:"Por año",v:eur(270)}],
       note:"Estimación de modelo, no tarifa de taller. Se apoya en dos hechos publicados: menos piezas móviles y regeneración de frenos; un estudio de 2026 citado en nuestras noticias sitúa la sustitución de batería en el 0,3 % de los casos."})},
+
+  { id:"viaje-coste", cat:"finance", name:"Coste total del viaje", h1:"Cuánto te sale el viaje entero.",
+    desc:"Energía real, peajes y aparcamiento. No solo el kWh.",
+    inputs:[num("km","Distancia",617,"km",50,3000,10),num("use","Consumo",16.8,"kWh/100",10,30,0.1),num("peaje","Peajes",28,"€",0,300,1),num("parking","Parking",12,"€/día",0,100,1),num("dias","Días",2,"",1,14,1)],
+    calc:v=>{
+      const pvpc=(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?LIVE.pvpcAvg:.212;
+      const energy=v.km/100*v.use*pvpc, parking=v.parking*v.dias, total=energy+v.peaje+parking;
+      return {out:[{l:"Energía",v:eur(energy)},{l:"Peajes",v:eur(v.peaje)},{l:"Parking",v:eur(parking)},{l:"Total",v:eur(total)}],
+        table:table(["Concepto","Importe","€/km"],[["Energía PVPC",eur(energy),(energy/v.km).toFixed(3)],["Peajes",eur(v.peaje),(v.peaje/v.km).toFixed(3)],["Parking",eur(parking),(parking/v.km).toFixed(3)]]),
+        note:`PVPC real ${typeof LIVE!=="undefined"?LIVE.pvpcDate:"snapshot"}. Peajes y parking los introduces tú porque no hay fuente abierta unificada.`};
+    }},
+
+  { id:"soh-usado", cat:"sim", name:"Salud de batería de ocasión", h1:"Qué batería te estás comprando.",
+    desc:"Estado de salud estimado de un eléctrico de segunda mano.",
+    inputs:[selx("quim",["NMC","LFP"]),num("anos","Años",6,"",1,15,1),num("km","Km",90000,"km",10000,300000,5000)],
+    calc:v=>{
+      const rate=v.quim==="LFP"?.008:.013;
+      const soh=Math.max(.55,1-rate*v.anos-Math.min(.12,v.km/500000));
+      const cap=75*soh, range=Math.round(450*soh);
+      return {out:[{l:"Salud",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(cap)+" kWh"},{l:"Autonomía",v:range+" km"},{l:"Química",v:v.quim}],
+        note:"Modelo de degradación por ciclos y calendario. No sustituye a un informe SOH real del vehículo; para comprar pide siempre el certificado."};
+    }},
+
+  { id:"comparador-ccaa", cat:"finance", name:"Ayudas por comunidad", h1:"Tu comunidad, tus ayudas.",
+    desc:"Deducción estatal y ayuda autonómica orientativa por CCAA.",
+    inputs:[selx("ccaa",["Madrid","Cataluña","Valencia","Andalucía","País Vasco"]),num("precio","Precio coche",42000,"€",15000,100000,1000)],
+    calc:v=>{
+      const extra={"Madrid":2500,"Cataluña":2000,"Valencia":1500,"Andalucía":1000,"País Vasco":3000}[v.ccaa]||0;
+      const ded=v.precio<=30000?7000:5000;
+      return {out:[{l:"Comunidad",v:v.ccaa},{l:"Deducción IRPF",v:eur(ded)},{l:"Ayuda CCAA",v:eur(extra)},{l:"Total",v:eur(ded+extra)}],
+        note:"Importes orientativos. Las bases y plazos los publica cada comunidad y la AEAT; verifícalos antes de decidir."};
+    }},
+
+  { id:"remolque", cat:"sim", name:"Remolque y carga útil", h1:"Lo que pesa de verdad.",
+    desc:"Impacto del remolque y el equipaje en el consumo.",
+    inputs:[num("peso","Peso extra",300,"kg",0,1500,50),num("vel","Velocidad",110,"km/h",70,140,5),num("base","Consumo base",16.8,"kWh/100",10,30,0.1)],
+    calc:v=>{
+      const factor=1+v.peso/1200*.22+Math.pow((v.vel-90)/90,2)*.18;
+      const real=v.base*factor;
+      return {out:[{l:"Consumo",v:nf1.format(real)+" kWh/100"},{l:"Sobreconsumo",v:nf0.format((factor-1)*100)+" %"},{l:"Autonomía",v:nf0.format(75/real*100)+" km"},{l:"Peso",v:v.peso+" kg"}],
+        note:"Modelo físico: la masa afecta a rodadura y gravedad; la velocidad, a aerodinámica. Los remolques empeoran además el Cd."};
+    }},
+
+  { id:"alerta-coche", cat:"service", name:"Alerta de precio del coche", h1:"Avísame cuando baje.",
+    desc:"Sin cuenta: la alerta vive en tu dispositivo y en la URL.",
+    inputs:[car("a"),num("objetivo","Precio objetivo",35000,"€",10000,100000,1000)],
+    calc:v=>{
+      const c=CARS[v.a], precio=c.price;
+      const html=`<div style="margin-top:16px;padding:14px;border:1px solid var(--rule)"><span class="k">Precio RRP Alemania (fuente)</span><span class="v" style="font-size:22px">${precio?eur(precio):"Sin dato"}</span><p class="source" style="margin-top:8px">${precio&&precio<=v.objetivo?"Objetivo alcanzado según la fuente.":"Por encima del objetivo."}</p></div>`;
+      return {out:[{l:"Modelo",v:v.a},{l:"Objetivo",v:eur(v.objetivo)},{l:"Fuente",v:precio?"ev-database":"Sin dato"},{l:"Cuenta",v:"No"}],
+        html,note:"No publicamos precios españoles porque la fuente abierta solo da RRP de Alemania. Compara con ese dato y con el concesionario."};
+    }},
+
+  { id:"informe", cat:"service", name:"Informe de decisión", h1:"Todo en un solo papel.",
+    desc:"Genera un resumen con cifras y fuentes para llevarte.",
+    inputs:[car("a"),num("km","Km al año",15000,"km",5000,40000,1000)],
+    calc:v=>{
+      const c=CARS[v.a];
+      const txt=`VOLTIERI · INFORME DE DECISIÓN\n\nModelo: ${v.a} (${c.year})\nAutonomía real: ${c.range} km (${c.rangeSource})\nWLTP: ${c.wltp} km · Batería: ${c.battery} kWh\nConsumo derivado: ${c.use} kWh/100\nCarga DC: ${c.dc} kW · Maletero: ${nd(c.boot)} L\nPrecio RRP Alemania: ${c.price?eur(c.price):"Sin dato"}\nUso anual: ${v.km} km\n\nFuentes: OpenEV Data v1.24.0, ev-database.org, ESIOS, MITECO.`;
+      return {out:[{l:"Modelo",v:v.a},{l:"Autonomía",v:c.range+" km"},{l:"Consumo",v:c.use+" kWh/100"},{l:"Fuentes",v:"4"}],
+        html:`<pre class="mono" style="margin-top:16px;padding:14px;border:1px solid var(--rule);white-space:pre-wrap">${txt}</pre>`,
+        note:"Informe generado con datos verificados. Se puede copiar y compartir sin cuenta."};
+    }},
+
+  { id:"casa-publica", cat:"finance", name:"Casa vs carga pública", h1:"Dónde te sale más barato.",
+    desc:"Compara el PVPC de tu casa con la tarifa que pagas en la calle.",
+    inputs:[num("kwh","Energía",50,"kWh",10,100,5),num("tarifa","Tarifa pública",0.55,"€/kWh",0.1,1,0.01)],
+    calc:v=>{
+      const pvpc=(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?LIVE.pvpcAvg:.212;
+      const casa=v.kwh*pvpc, calle=v.kwh*v.tarifa;
+      return {out:[{l:"En casa",v:eur(casa)},{l:"En la calle",v:eur(calle)},{l:"Diferencia",v:eur(calle-casa)},{l:"Ratio",v:(v.tarifa/pvpc).toFixed(1)+"×"}],
+        note:`PVPC real ${typeof LIVE!=="undefined"?LIVE.pvpcDate:"snapshot"}. Las tarifas públicas no son abiertas: introduce la tuya.`};
+    }},
 ];
 
 const CATS = {

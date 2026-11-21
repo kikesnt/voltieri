@@ -150,4 +150,4 @@ async function planRoute(fromName, toName, opts={}){
   };
 }
 
-window.VoltieriRouting = { planRoute, geocode, getRoute, elevations, energyFor, nearestChargers, PLACES };
+window.VoltieriRouting = { planRoute, geocode, getRoute, sample, elevations, weatherAt, energyFor, nearestChargers, loadChargers, PLACES };

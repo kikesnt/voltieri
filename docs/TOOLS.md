@@ -68,7 +68,14 @@ Verificación: las 40 herramientas se recorren una a una; ninguna devuelve `NaN`
 | API | `web/api/data.json`, JSON estático servido desde el CDN |
 | Alertas | `localStorage` + PVPC en vivo + Notification API, sin cuenta |
 
-Ya no queda ninguna herramienta con datos de ejemplo.
+**Total: 56 herramientas** — 47 en el hub, 6 con página propia y 3 páginas nuevas (optimizador PVPC, carrera en ruta, V2G solar). Todas verificadas sin `NaN`.
+
+### Segundo bloque de herramientas nuevas
+
+- **Optimizador horario de carga** (`optimizador-carga.html`): 24 precios reales del PVPC, ventana más barata y ahorro. Madrid: 6,37 € por 50 kWh, 2,42 € de ahorro.
+- **Carrera en ruta** (`carrera-ruta.html`): 4 coches por la misma ruta con paradas reales. En Madrid→Barcelona ganó BMW i4 por 1 minuto, con 442 cargadores en el corredor.
+- **V2G y carga solar** (`v2g-solar.html`): radiación real de Open-Meteo + PVPC. 5 kWp en Madrid dan 232 kWh/mes y 2.093 km; V2G añade 488 €/año.
+- **Siete más en el hub**: coste total del viaje, SOH de ocasión, ayudas por CCAA, remolque y carga útil, alerta de precio del coche, informe de decisión y casa vs carga pública.
 
 ---
 
