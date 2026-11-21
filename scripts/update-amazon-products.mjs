@@ -62,6 +62,10 @@ async function token(){
 }
 
 async function getItems(accessToken, asins){
+  // ItemInfo e Images son gratuitos. OffersV2 (precio/disponibilidad) exige License Key.
+  const resources = cfg.license
+    ? ["itemInfo.title","images.primary.medium","offersV2.listings.price","offersV2.listings.availability","customerReviews.starRating"]
+    : ["itemInfo.title","images.primary.medium"];
   const r = await fetch("https://creatorsapi.amazon/catalog/v1/getItems", {
     method:"POST",
     headers:{
@@ -74,7 +78,7 @@ async function getItems(accessToken, asins){
       partnerTag:cfg.partnerTag,
       partnerType:"Associates",
       itemIds:asins,
-      resources:["itemInfo.title","images.primary.medium","offersV2.listings.price","offersV2.listings.availability","customerReviews.starRating"]
+      resources
     })
   });
   const t = await r.text();
@@ -108,7 +112,7 @@ try {
   const response = await getItems(access, asins);
   const items = response.Items || response.items || [];
   const byAsin = new Map(items.map(i=>[i.ASIN || i.asin, i]));
-  let updated = 0;
+  let updated = 0, priced = 0;
   for(const cat of data.categories) for(const p of cat.products){
     const it = byAsin.get(p.asin);
     if(!it) continue;
@@ -116,15 +120,26 @@ try {
     const price = it.OffersV2?.Listings?.[0]?.Price?.DisplayAmount;
     const rating = it.CustomerReviews?.StarRating?.StarRating;
     if(title) p.title = String(title).slice(0,120);
-    if(price) p.price = price;
+    if(price){ p.price = price; priced++; }
     if(rating) p.rating = Number(rating).toFixed(1);
     updated++;
   }
-  data.date = new Date().toISOString().slice(0,10);
-  data.source = "Amazon Creators API · GetItems";
+  data.date = priced ? new Date().toISOString().slice(0,10) : data.date;
+  data.source = priced ? "Amazon Creators API · GetItems + OffersV2" : "Amazon Creators API · metadatos + instantánea 21/11/2026";
   await fs.writeFile(PRODUCTS, JSON.stringify(data,null,2));
-  await writeStatus({ mode:"api", api:"Amazon Creators API", eligible:true, updated, message:"Precios actualizados desde Creators API." });
-  console.log(`Actualizados ${updated} productos.`);
+  await writeStatus({
+    mode:"api",
+    api:"Amazon Creators API",
+    eligible:true,
+    updated,
+    priced,
+    priceLicense: cfg.license ? "configurada" : "no configurada",
+    message: priced
+      ? `Precios actualizados desde Creators API (${priced} productos).`
+      : "API conectada: título e imágenes actualizados. Sin License Key no se pueden leer precios; se conserva la instantánea del 21/11/2026.",
+    next: priced ? "Nada más." : "Añade CREATORSAPI_LICENSE_KEY para precios en vivo."
+  });
+  console.log(`Actualizados ${updated} productos (${priced} con precio).`);
 } catch(e) {
   await writeStatus({
     mode:"local",
