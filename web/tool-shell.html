@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Coste por 100 km de tu coche eléctrico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+header{display:flex;align-items:center;gap:28px;padding:14px 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.22em}
+nav{display:flex;gap:20px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--ink)}
+.head-right{margin-left:auto}
+main{max-width:1100px;margin:0 auto;padding:52px 32px 88px}
+h1{font-size:48px;line-height:1.04;letter-spacing:-.03em;font-weight:500;max-width:720px}
+.lede{margin-top:16px;font-size:14px;line-height:1.6;color:var(--muted);max-width:640px}
+.workspace{display:grid;grid-template-columns:340px 1fr;gap:24px;margin-top:44px;align-items:start}
+.controls{padding:24px}
+.controls .field{align-items:center}
+.controls input{
+  width:92px;padding:6px 8px;border:1px solid var(--rule);background:transparent;color:var(--text);
+  font-family:var(--font-data);font-size:13px;text-align:right
+}
+.result{padding:24px}
+.result .data-grid{margin:0 -24px 24px;border-bottom:1px solid var(--rule)}
+.calc-note{margin-top:18px;font-size:12px;line-height:1.6;color:var(--muted)}
+.affiliate{margin-top:24px}
+footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
+@media(max-width:820px){
+  header{padding:14px 18px;gap:14px}
+  nav{display:none}
+  main{padding:34px 18px 64px}
+  h1{font-size:34px}
+  .workspace{grid-template-columns:1fr}
+  .result .data-grid{grid-template-columns:1fr 1fr}
+  .result .data-cell:nth-child(3){border-left:0;border-top:1px solid var(--rule)}
+  .result .data-cell:nth-child(4){border-top:1px solid var(--rule)}
+}
+@media(max-width:420px){
+  .result .data-grid{grid-template-columns:1fr}
+  .result .data-cell{border-left:0;border-top:1px solid var(--rule)}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <span class="brand">VOLTIERI</span>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right modes" role="group" aria-label="Modo de pantalla">
+    <button type="button" data-mode="auto">Auto</button>
+    <button type="button" data-mode="day">Día</button>
+    <button type="button" data-mode="night">Noche</button>
+  </div>
+</header>
+
+<main>
+  <h1>Coste por 100 km de tu coche eléctrico.</h1>
+  <p class="lede">Energía, peajes y combustible comparados con tus números, no con una media. Sin cuenta y con el desglose a la vista.</p>
+
+  <div class="workspace">
+    <div class="panel controls">
+      <span class="k">Tus datos</span>
+      <div class="field"><label class="k" for="consumo">Consumo eléctrico</label><span><input id="consumo" type="number" min="1" max="40" step="0.1" value="16.8"> <span class="k">kWh/100</span></span></div>
+      <div class="field"><label class="k" for="precio">Precio de la carga</label><span><input id="precio" type="number" min="0.05" max="1" step="0.01" value="0.24"> <span class="k">€/kWh</span></span></div>
+      <div class="field"><label class="k" for="gasolina">Gasolina equivalente</label><span><input id="gasolina" type="number" min="1" max="20" step="0.1" value="7.5"> <span class="k">L/100</span></span></div>
+      <div class="field"><label class="k" for="precioGas">Precio gasolina</label><span><input id="precioGas" type="number" min="1" max="3" step="0.01" value="1.55"> <span class="k">€/L</span></span></div>
+      <button class="btn btn--wide" type="button" id="recalcular">Recalcular</button>
+    </div>
+
+    <div class="panel result">
+      <div class="data-grid">
+        <div class="data-cell"><span class="k">Eléctrico</span><span class="v" id="out-ev">—</span></div>
+        <div class="data-cell"><span class="k">Gasolina</span><span class="v" id="out-gas">—</span></div>
+        <div class="data-cell"><span class="k">Ahorro</span><span class="v" id="out-save">—</span></div>
+        <div class="data-cell"><span class="k">Por 15.000 km</span><span class="v" id="out-year">—</span></div>
+      </div>
+
+      <table class="table">
+        <thead><tr><th>Concepto</th><th>Eléctrico</th><th>Gasolina</th><th class="num">Diferencia</th></tr></thead>
+        <tbody>
+          <tr><td>Energía por 100 km</td><td id="t-ev">—</td><td id="t-gas">—</td><td class="num" id="t-dif">—</td></tr>
+          <tr><td>Mantenimiento estimado</td><td>2,10 €</td><td>4,80 €</td><td class="num">−2,70 €</td></tr>
+        </tbody>
+      </table>
+
+      <p class="calc-note">El cálculo usa consumo medido y precio de energía introducidos por ti. Mantenimiento: estimación orientativa. Cambia cualquier dato y vuelve a calcular.</p>
+
+      <div class="affiliate">
+        <span class="thumb"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 1 L4 9 H7 L6 15 L12 6 H9 Z" fill="currentColor"/></svg></span>
+        <span><strong>Cable Tipo 2 · 5 m · 22 kW</strong><span class="meta">Para cargar fuera de casa · 29 €</span></span>
+        <span class="source" style="margin-left:auto">Enlace de afiliado · el precio no cambia</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="source">Fuentes: precio PVPC · REE/ESIOS · datos introducidos por el usuario</span>
+    <span class="source">Sin cuentas. Sin cookies.</span>
+  </footer>
+</main>
+
+<script src="data-live.js"></script>
+<script>
+const KEY="voltieri-theme";
+const mql=matchMedia("(prefers-color-scheme: dark)");
+function resolve(){const p=localStorage.getItem(KEY)||"auto";return p==="auto"?(mql.matches?"night":"day"):p;}
+function applyTheme(){
+  const r=resolve(), p=localStorage.getItem(KEY)||"auto";
+  document.documentElement.dataset.theme=r;
+  for(const b of document.querySelectorAll(".modes button")){const on=b.dataset.mode===p;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on);}
+}
+document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{localStorage.setItem(KEY,b.dataset.mode);applyTheme();}));
+applyTheme();
+mql.addEventListener?.("change",applyTheme);
+
+const fmt=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",minimumFractionDigits:2});
+const pct=new Intl.NumberFormat("es-ES",{style:"percent",maximumFractionDigits:0});
+function calculate(){
+  const kwh=+document.getElementById("consumo").value;
+  const price=+document.getElementById("precio").value;
+  const litres=+document.getElementById("gasolina").value;
+  const gasPrice=+document.getElementById("precioGas").value;
+  const ev=kwh*price, gas=litres*gasPrice, saving=1-ev/gas;
+  document.getElementById("out-ev").textContent=fmt.format(ev)+"/100";
+  document.getElementById("out-gas").textContent=fmt.format(gas)+"/100";
+  document.getElementById("out-save").textContent=pct.format(saving);
+  document.getElementById("out-year").textContent=fmt.format((gas-ev)*150);
+  document.getElementById("t-ev").textContent=fmt.format(ev);
+  document.getElementById("t-gas").textContent=fmt.format(gas);
+  document.getElementById("t-dif").textContent="−"+fmt.format(gas-ev);
+}
+document.getElementById("recalcular").addEventListener("click",calculate);
+calculate();
+loadLivePrices().then(()=>calculate());
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>

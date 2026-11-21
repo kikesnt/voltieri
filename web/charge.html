@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Simulador de carga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+header{display:flex;align-items:center;gap:28px;padding:14px 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.22em}
+nav{display:flex;gap:20px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none}
+.head-right{margin-left:auto}
+main{max-width:1120px;margin:0 auto;padding:52px 32px 88px}
+h1{font-size:46px;line-height:1.04;letter-spacing:-.03em;font-weight:500;max-width:680px}
+.lede{margin-top:16px;font-size:14px;line-height:1.6;color:var(--muted);max-width:640px}
+.workspace{display:grid;grid-template-columns:300px 1fr;gap:24px;margin-top:42px;align-items:start}
+.panel{padding:24px}
+.controls input{width:88px;padding:6px 8px;border:1px solid var(--rule);background:transparent;color:var(--text);font-family:var(--font-data);font-size:13px;text-align:right}
+.controls .field{align-items:center}
+.result .data-grid{margin:0 -24px 24px;border-bottom:1px solid var(--rule)}
+.chart{margin-top:22px}
+.chart .k{margin-bottom:8px}
+.chart svg{width:100%;height:220px;display:block;overflow:visible}
+.axis{stroke:var(--rule);stroke-width:1}
+.calc-note{margin-top:18px;font-size:12px;line-height:1.6;color:var(--muted)}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
+@media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <span class="brand">VOLTIERI</span>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right modes" role="group" aria-label="Modo de pantalla">
+    <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
+  </div>
+</header>
+
+<main>
+  <h1>Cuánto tarda de verdad tu carga rápida.</h1>
+  <p class="lede">La potencia de punta no es la que ves en el cargador. La curva cae con el estado de carga y con el frío; aquí se ve y se mide el tiempo 10–80 %.</p>
+
+  <div class="workspace">
+    <form class="panel controls" onsubmit="return false">
+      <span class="k">Tu carga</span>
+      <div class="field"><label class="k" for="modelo">Modelo con curva real</label><select id="modelo"><option value="">— Personalizado —</option></select></div>
+      <div class="field"><label class="k" for="peak">Potencia punta</label><span><input id="peak" type="number" min="20" max="400" step="5" value="250"> <span class="k">kW</span></span></div>
+      <div class="field"><label class="k" for="cap">Batería útil</label><span><input id="cap" type="number" min="20" max="150" step="1" value="75"> <span class="k">kWh</span></span></div>
+      <div class="field"><label class="k" for="from">SoC inicial</label><span><input id="from" type="number" min="0" max="95" step="1" value="10"> <span class="k">%</span></span></div>
+      <div class="field"><label class="k" for="to">SoC final</label><span><input id="to" type="number" min="10" max="100" step="1" value="80"> <span class="k">%</span></span></div>
+      <div class="field"><label class="k" for="temp">Temperatura</label><span><input id="temp" type="number" min="-10" max="40" step="1" value="18"> <span class="k">°C</span></span></div>
+      <button class="btn btn--wide" type="button" id="calc">Calcular carga</button>
+    </form>
+
+    <div class="panel result">
+      <div class="data-grid">
+        <div class="data-cell"><span class="k">Tiempo</span><span class="v" id="out-time">—</span></div>
+        <div class="data-cell"><span class="k">Energía</span><span class="v" id="out-energy">—</span></div>
+        <div class="data-cell"><span class="k">Potencia media</span><span class="v" id="out-avg">—</span></div>
+        <div class="data-cell"><span class="k">Pérdida por frío</span><span class="v" id="out-cold">—</span></div>
+      </div>
+      <div class="chart">
+        <span class="k">Curva de potencia · eje horizontal = estado de carga</span>
+        <svg id="curve" viewBox="0 0 800 220" preserveAspectRatio="none" aria-label="Curva de potencia de carga">
+          <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--contour)" stop-opacity=".24"/><stop offset="100%" stop-color="var(--contour)" stop-opacity="0"/></linearGradient></defs>
+          <line class="axis" x1="0" y1="200" x2="800" y2="200"/>
+          <line class="axis" x1="0" y1="100" x2="800" y2="100"/>
+          <path id="curve-area" fill="url(#cg)"/>
+          <path id="curve-line" fill="none" stroke="var(--contour)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          <line id="curve-start" y1="0" y2="200" stroke="var(--route)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+          <line id="curve-end" y1="0" y2="200" stroke="var(--route)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+      </div>
+      <p class="calc-note" id="curve-note">Modelo de curva: meseta hasta el 50 % de SoC y caída lineal hasta el 10 % de potencia al 100 %. El frío reduce la potencia disponible. Es una aproximación, no el dato del fabricante.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="source">Modelo documentado en docs/DESIGN.md · sin datos de fabricante</span>
+    <span class="source">Sin cuentas. Sin cookies.</span>
+  </footer>
+</main>
+
+<script src="tools-data.js"></script>
+<script>
+const KEY="voltieri-theme",mql=matchMedia("(prefers-color-scheme: dark)");
+function resolve(){const p=localStorage.getItem(KEY)||"auto";return p==="auto"?(mql.matches?"night":"day"):p;}
+function applyTheme(){const r=resolve(),p=localStorage.getItem(KEY)||"auto";document.documentElement.dataset.theme=r;for(const b of document.querySelectorAll(".modes button")){const on=b.dataset.mode===p;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on);}}
+document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{localStorage.setItem(KEY,b.dataset.mode);applyTheme();}));
+applyTheme();mql.addEventListener?.("change",applyTheme);
+
+const n1=new Intl.NumberFormat("es-ES",{minimumFractionDigits:1,maximumFractionDigits:1});
+const CURVES={};
+function curvePower(soc,peak,cold){
+  const c=window.__curve;
+  if(c && c.length){
+    for(let i=0;i<c.length-1;i++){
+      const [s0,p0]=c[i], [s1,p1]=c[i+1];
+      if(soc>=s0 && soc<=s1){const t=(soc-s0)/((s1-s0)||1);return (p0+(p1-p0)*t)*cold;}
+    }
+    return (soc<c[0][0]?c[0][1]:c[c.length-1][1])*cold;
+  }
+  const shape=soc<=.5?1:1-.9*((soc-.5)/.5);
+  return peak*Math.max(.08,shape)*cold;
+}
+function calc(){
+  const peak=+document.getElementById("peak").value, cap=+document.getElementById("cap").value;
+  const from=+document.getElementById("from").value, to=+document.getElementById("to").value;
+  const temp=+document.getElementById("temp").value;
+  const cold=temp>=10?1:Math.max(.45,.6+(temp/10)*.4);
+  const axisMax=window.__curve?Math.max(...window.__curve.map(p=>p[1])):peak;
+  let minutes=0, energy=0;
+  for(let s=from;s<to;s++){
+    const p=(curvePower(s/100,peak,cold)+curvePower((s+1)/100,peak,cold))/2;
+    minutes+=(cap*.01)/p*60;
+    energy+=cap*.01;
+  }
+  document.getElementById("out-time").textContent=n1.format(minutes)+" min";
+  document.getElementById("out-energy").textContent=n1.format(energy)+" kWh";
+  document.getElementById("out-avg").textContent=n1.format(energy/(minutes/60))+" kW";
+  document.getElementById("out-cold").textContent=n1.format((1-cold)*100)+" %";
+  const pts=[];
+  for(let i=0;i<=100;i++){
+    const x=i/100*800, y=200-(curvePower(i/100,peak,cold)/axisMax)*180;
+    pts.push(`${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`);
+  }
+  const line=pts.join(' ');
+  document.getElementById("curve-line").setAttribute('d',line);
+  document.getElementById("curve-area").setAttribute('d',`${line} L800,200 L0,200 Z`);
+  for(const [id,val] of [["curve-start",from],["curve-end",to]]){
+    const x=val/100*800, el=document.getElementById(id);
+    el.setAttribute('x1',x);el.setAttribute('x2',x);
+  }
+}
+document.getElementById("calc").addEventListener("click",calc);calc();
+
+(async()=>{
+  const txt=await (await fetch("data/curves.txt")).text();
+  for(const line of txt.trim().split("\n")){
+    const [name,batt,cons,pts]=line.split("|");
+    CURVES[name]={battery:+batt,cons:+cons,curve:pts.split(",").map(p=>p.split(":").map(Number))};
+  }
+  const sel=document.getElementById("modelo");
+  sel.innerHTML='<option value="">— Personalizado —</option>'+Object.keys(CURVES).sort((a,b)=>a.localeCompare(b,"es")).map(n=>`<option>${n}</option>`).join("");
+  sel.addEventListener("change",()=>{
+    const c=CURVES[sel.value];
+    if(!c){window.__curve=null;return;}
+    window.__curve=c.curve;
+    document.getElementById("peak").value=Math.max(...c.curve.map(p=>p[1]));
+    document.getElementById("cap").value=c.battery;
+    document.getElementById("curve-note").textContent=`Curva real de ${sel.value} · KilowattApp/open-ev-data (MIT con atribución). Consumo medio ${n1.format(c.cons)} kWh/100.`;
+    calc();
+  });
+})();
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>

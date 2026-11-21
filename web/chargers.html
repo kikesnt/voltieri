@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Mapa de cargadores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+header{position:absolute;inset:0 0 auto;z-index:20;height:56px;display:flex;align-items:center;gap:26px;padding:0 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.22em}
+nav{display:flex;gap:20px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none}
+.head-right{margin-left:auto}
+#map{position:absolute;inset:56px 0 0 0;background:var(--paper)}
+.panel{position:absolute;left:24px;top:84px;z-index:15;width:340px;padding:20px;max-height:calc(100vh - 130px);overflow:auto}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.list{margin-top:18px;display:flex;flex-direction:column}
+.item{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--rule);font-size:11px;cursor:pointer}
+.item:hover{color:var(--route)}
+.item .k{margin-top:2px}
+.charger{width:11px;height:11px;border-radius:50%;background:var(--route);border:2px solid var(--paper);outline:1px solid var(--route);cursor:pointer}
+.charger.slow{background:var(--contour);outline-color:var(--contour)}
+@media(max-width:760px){header{padding:0 18px}nav{display:none}.panel{left:12px;right:12px;top:auto;bottom:12px;width:auto;max-height:44vh}}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <span class="brand">VOLTIERI</span>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right modes" role="group" aria-label="Modo de pantalla">
+    <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
+  </div>
+</header>
+
+<div id="map"></div>
+
+<aside class="panel">
+  <h1 style="font-size:18px;font-weight:500;letter-spacing:-.02em">Puntos de recarga en España</h1>
+  <div class="filters">
+    <button type="button" class="chip chip--route" data-f="fast">≥ 150 kW</button>
+    <button type="button" class="chip" data-f="ccs">CCS2</button>
+    <button type="button" class="chip" data-f="chademo">CHAdeMO</button>
+  </div>
+  <div class="list" id="list"></div>
+  <p class="source" style="margin-top:16px">MITECO · RIPREE, exportación pública 20.11.2026 · 180 puntos DC ≥ 50 kW en 8 provincias.</p>
+</aside>
+
+<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script type="module">
+let STATIONS = [];
+const PAL = {
+  day:  { bg:"#EFE7D5", water:"#B7CFCB", line:"#C9B79A", hill:{s:"#6B5A44",h:"#FFF8E6",a:"#8A7355"} },
+  night:{ bg:"#080B09", water:"#143830", line:"#2E4E45", hill:{s:"#14221D",h:"#454032",a:"#6A9B81"} }
+};
+let map, markers = [];
+const KEY = "voltieri-theme", mql = matchMedia("(prefers-color-scheme: dark)");
+function resolve(){const p=localStorage.getItem(KEY)||"auto";return p==="auto"?(mql.matches?"night":"day"):p;}
+function applyTheme(){
+  const r=resolve(), p=localStorage.getItem(KEY)||"auto";
+  document.documentElement.dataset.theme=r;
+  for(const b of document.querySelectorAll(".modes button")){const on=b.dataset.mode===p;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on);}
+  if(!map) return;
+  const pal=PAL[r];
+  for(const l of map.getStyle().layers){
+    if(l.id==="background") map.setPaintProperty(l.id,"background-color",pal.bg);
+    else if(l.id==="water") map.setPaintProperty(l.id,"fill-color",pal.water);
+    else if(l.id==="relief"){
+      map.setPaintProperty(l.id,"hillshade-shadow-color",pal.hill.s);
+      map.setPaintProperty(l.id,"hillshade-highlight-color",pal.hill.h);
+      map.setPaintProperty(l.id,"hillshade-accent-color",pal.hill.a);
+    }
+  }
+}
+document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{localStorage.setItem(KEY,b.dataset.mode);applyTheme();}));
+applyTheme(); mql.addEventListener?.("change",applyTheme);
+
+const filters = { fast:false, ccs:false, chademo:false };
+const visible = s => (!filters.fast||s.kw>=150) && (!filters.ccs||s.connector.includes("COMBO")) && (!filters.chademo||s.connector==="CHADEMO");
+
+function renderList(){
+  const list = STATIONS.filter(visible);
+  document.getElementById("list").innerHTML = list.map((s,i)=>
+    `<div class="item" data-i="${i}"><span>${s.name}<span class="k">${s.kw} kW · ${s.connector.includes("COMBO")?"CCS2":s.connector==="CHADEMO"?"CHAdeMO":s.connector} · ${s.op.slice(0,22)}</span></span><span class="mono">${s.prov}</span></div>`).join("");
+  for(const el of document.querySelectorAll(".item")){
+    el.addEventListener("click",()=>map.flyTo({center:list[+el.dataset.i].p,zoom:9,duration:900}));
+  }
+  markers.forEach((m,i)=>{ m.getElement().style.display = visible(STATIONS[i]) ? "block" : "none"; });
+}
+for(const b of document.querySelectorAll("[data-f]")) b.addEventListener("click",()=>{
+  filters[b.dataset.f]=!filters[b.dataset.f];
+  b.classList.toggle("chip--route");
+  renderList();
+});
+
+async function loadStations(){
+  const txt = await (await fetch("data/chargers.txt")).text();
+  STATIONS = txt.trim().split("\n").map(line=>{
+    const [name,lat,lon,kw,op,connector,prov] = line.split("|");
+    return { name, p:[+lon,+lat], kw:+kw, op, connector, prov };
+  });
+}
+
+await loadStations();
+
+const style = await (await fetch("https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json")).json();
+for(const l of style.layers){
+  l.paint=l.paint||{}; const id=l.id||"", p=PAL.day;
+  if(l.type==="background") l.paint["background-color"]=p.bg;
+  else if(l.type==="water") l.paint["fill-color"]=p.water;
+  else if(l.type==="landcover"){ l.paint["fill-color"]=p.line; l.paint["fill-opacity"]=.35; }
+  else if(l.type==="boundary"){ l.paint["line-color"]=p.line; l.paint["line-dasharray"]=[3,2]; }
+  else if(l.type==="line" && /road|street|highway|bridge|tunnel/i.test(id)) l.paint["line-color"]=p.line;
+}
+style.sources.terrain={type:"raster-dem",tiles:["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],encoding:"terrarium",tileSize:256,maxzoom:15};
+style.layers.splice(1,0,{id:"relief",type:"hillshade",source:"terrain",paint:{"hillshade-exaggeration":.35,"hillshade-shadow-color":PAL.day.hill.s,"hillshade-highlight-color":PAL.day.hill.h,"hillshade-accent-color":PAL.day.hill.a}});
+
+map = new maplibregl.Map({container:"map",style,center:[-3.7,40.0],zoom:5.5,pitch:30,attributionControl:false,scrollZoom:false,dragRotate:false});
+for(const s of STATIONS){
+  const el=document.createElement("div");
+  el.className="charger"+(s.kw<150?" slow":"");
+  el.title=`${s.name} · ${s.kw} kW · ${s.op}`;
+  markers.push(new maplibregl.Marker({element:el}).setLngLat(s.p).addTo(map));
+}
+renderList();
+map.on("load",()=>{
+  map.setTerrain({source:"terrain",exaggeration:1.05});
+  applyTheme();
+});
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>

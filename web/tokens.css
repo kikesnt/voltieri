@@ -1,0 +1,102 @@
+/* Voltieri — design tokens (fuente de verdad) */
+
+:root {
+  color-scheme: light;
+
+  /* Día — papel crema de hoja cartográfica */
+  --paper: #EFE7D5;
+  --paper-deep: #E7DCC6;
+  --ink: #212620;
+  --text: #2C3027;
+  --muted: #5B5446;
+  --contour: #A8896A;
+  --water: #B7CFCB;
+  --route: #B23A17;
+  --rule: rgba(41, 36, 34, .16);
+
+  /* Tipografía */
+  --font-display: "Archivo", sans-serif;
+  --font-map: "Newsreader", serif;
+  --font-data: "Geist Mono", monospace;
+
+  /* Espacio */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  /* Forma */
+  --radius: 0;
+  --hair: 1px;
+
+  /* Movimiento */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --t-fast: 180ms;
+  --t-mid: 320ms;
+  --t-moment: 2200ms;
+}
+
+:root[data-theme="night"] {
+  color-scheme: dark;
+
+  /* Noche — carta luminosa */
+  --paper: #080B09;
+  --paper-deep: #0C1210;
+  --ink: #F2EDDF;
+  --text: #EAE4D4;
+  --muted: #8C8670;
+  --contour: #6A9B81;
+  --water: #143830;
+  --route: #E0953A;
+  --rule: rgba(242, 237, 223, .13);
+}
+
+/* 2027 — instrumento de precisión: superficies oscuras, ion y ámbar */
+:root[data-skin="2027"]{
+  --paper:#080B10;
+  --paper-deep:#0D1119;
+  --ink:#EEF3F9;
+  --text:#EEF3F9;
+  --muted:#8C99AB;
+  --contour:#5B8CFF;
+  --water:#14283F;
+  --route:#FFB020;
+  --rule:rgba(238,243,249,.12);
+  --ion:#5B8CFF;
+  --ion-2:#8FB0FF;
+  --amber:#FFB020;
+  --mint:#3DDC97;
+  --font-display:"Geist",sans-serif;
+}
+:root[data-skin="2027"][data-theme="day"]{
+  --paper:#101720;
+  --paper-deep:#151D28;
+  --ink:#F4F7FB;
+  --text:#F4F7FB;
+  --muted:#A3AEBE;
+  --rule:rgba(244,247,251,.14);
+}
+
+/* Superficies del navegador: señal barata de que el tema está diseñado */
+::selection { background: var(--ink); color: var(--paper); }
+:focus-visible { outline: 2px solid var(--route); outline-offset: 3px; }
+input, button, textarea { font: inherit; color: inherit; caret-color: var(--route); }
+* { scrollbar-color: var(--contour) var(--paper); scrollbar-width: thin; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--contour); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

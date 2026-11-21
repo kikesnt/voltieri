@@ -1,0 +1,36 @@
+/* Voltieri — layout del hub de herramientas */
+header{display:flex;align-items:center;gap:26px;padding:14px 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.22em}
+nav{display:flex;gap:18px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--ink)}
+.head-right{margin-left:auto}
+.shell{display:grid;grid-template-columns:236px 1fr;gap:32px;max-width:1320px;margin:0 auto;padding:40px 32px 88px}
+.sidebar{border-right:1px solid var(--rule);padding-right:20px}
+.sidebar a{display:block;padding:8px 10px;border-bottom:1px solid var(--rule);font-size:12px;color:var(--muted);text-decoration:none}
+.sidebar a:hover{color:var(--ink)}
+.sidebar a.on{color:var(--ink);border-left:2px solid var(--route);padding-left:8px}
+.main h1{font-size:42px;line-height:1.05;letter-spacing:-.03em;font-weight:500;max-width:760px}
+.lede{margin-top:14px;font-size:14px;line-height:1.6;color:var(--muted);max-width:680px}
+.workspace{display:grid;grid-template-columns:310px 1fr;gap:24px;margin-top:34px;align-items:start}
+.controls input,.controls select{width:104px;padding:6px 8px;border:1px solid var(--rule);background:transparent;color:var(--text);font-family:var(--font-data);font-size:12px}
+.controls select{width:190px;font-family:var(--font-display)}
+.controls .field{align-items:center}
+.result .data-grid{margin:0 -22px 22px;border-bottom:1px solid var(--rule)}
+.result .table{margin-top:18px}
+footer{margin-top:52px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
+@media(max-width:1000px){
+  .shell{grid-template-columns:1fr;padding:30px 18px 64px}
+  .sidebar{border-right:0;border-bottom:1px solid var(--rule);padding:0 0 16px;display:flex;flex-wrap:wrap;gap:4px}
+  .sidebar a{border-bottom:0;border:1px solid var(--rule)}
+  .sidebar a.on{border-left:1px solid var(--rule);padding-left:10px}
+  .sidebar .k{width:100%}
+}
+@media(max-width:760px){
+  header{padding:14px 18px}
+  nav{display:none}
+  .main h1{font-size:32px}
+  .workspace{grid-template-columns:1fr}
+  .result .data-grid{grid-template-columns:1fr 1fr}
+  .result .data-cell{border-left:0;border-top:1px solid var(--rule)}
+}

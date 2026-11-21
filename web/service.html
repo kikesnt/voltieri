@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Servicios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="tools.css">
+<style></style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body data-cat="service">
+<header>
+  <span class="brand">VOLTIERI</span>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right modes" role="group" aria-label="Modo de pantalla">
+    <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
+  </div>
+</header>
+<div class="shell">
+  <aside class="sidebar" id="tool-list"></aside>
+  <main>
+    <h1>Servicios</h1>
+    <p class="lede" id="tool-desc">Talleres, pruebas, actualidad, PWA y API abierta.</p>
+    <div class="workspace" id="tool-host"></div>
+    <footer>
+      <span class="source">Datos abiertos · sin cuentas · enlaces compartibles</span>
+      <span class="source">© 2027 Voltieri</span>
+    </footer>
+  </main>
+</div>
+<script src="tools-data.js"></script><script src="data-live.js"></script><script src="car3d.js"></script><script src="tools.js"></script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>

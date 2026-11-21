@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Copiloto EV 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080b;
+  --bg2:#090d13;
+  --surface:rgba(13,18,26,.74);
+  --surface2:#0f151e;
+  --line:rgba(255,255,255,.08);
+  --line2:rgba(255,255,255,.14);
+  --text:#eef3f9;
+  --muted:#8c99ab;
+  --dim:#5c6878;
+  --ion:#5b8cff;
+  --ion2:#8fb0ff;
+  --amber:#ffb020;
+  --mint:#3ddc97;
+  --danger:#ff5c5c;
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text);font-family:'Geist',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+.mono{font-family:'Geist Mono',monospace;font-variant-numeric:tabular-nums}
+.serif{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400}
+.eyebrow{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+
+/* NAV */
+.nav{position:fixed;inset:0 0 auto;z-index:60;height:66px;display:flex;align-items:center;gap:34px;padding:0 30px;
+  background:linear-gradient(to bottom,rgba(6,8,11,.94),rgba(6,8,11,.5));backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-.03em;font-size:17px}
+.logo .thin{font-weight:300;color:var(--muted);margin-left:-.035em}
+.logo-mark{width:23px;height:23px;border-radius:7px;background:linear-gradient(145deg,#8fb0ff,#5b8cff);display:grid;place-items:center;color:#06080b;font-weight:800;font-size:12px;box-shadow:0 0 26px rgba(91,140,255,.5)}
+.nav-links{display:flex;gap:26px;font-size:12.5px;color:var(--muted)}
+.nav-links a{transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+.pill{display:inline-flex;align-items:center;gap:7px;font-family:'Geist Mono';font-size:9.5px;letter-spacing:.12em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 10px;text-transform:uppercase}
+.pill i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint)}
+.btn-ghost{background:transparent;border:1px solid var(--line2);color:var(--text);border-radius:10px;padding:9px 14px;font-size:12px;font-weight:500;transition:.2s}
+.btn-ghost:hover{border-color:rgba(91,140,255,.5);background:rgba(91,140,255,.08)}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;padding:108px 30px 158px;overflow:hidden}
+#map{position:absolute;inset:0;z-index:0;background:#070a0f}
+.map-overlay{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(1100px 620px at 18% 18%,rgba(91,140,255,.14),transparent 62%),
+    linear-gradient(90deg,rgba(6,8,11,.92) 0%,rgba(6,8,11,.52) 34%,rgba(6,8,11,.06) 62%,rgba(6,8,11,.42) 100%),
+    radial-gradient(ellipse at 50% 110%,rgba(6,8,11,.78),transparent 60%)}
+.map-label{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--text);background:rgba(6,8,11,.72);border:1px solid rgba(255,255,255,.14);padding:3px 6px;border-radius:5px;backdrop-filter:blur(8px);white-space:nowrap}
+.map-grid{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse at 50% 40%,#000 0%,transparent 78%)}
+.hero-inner{position:relative;z-index:3;width:100%;max-width:1440px;margin:0 auto;display:flex;gap:40px;justify-content:space-between;align-items:flex-start}
+.hero-copy{max-width:600px;padding-top:26px}
+h1{font-size:clamp(44px,5.4vw,78px);line-height:.97;letter-spacing:-.058em;font-weight:500}
+h1 .serif{font-size:1.04em;letter-spacing:-.02em;color:var(--ion2)}
+.hero-sub{margin-top:22px;max-width:510px;color:var(--muted);font-size:15.5px;line-height:1.6}
+.hero-sub b{color:var(--text);font-weight:500}
+
+/* COMMAND */
+.command{margin-top:32px;display:flex;align-items:stretch;max-width:760px;background:rgba(13,18,26,.8);
+  border:1px solid var(--line2);border-radius:15px;backdrop-filter:blur(20px);box-shadow:0 28px 70px rgba(0,0,0,.5);overflow:hidden}
+.command .field{flex:1;padding:11px 15px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.command .label{font-family:'Geist Mono';font-size:8.5px;letter-spacing:.16em;color:var(--dim)}
+.command .value{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.command .divider{width:1px;background:var(--line);flex:0 0 1px}
+.command .car{display:flex;align-items:center;gap:8px;padding:0 15px;font-size:11.5px;color:var(--muted);border-left:1px solid var(--line);white-space:nowrap}
+.command .car .dot{width:6px;height:6px;border-radius:50%;background:var(--ion);box-shadow:0 0 10px var(--ion)}
+.command .cta{border:0;background:linear-gradient(145deg,#8fb0ff,#5b8cff);color:#06080b;font-weight:650;font-size:12.5px;padding:0 20px;display:flex;align-items:center;gap:8px;transition:.2s}
+.command .cta:hover{filter:brightness(1.08)}
+.stats{display:flex;gap:38px;margin-top:28px;flex-wrap:wrap}
+.stat .num{font-family:'Geist Mono';font-size:21px;font-weight:500;letter-spacing:-.04em}
+.stat .num span{font-size:11px;color:var(--dim);margin-left:2px}
+.stat .lbl{font-size:10.5px;color:var(--dim);margin-top:3px;letter-spacing:.02em}
+
+/* ROUTE PANEL */
+.route-panel{width:356px;flex:0 0 356px;background:rgba(12,17,24,.78);border:1px solid var(--line2);border-radius:20px;
+  backdrop-filter:blur(24px);padding:19px;box-shadow:0 34px 90px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.04);margin-top:18px}
+.panel-head{display:flex;justify-content:space-between;align-items:center}
+.live{display:inline-flex;align-items:center;gap:6px;font-family:'Geist Mono';font-size:8.5px;letter-spacing:.14em;color:var(--mint)}
+.live i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 10px var(--mint);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.route-panel h2{font-size:19px;font-weight:550;letter-spacing:-.03em;margin-top:12px;display:flex;align-items:center;gap:8px}
+.route-panel h2 em{font-style:normal;color:var(--dim);font-weight:400}
+.route-meta{font-size:10.5px;color:var(--dim);margin-top:4px;font-family:'Geist Mono';letter-spacing:.02em}
+.big-time{font-family:'Geist Mono';font-size:40px;letter-spacing:-.06em;font-weight:500;margin-top:16px;line-height:1}
+.big-time span{display:block;font-family:'Geist';font-size:10.5px;letter-spacing:0;color:var(--amber);margin-top:6px;font-weight:500}
+.soc{margin-top:18px}
+.soc-bar{height:7px;border-radius:99px;background:rgba(255,255,255,.07);position:relative;overflow:visible}
+.soc-fill{position:absolute;inset:0 auto 0 0;width:82%;border-radius:99px;background:linear-gradient(90deg,var(--mint),var(--ion));box-shadow:0 0 16px rgba(91,140,255,.35)}
+.soc-stop{position:absolute;top:50%;left:62%;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--amber);transform:translate(-50%,-50%);box-shadow:0 0 14px rgba(255,176,32,.5)}
+.soc-labels{display:flex;justify-content:space-between;margin-top:7px;font-family:'Geist Mono';font-size:9px;color:var(--dim)}
+.stop{display:flex;align-items:center;gap:11px;margin-top:18px;padding:11px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.stop-icon{width:30px;height:30px;border-radius:9px;background:rgba(255,176,32,.12);border:1px solid rgba(255,176,32,.3);display:grid;place-items:center;color:var(--amber);font-size:13px;flex:0 0 30px}
+.stop strong{display:block;font-size:12px;font-weight:550}
+.stop span{display:block;font-size:9.5px;color:var(--dim);margin-top:2px}
+.stop-price{margin-left:auto;font-family:'Geist Mono';font-size:12px;color:var(--text)}
+.savings{display:inline-flex;align-items:center;gap:6px;margin-top:11px;font-family:'Geist Mono';font-size:9.5px;color:var(--mint)}
+.savings b{font-weight:500}
+.panel-cta{width:100%;margin-top:16px;border:0;border-radius:11px;background:rgba(91,140,255,.14);border:1px solid rgba(91,140,255,.35);color:var(--ion2);padding:11px;font-size:12px;font-weight:550;display:flex;justify-content:center;gap:8px;transition:.2s}
+.panel-cta:hover{background:rgba(91,140,255,.22)}
+
+/* PROFILE STRIP */
+.profile-strip{position:absolute;left:30px;right:30px;bottom:26px;z-index:4;height:132px;background:rgba(12,17,24,.72);
+  border:1px solid var(--line2);border-radius:17px;backdrop-filter:blur(22px);padding:12px 16px 8px;display:flex;flex-direction:column;gap:6px;
+  box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.profile-head{display:flex;justify-content:space-between;align-items:center;font-family:'Geist Mono';font-size:9px;letter-spacing:.08em;color:var(--dim)}
+.profile-head b{color:var(--text);font-weight:500}
+.profile-head .legend{display:flex;gap:14px}
+.profile-head .legend i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px}
+.profile-svg{width:100%;height:92px;display:block;overflow:visible}
+#elev-line{stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 2.6s .4s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.profile-labels{position:absolute;inset:auto 16px 7px;display:flex;justify-content:space-between;font-family:'Geist Mono';font-size:8px;color:var(--dim);pointer-events:none}
+
+/* TOOLS */
+.tools{padding:104px 30px 96px;max-width:1440px;margin:0 auto}
+.section-head{max-width:660px;margin-bottom:40px}
+.section-head h2{font-size:clamp(30px,3.4vw,46px);letter-spacing:-.045em;font-weight:500;line-height:1.04;margin-top:12px}
+.section-head h2 .serif{color:var(--ion2)}
+.section-head p{color:var(--muted);font-size:14.5px;line-height:1.6;margin-top:14px;max-width:540px}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(16,22,31,.92),rgba(9,13,19,.94));border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-height:218px;display:flex;flex-direction:column;transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-3px);border-color:rgba(91,140,255,.3);box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.card::before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(91,140,255,.5),transparent);opacity:0;transition:.25s}
+.card:hover::before{opacity:1}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.card-idx{font-family:'Geist Mono';font-size:9px;color:var(--dim);letter-spacing:.12em}
+.card-tag{font-family:'Geist Mono';font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--ion2);border:1px solid rgba(91,140,255,.25);background:rgba(91,140,255,.08);padding:3px 6px;border-radius:5px}
+.card h3{font-size:15px;font-weight:550;letter-spacing:-.02em;margin-top:12px}
+.card p{font-size:10.5px;line-height:1.5;color:var(--dim);margin-top:5px;max-width:230px}
+.card-viz{margin-top:auto;padding-top:16px}
+.card-lg{grid-column:span 2}
+.card-lg h3{font-size:19px}
+.card-lg p{max-width:340px;font-size:11.5px}
+.card-lg .card-viz{position:absolute;right:18px;bottom:14px;width:46%;padding:0}
+.affiliate{display:flex;align-items:center;gap:11px;margin-top:auto;padding:10px;border:1px dashed rgba(255,255,255,.13);border-radius:11px;background:rgba(255,255,255,.02)}
+.affiliate .thumb{width:34px;height:34px;border-radius:8px;background:rgba(255,176,32,.1);border:1px solid rgba(255,176,32,.25);display:grid;place-items:center;color:var(--amber);font-size:15px}
+.affiliate .meta strong{display:block;font-size:10.5px;font-weight:550}
+.affiliate .meta span{display:block;font-size:8.5px;color:var(--dim);margin-top:2px}
+.affiliate .go{margin-left:auto;font-family:'Geist Mono';font-size:8px;color:var(--amber);letter-spacing:.06em}
+.disclosure{font-size:8px;color:var(--dim);margin-top:7px;font-family:'Geist Mono'}
+
+/* SYSTEM */
+.system{padding:0 30px 100px;max-width:1440px;margin:0 auto}
+.system-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:13px}
+.panel{background:linear-gradient(180deg,rgba(16,22,31,.9),rgba(9,13,19,.94));border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.panel h3{font-size:13px;font-weight:550;letter-spacing:-.01em}
+.panel .sub{font-size:10px;color:var(--dim);margin-top:4px}
+.swatches{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.swatch{width:64px}
+.swatch .chip{height:44px;border-radius:9px;border:1px solid rgba(255,255,255,.08)}
+.swatch .name{font-family:'Geist Mono';font-size:8px;color:var(--dim);margin-top:5px}
+.type-row{display:flex;align-items:baseline;gap:12px;margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.type-row .sample{font-size:26px;letter-spacing:-.04em}
+.type-row .meta{font-family:'Geist Mono';font-size:8.5px;color:var(--dim);margin-left:auto;text-align:right}
+.type-row .meta b{display:block;color:var(--muted);font-weight:400}
+.comp-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.mini-btn{border:1px solid rgba(91,140,255,.35);background:rgba(91,140,255,.14);color:var(--ion2);border-radius:8px;padding:7px 11px;font-size:10px}
+.mini-pill{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:9px;color:var(--muted);font-family:'Geist Mono'}
+.mini-input{flex:1;min-width:130px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:8px;padding:7px 10px;font-size:10px;color:var(--dim)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:26px 30px;display:flex;justify-content:space-between;gap:20px;color:var(--dim);font-size:10.5px;flex-wrap:wrap}
+footer .left{display:flex;align-items:center;gap:10px}
+footer .left i{width:5px;height:5px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint)}
+footer .right{display:flex;gap:18px;font-family:'Geist Mono';font-size:9px}
+
+@media(max-width:980px){
+  .hero{min-height:100vh;padding:82px 18px 142px}
+  .hero-inner{flex-direction:column;gap:14px}
+  .hero-copy{max-width:100%;padding-top:0}
+  h1{font-size:clamp(38px,7vw,54px)}
+  .hero-sub{font-size:13.5px;margin-top:12px;max-width:100%}
+  .command{margin-top:16px}
+  .stats{gap:22px;margin-top:16px}
+  .stat .num{font-size:18px}
+  .route-panel{width:100%;flex:auto;max-width:none;margin-top:0;padding:14px}
+  .big-time{font-size:30px;margin-top:10px}
+  .soc{margin-top:12px}
+  .stop{margin-top:12px;padding:9px}
+  .panel-cta{margin-top:10px;padding:9px}
+  .profile-strip{left:18px;right:18px;bottom:12px;height:112px;padding:10px 12px 6px}
+  .profile-svg{height:76px}
+  .bento{grid-template-columns:1fr 1fr}
+  .card-lg{grid-column:span 2}
+  .system-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+@media(max-width:720px){
+  .hero{padding:78px 14px 138px}
+  .nav{padding:0 18px}
+  .command{flex-wrap:wrap}
+  .command .car{display:none}
+  .command .cta{padding:12px 16px}
+  .bento{grid-template-columns:1fr}
+  .card-lg{grid-column:span 1}
+  .card-lg .card-viz{position:static;width:100%;margin-top:14px}
+  .profile-strip{left:14px;right:14px;bottom:10px;height:104px}
+  .profile-svg{height:70px}
+  .tools,.system{padding-left:18px;padding-right:18px}
+  footer{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="#">
+    <span class="logo-mark">V</span>
+    VOLT<span class="thin">IERI</span>
+  </a>
+  <div class="nav-links">
+    <a href="#">Coches</a>
+    <a href="#">Rutas</a>
+    <a href="#">Cargadores</a>
+    <a href="#">Costes</a>
+    <a href="#">Equipamiento</a>
+  </div>
+  <div class="nav-right">
+    <span class="pill"><i></i>Sin registro</span>
+    <button class="btn-ghost">Planificar viaje →</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div id="map"></div>
+  <div class="map-overlay"></div>
+  <div class="map-grid"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="eyebrow">Copiloto EV · Edición 2027</div>
+      <h1>La autonomía <span class="serif">real</span>,<br>en tu mapa.</h1>
+      <p class="hero-sub">Rutas con <b>orografía, viento y temperatura</b>. Cargadores oficiales. Coste real por kilómetro. Sin cuentas, sin cookies, sin ruido.</p>
+
+      <div class="command">
+        <div class="field">
+          <span class="label">ORIGEN</span>
+          <span class="value">Madrid</span>
+        </div>
+        <div class="divider"></div>
+        <div class="field">
+          <span class="label">DESTINO</span>
+          <span class="value">Barcelona</span>
+        </div>
+        <div class="car"><span class="dot"></span>Tesla Model 3 LR</div>
+        <button class="cta">Calcular <span>→</span></button>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="num">617<span>km</span></div><div class="lbl">Distancia</div></div>
+        <div class="stat"><div class="num">5h 45<span>m</span></div><div class="lbl">Tiempo total</div></div>
+        <div class="stat"><div class="num">1<span>parada</span></div><div class="lbl">Carga rápida</div></div>
+        <div class="stat"><div class="num">16,8<span>kWh/100</span></div><div class="lbl">Consumo real</div></div>
+      </div>
+    </div>
+
+    <aside class="route-panel">
+      <div class="panel-head">
+        <span class="eyebrow">Ruta activa</span>
+        <span class="live"><i></i>En vivo</span>
+      </div>
+      <h2>Madrid <em>→</em> Barcelona</h2>
+      <div class="route-meta">A-2 / AP-2 · 1 parada · SoC llegada 18%</div>
+
+      <div class="big-time">5h 45m<span>18 min de carga · 42 kWh</span></div>
+
+      <div class="soc">
+        <div class="soc-bar">
+          <div class="soc-fill"></div>
+          <div class="soc-stop"></div>
+        </div>
+        <div class="soc-labels"><span>Salida 100%</span><span>Llegada 18%</span></div>
+      </div>
+
+      <div class="stop">
+        <div class="stop-icon">⚡</div>
+        <div>
+          <strong>Zaragoza · Supercharger</strong>
+          <span>42 kWh · 18 min · 250 kW</span>
+        </div>
+        <div class="stop-price">24,80 €</div>
+      </div>
+
+      <div class="savings"><b>−68%</b> vs gasolina · ahorro 52,10 €</div>
+      <button class="panel-cta">Abrir ruta completa <span>→</span></button>
+    </aside>
+  </div>
+
+  <div class="profile-strip">
+    <div class="profile-head">
+      <span><b>Perfil de elevación</b> · Madrid → Barcelona</span>
+      <div class="legend">
+        <span><i style="background:var(--ion)"></i>Altitud</span>
+        <span><i style="background:var(--amber)"></i>Parada</span>
+        <span>+4.038 m / −4.668 m</span>
+      </div>
+    </div>
+    <svg class="profile-svg" viewBox="0 0 1000 92" preserveAspectRatio="none" aria-label="Perfil de elevación">
+      <defs>
+        <linearGradient id="elevFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5b8cff" stop-opacity=".32"/>
+          <stop offset="100%" stop-color="#5b8cff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="elevLine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#8fb0ff"/>
+          <stop offset="58%" stop-color="#5b8cff"/>
+          <stop offset="100%" stop-color="#ffb020"/>
+        </linearGradient>
+      </defs>
+      <g opacity=".18" stroke="#8c99ab" stroke-width=".5">
+        <line x1="0" y1="23" x2="1000" y2="23"/>
+        <line x1="0" y1="46" x2="1000" y2="46"/>
+        <line x1="0" y1="69" x2="1000" y2="69"/>
+      </g>
+      <path id="elev-area" fill="url(#elevFill)"/>
+      <path id="elev-line" fill="none" stroke="url(#elevLine)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle id="elev-dot" r="3.5" fill="#ffb020" stroke="#06080b" stroke-width="2"/>
+    </svg>
+    <div class="profile-labels"><span>0 km</span><span>Zaragoza · 320 km</span><span>617 km</span></div>
+  </div>
+
+  <span id="map-ready" style="position:absolute;opacity:0;pointer-events:none">MAP_READY</span>
+</header>
+
+<section class="tools">
+  <div class="section-head">
+    <div class="eyebrow">Suite 2027 · 12 herramientas</div>
+    <h2>No es un catálogo.<br>Es un <span class="serif">cockpit</span>.</h2>
+    <p>Todo lo que necesitas para decidir y viajar, en una sola capa de datos. Sin registro, sin anuncios que rompan el flujo y sin métricas maquilladas.</p>
+  </div>
+
+  <div class="bento">
+    <article class="card card-lg">
+      <div class="card-top"><span class="card-idx">01 / MAPA</span><span class="card-tag">Isócronas</span></div>
+      <h3>Mapa de autonomía real</h3>
+      <p>Hasta dónde llegas de verdad desde tu ciudad, con orografía, temperatura y velocidad. No un círculo de marketing.</p>
+      <div class="card-viz">
+        <svg viewBox="0 0 260 150" width="100%" height="150">
+          <defs>
+            <radialGradient id="iso" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#5b8cff" stop-opacity=".18"/>
+              <stop offset="100%" stop-color="#5b8cff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="130" cy="75" r="64" fill="url(#iso)"/>
+          <ellipse cx="130" cy="75" rx="62" ry="42" fill="none" stroke="#5b8cff" stroke-opacity=".55" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <ellipse cx="130" cy="75" rx="44" ry="30" fill="none" stroke="#8fb0ff" stroke-opacity=".45" stroke-width="1.2" stroke-dasharray="3 4"/>
+          <ellipse cx="130" cy="75" rx="26" ry="18" fill="none" stroke="#8fb0ff" stroke-opacity=".3" stroke-width="1.2" stroke-dasharray="2 4"/>
+          <circle cx="130" cy="75" r="4" fill="#eef3f9"/>
+          <circle cx="130" cy="75" r="9" fill="none" stroke="#5b8cff" stroke-opacity=".6"/>
+          <text x="130" y="102" text-anchor="middle" fill="#8c99ab" font-family="Geist Mono" font-size="7">MADRID · 100%</text>
+        </svg>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span class="card-idx">02 / RUTAS</span><span class="card-tag">OSRM</span></div>
+      <h3>Planificador con paradas</h3>
+      <p>Corredor de ruta, desvío mínimo y SoC de llegada.</p>
+      <div class="card-viz">
+        <svg viewBox="0 0 220 90" width="100%" height="90">
+          <path d="M10,70 C40,20 70,80 100,40 S160,10 210,30" fill="none" stroke="#5b8cff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="10" cy="70" r="3.5" fill="#eef3f9"/>
+          <circle cx="100" cy="40" r="3.5" fill="#ffb020"/>
+          <circle cx="210" cy="30" r="3.5" fill="#eef3f9"/>
+          <circle cx="100" cy="40" r="9" fill="none" stroke="#ffb020" stroke-opacity=".4"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span class="card-idx">03 / COSTES</span><span class="card-tag">TCO</span></div>
+      <h3>Coste real vs combustión</h3>
+      <p>Energía, mantenimiento, seguro y depreciación.</p>
+      <div class="card-viz">
+        <svg viewBox="0 0 220 90" width="100%" height="90">
+          <g fill="#5b8cff" opacity=".75">
+            <rect x="18" y="52" width="16" height="30" rx="2"/>
+            <rect x="44" y="42" width="16" height="40" rx="2"/>
+            <rect x="70" y="34" width="16" height="48" rx="2"/>
+            <rect x="96" y="46" width="16" height="36" rx="2"/>
+            <rect x="122" y="28" width="16" height="54" rx="2" fill="#ffb020"/>
+            <rect x="148" y="38" width="16" height="44" rx="2"/>
+            <rect x="174" y="22" width="16" height="60" rx="2"/>
+          </g>
+          <line x1="12" y1="84" x2="208" y2="84" stroke="#8c99ab" stroke-opacity=".25"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span class="card-idx">04 / CARGA</span><span class="card-tag">Curva DC</span></div>
+      <h3>Simulador de carga</h3>
+      <p>kW reales, temperatura y tiempo 10–80%.</p>
+      <div class="card-viz">
+        <svg viewBox="0 0 220 90" width="100%" height="90">
+          <path d="M10,78 C34,78 40,22 78,18 C116,14 124,34 150,46 C176,58 190,64 210,66" fill="none" stroke="#3ddc97" stroke-width="2" stroke-linecap="round"/>
+          <path d="M10,78 C34,78 40,22 78,18 C116,14 124,34 150,46 C176,58 190,64 210,66 L210,84 L10,84 Z" fill="#3ddc97" fill-opacity=".08"/>
+          <line x1="10" y1="84" x2="210" y2="84" stroke="#8c99ab" stroke-opacity=".2"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span class="card-idx">05 / GARAJE</span><span class="card-tag">3D</span></div>
+      <h3>¿Entra en tu plaza?</h3>
+      <p>Giros, apertura de puertas y altura real.</p>
+      <div class="card-viz">
+        <svg viewBox="0 0 220 90" width="100%" height="90">
+          <rect x="12" y="12" width="196" height="66" rx="6" fill="none" stroke="#8c99ab" stroke-opacity=".25" stroke-dasharray="4 4"/>
+          <path d="M46,62 L54,38 C56,33 60,31 66,31 L128,31 C134,31 138,33 140,38 L148,62 L148,68 L46,68 Z" fill="none" stroke="#8fb0ff" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="66" cy="68" r="7" fill="#06080b" stroke="#8fb0ff" stroke-width="1.5"/>
+          <circle cx="128" cy="68" r="7" fill="#06080b" stroke="#8fb0ff" stroke-width="1.5"/>
+          <path d="M148,62 L168,62" stroke="#ffb020" stroke-width="1.5" stroke-dasharray="2 3"/>
+        </svg>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top"><span class="card-idx">06 / EQUIPAMIENTO</span><span class="card-tag">Afiliados</span></div>
+      <h3>Lo que sí necesitas</h3>
+      <p>Recomendado según tu coche y tu ruta. Sin relleno.</p>
+      <div class="affiliate">
+        <div class="thumb">⌁</div>
+        <div class="meta">
+          <strong>Cable Tipo 2 · 5 m · 22 kW</strong>
+          <span>Para tu Model 3 · carga pública</span>
+        </div>
+        <div class="go">29 € →</div>
+      </div>
+      <div class="disclosure">Enlace de afiliado · el precio no cambia</div>
+    </article>
+  </div>
+</section>
+
+<section class="system">
+  <div class="section-head">
+    <div class="eyebrow">Sistema de diseño</div>
+    <h2>Oscuro por defecto.<br><span class="serif">Datos</span> por delante.</h2>
+  </div>
+  <div class="system-grid">
+    <div class="panel">
+      <h3>Paleta</h3>
+      <div class="sub">Obsidiana + ion + ámbar. Verde solo para estado.</div>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#06080b"></div><div class="name">#06080B</div></div>
+        <div class="swatch"><div class="chip" style="background:#0f151e"></div><div class="name">#0F151E</div></div>
+        <div class="swatch"><div class="chip" style="background:#5b8cff"></div><div class="name">#5B8CFF</div></div>
+        <div class="swatch"><div class="chip" style="background:#8fb0ff"></div><div class="name">#8FB0FF</div></div>
+        <div class="swatch"><div class="chip" style="background:#ffb020"></div><div class="name">#FFB020</div></div>
+        <div class="swatch"><div class="chip" style="background:#3ddc97"></div><div class="name">#3DDC97</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Tipografía</h3>
+      <div class="sub">Grotesk para leer. Serif para emocionar. Mono para medir.</div>
+      <div class="type-row"><span class="sample" style="font-family:'Geist'">Geist</span><div class="meta"><b>Interfaz</b>400–600</div></div>
+      <div class="type-row"><span class="sample serif" style="font-size:30px">Instrument Serif</span><div class="meta"><b>Acento editorial</b>Italic</div></div>
+      <div class="type-row"><span class="sample mono" style="font-size:22px">16,8 kWh</span><div class="meta"><b>Datos</b>Tabular</div></div>
+    </div>
+  </div>
+  <div class="panel" style="margin-top:13px">
+    <h3>Componentes base</h3>
+    <div class="comp-row">
+      <button class="mini-btn">Calcular ruta</button>
+      <span class="mini-pill">≥ 150 kW</span>
+      <span class="mini-pill">CCS2</span>
+      <span class="mini-pill">Público</span>
+      <span class="mini-input">Busca tu coche…</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="left"><i></i>Sin cuentas. Sin cookies. Solo datos.</div>
+  <div class="right">
+    <span>DATEX II · MITECO</span>
+    <span>OpenEV Data</span>
+    <span>OpenStreetMap</span>
+    <span>© 2027 VOLTIERI</span>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script>
+const ROUTE = [[-3.7037,40.4176],[-3.5634,40.4496],[-3.3993,40.4841],[-3.2616,40.5561],[-3.1429,40.6368],[-3.0366,40.7407],[-2.9062,40.8326],[-2.7533,40.9013],[-2.6137,40.9781],[-2.4631,41.0348],[-2.4257,41.1522],[-2.299,41.2036],[-2.1725,41.2864],[-2.0095,41.3148],[-1.8477,41.3193],[-1.6804,41.3218],[-1.5455,41.3984],[-1.4425,41.4845],[-1.2815,41.5198],[-1.1303,41.5552],[-0.996,41.6285],[-0.8469,41.6776],[-0.6962,41.61],[-0.5561,41.543],[-0.3888,41.5232],[-0.214,41.5192],[-0.0412,41.5128],[0.1174,41.4976],[0.2863,41.4652],[0.4463,41.5153],[0.6066,41.5544],[0.7637,41.5065],[0.9007,41.4496],[1.0631,41.4096],[1.2324,41.3911],[1.3425,41.3072],[1.5034,41.2806],[1.649,41.3264],[1.773,41.3964],[1.9149,41.4658],[2.0241,41.3929],[2.1686,41.3874]];
+const PROFILE = [{"d":0,"e":667},{"d":15,"e":590},{"d":30.1,"e":596},{"d":45.1,"e":615},{"d":60.2,"e":734},{"d":75.2,"e":930},{"d":90.3,"e":1024},{"d":105.3,"e":1054},{"d":120.4,"e":1083},{"d":135.4,"e":1196},{"d":150.4,"e":1020},{"d":165.5,"e":883},{"d":180.5,"e":759},{"d":195.6,"e":688},{"d":210.6,"e":716},{"d":225.7,"e":567},{"d":240.7,"e":683},{"d":255.8,"e":552},{"d":270.8,"e":366},{"d":285.8,"e":612},{"d":300.9,"e":292},{"d":315.9,"e":201},{"d":331,"e":191},{"d":346,"e":196},{"d":361.1,"e":313},{"d":376.1,"e":380},{"d":391.2,"e":262},{"d":406.2,"e":291},{"d":421.3,"e":320},{"d":436.3,"e":135},{"d":451.3,"e":175},{"d":466.4,"e":284},{"d":481.4,"e":454},{"d":496.5,"e":493},{"d":511.5,"e":458},{"d":526.6,"e":308},{"d":541.6,"e":174},{"d":556.7,"e":177},{"d":571.7,"e":179},{"d":586.7,"e":69},{"d":601.8,"e":23},{"d":616.8,"e":25}];
+
+// Elevation chart
+(function(){
+  const W=1000,H=92,PAD=4;
+  const maxE=Math.max(...PROFILE.map(p=>p.e)), minE=Math.min(...PROFILE.map(p=>p.e));
+  const x=d=>PAD+(d/616.8)*(W-2*PAD);
+  const y=e=>H-PAD-((e-minE)/(maxE-minE))*(H-2*PAD);
+  const line=PROFILE.map((p,i)=>`${i?'L':'M'}${x(p.d).toFixed(1)},${y(p.e).toFixed(1)}`).join(' ');
+  const area=`${line} L${W-PAD},${H-PAD} L${PAD},${H-PAD} Z`;
+  document.getElementById('elev-line').setAttribute('d',line);
+  document.getElementById('elev-area').setAttribute('d',area);
+  const stop=PROFILE.reduce((a,b)=>Math.abs(b.d-320)<Math.abs(a.d-320)?b:a);
+  document.getElementById('elev-dot').setAttribute('cx',x(stop.d));
+  document.getElementById('elev-dot').setAttribute('cy',y(stop.e));
+})();
+
+// Map
+try {
+  const map = new maplibregl.Map({
+    container:'map',
+    style:'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center:[-1.2,41.0],
+    zoom:7.0,
+    pitch:48,
+    bearing:-18,
+    interactive:false,
+    attributionControl:false
+  });
+  window.__map = map;
+  const ready=()=>{const el=document.getElementById('map-ready'); if(el) el.textContent='MAP_READY';};
+  map.on('load',()=>{
+    map.addSource('terrain',{type:'raster-dem',tiles:['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],encoding:'terrarium',tileSize:256,maxzoom:15});
+    map.setTerrain({source:'terrain',exaggeration:1.55});
+    map.addLayer({id:'hills',type:'hillshade',source:'terrain',paint:{'hillshade-exaggeration':.32,'hillshade-shadow-color':'#000000','hillshade-highlight-color':'#2b3d5e','hillshade-accent-color':'#000000'}});
+    map.addSource('route',{type:'geojson',data:{type:'Feature',geometry:{type:'LineString',coordinates:ROUTE}}});
+    map.addLayer({id:'route-glow',type:'line',source:'route',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#5b8cff','line-width':22,'line-opacity':.22,'line-blur':12}});
+    map.addLayer({id:'route',type:'line',source:'route',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#8fb0ff','line-width':3.2}});
+    const stations={type:'FeatureCollection',features:[
+      {type:'Feature',geometry:{type:'Point',coordinates:[-3.7038,40.4168]},properties:{n:'Madrid'}},
+      {type:'Feature',geometry:{type:'Point',coordinates:[-0.88,41.65]},properties:{n:'Zaragoza'}},
+      {type:'Feature',geometry:{type:'Point',coordinates:[2.1686,41.3874]},properties:{n:'Barcelona'}}
+    ]};
+    map.addSource('stations',{type:'geojson',data:stations});
+    map.addLayer({id:'station-glow',type:'circle',source:'stations',paint:{'circle-radius':13,'circle-color':'#5b8cff','circle-opacity':.22,'circle-blur':1}});
+    map.addLayer({id:'station',type:'circle',source:'stations',paint:{'circle-radius':4,'circle-color':'#eef3f9','circle-stroke-width':2,'circle-stroke-color':'#5b8cff'}});
+    const mk=(lon,lat,name)=>{const el=document.createElement('div');el.className='map-label';el.textContent=name;new maplibregl.Marker({element:el,anchor:'bottom',offset:[0,-10]}).setLngLat([lon,lat]).addTo(map);};
+    mk(-3.7038,40.4168,'Madrid');
+    mk(2.1686,41.3874,'Barcelona');
+    ready();
+  });
+  map.on('idle',ready);
+  setTimeout(ready,15000);
+} catch(e) { document.getElementById('map-ready').textContent='MAP_READY'; }
+</script>
+</body>
+</html>

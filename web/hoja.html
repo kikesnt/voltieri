@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Tu coche eléctrico, medido en la carretera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Newsreader:ital,opsz,wght@1,6..72,400&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+/* Composición de la hoja: mapa a sangre, rail de leyenda y cinta de telemetría */
+:root{--strip-h:120px;--rail-w:360px}
+header{
+  position:absolute;inset:0 0 auto;height:56px;z-index:20;display:flex;align-items:center;gap:38px;
+  padding:0 32px;background:var(--paper);border-bottom:1px solid var(--ink)
+}
+.brand{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.22em}
+.brand .mark{width:9px;height:9px;background:var(--route)}
+nav{display:flex;gap:24px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none;padding:3px 0;border-bottom:1px solid transparent}
+nav a:hover{color:var(--ink);border-color:var(--ink)}
+.head-right{margin-left:auto;display:flex;align-items:center;gap:16px}
+
+#map{position:absolute;inset:56px 0 0 0;background:var(--paper)}
+.grid{position:absolute;inset:56px 0 var(--strip-h);z-index:4;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);
+  background-size:140px 140px}
+.grain{position:absolute;inset:56px 0 var(--strip-h);z-index:5;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.rail{
+  position:absolute;left:0;top:56px;bottom:var(--strip-h);z-index:15;width:var(--rail-w);
+  background:var(--paper);border-right:1px solid var(--ink);
+  padding:32px 28px;display:flex;flex-direction:column
+}
+.rail h1{font-size:clamp(30px,2.8vw,40px);line-height:1.04;letter-spacing:-.03em;font-weight:500}
+.lede{margin-top:18px;font-size:13.5px;line-height:1.6;color:var(--muted)}
+.lede b{color:var(--ink);font-weight:500}
+.factline{margin-top:22px;padding:10px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  display:flex;justify-content:space-between;gap:8px;font-family:var(--font-data);font-size:10px;color:var(--text)}
+.form{margin-top:14px}
+.form .btn{margin-top:18px}
+.rail .source{margin-top:auto;padding-top:20px}
+
+.strip{
+  position:absolute;left:0;right:0;bottom:0;z-index:15;height:var(--strip-h);
+  background:var(--paper);border-top:1px solid var(--ink);
+  display:grid;grid-template-columns:46% 54%
+}
+.profile{padding:12px 24px;border-right:1px solid var(--rule);display:flex;flex-direction:column}
+.profile .k{margin-bottom:4px}
+.profile svg{width:100%;height:66px;display:block;overflow:visible}
+.data-grid{align-items:center}
+
+.north{position:absolute;right:34px;top:86px;z-index:10;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink)}
+.north svg{width:24px;height:36px}
+.north span{font-family:var(--font-data);font-size:9px;letter-spacing:.2em}
+.maplegend{position:absolute;right:34px;bottom:calc(var(--strip-h) + 22px);z-index:10;display:flex;align-items:center;gap:8px;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.maplegend i{display:block;width:24px;height:2px;background:var(--route)}
+
+.city{font-family:var(--font-map);font-style:italic;font-size:14px;color:var(--ink);white-space:nowrap;
+  text-shadow:0 0 3px var(--paper),0 0 6px var(--paper),0 0 9px var(--paper)}
+
+.maplibregl-ctrl-scale{background:transparent!important;border:0!important;border-top:1px solid var(--ink)!important;color:var(--ink)!important;font-family:var(--font-data)!important;font-size:9px!important;padding:2px 0 0!important;box-shadow:none!important}
+.maplibregl-ctrl-bottom-right{margin:0 34px calc(var(--strip-h) + 20px) 0!important}
+
+@media(max-width:1100px){
+  :root{--strip-h:108px;--rail-w:320px}
+  header{padding:0 20px;gap:20px}
+  nav{gap:16px}
+  .head-right .status{display:none}
+  .rail{padding:24px 20px}
+  .lede{font-size:12.5px}
+  .profile{padding:10px 16px}
+  .data-cell{padding:10px}
+  .data-cell .v{font-size:16px}
+}
+@media(max-width:760px){
+  :root{--strip-h:0px}
+  header{padding:0 18px;gap:16px}
+  nav,.head-right .status{display:none}
+  .rail{top:auto;bottom:0;width:100%;height:auto;max-height:58vh;overflow:auto;border-right:0;border-top:1px solid var(--ink);padding:24px 18px}
+  .rail h1{font-size:32px}
+  .strip,.north,.maplegend{display:none}
+  .grid,.grain{inset:56px 0 0}
+  #map{inset:56px 0 0}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="mark"></span>VOLTIERI</div>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right">
+    <span class="status"><i></i>Datos abiertos · 20.11.2026</span>
+    <div class="modes" role="group" aria-label="Modo de pantalla">
+      <button type="button" data-mode="auto">Auto</button>
+      <button type="button" data-mode="day">Día</button>
+      <button type="button" data-mode="night">Noche</button>
+    </div>
+  </div>
+</header>
+
+<div id="map"></div>
+<div class="grid"></div>
+<div class="grain"></div>
+
+<aside class="rail">
+  <h1>Tu coche eléctrico, medido en la carretera.</h1>
+  <p class="lede">Orografía, viento y temperatura sobre la ruta que vas a hacer. Cargadores oficiales y <b>coste por kilómetro</b>.</p>
+
+  <div class="factline">
+    <span>617 km</span><span>16,8 kWh/100</span><span>18 min</span>
+  </div>
+
+  <form class="form" onsubmit="return false">
+    <div class="field"><span class="k">Origen</span><span class="v">Madrid</span></div>
+    <div class="field"><span class="k">Destino</span><span class="v">Barcelona</span></div>
+    <div class="field"><span class="k">Coche</span><span class="v"><span class="dot"></span>Tesla Model 3 LR</span></div>
+    <button class="btn btn--wide">Calcular mi ruta</button>
+  </form>
+
+  <p class="source">Fuentes: OpenStreetMap · CARTO · AWS Terrain · Open-Meteo · DATEX II</p>
+</aside>
+
+<section class="strip">
+  <div class="profile">
+    <span class="k">Perfil de elevación · Madrid → Barcelona</span>
+    <svg id="profile" viewBox="0 0 1000 90" preserveAspectRatio="none" aria-label="Perfil de elevación">
+      <defs>
+        <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--contour)" stop-opacity=".28"/>
+          <stop offset="100%" stop-color="var(--contour)" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path id="profile-area" fill="url(#pg)"/>
+      <path id="profile-line" fill="none" stroke="var(--contour)" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+      <circle id="profile-stop" r="3.2" fill="var(--route)" stroke="var(--paper)" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="data-grid">
+    <div class="data-cell"><span class="k">Distancia</span><span class="v">617<small>km</small></span></div>
+    <div class="data-cell"><span class="k">Consumo</span><span class="v">16,8<small>kWh/100</small></span></div>
+    <div class="data-cell"><span class="k">Carga</span><span class="v">18<small>min</small></span></div>
+    <div class="data-cell"><span class="k">Llegada</span><span class="v">18<small>% SoC</small></span></div>
+  </div>
+</section>
+
+<div class="north">
+  <svg viewBox="0 0 24 36" fill="none" aria-hidden="true">
+    <path d="M12 1 L18 28 L12 23 L6 28 Z" fill="currentColor"/>
+    <line x1="12" y1="28" x2="12" y2="35" stroke="currentColor" stroke-width="1"/>
+  </svg>
+  <span>N</span>
+</div>
+<div class="maplegend"><i></i>Itinerario calculado</div>
+
+<script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script type="module">
+const ROUTE = [[-3.7037,40.4176],[-3.5634,40.4496],[-3.3993,40.4841],[-3.2616,40.5561],[-3.1429,40.6368],[-3.0366,40.7407],[-2.9062,40.8326],[-2.7533,40.9013],[-2.6137,40.9781],[-2.4631,41.0348],[-2.4257,41.1522],[-2.299,41.2036],[-2.1725,41.2864],[-2.0095,41.3148],[-1.8477,41.3193],[-1.6804,41.3218],[-1.5455,41.3984],[-1.4425,41.4845],[-1.2815,41.5198],[-1.1303,41.5552],[-0.996,41.6285],[-0.8469,41.6776],[-0.6962,41.61],[-0.5561,41.543],[-0.3888,41.5232],[-0.214,41.5192],[-0.0412,41.5128],[0.1174,41.4976],[0.2863,41.4652],[0.4463,41.5153],[0.6066,41.5544],[0.7637,41.5065],[0.9007,41.4496],[1.0631,41.4096],[1.2324,41.3911],[1.3425,41.3072],[1.5034,41.2806],[1.649,41.3264],[1.773,41.3964],[1.9149,41.4658],[2.0241,41.3929],[2.1686,41.3874]];
+const PROFILE = [[0,667],[15,590],[30,596],[45,615],[60,734],[75,930],[90,1024],[105,1054],[120,1083],[135,1196],[150,1020],[165,883],[180,759],[195,688],[210,716],[225,567],[240,683],[255,552],[270,366],[285,612],[300,292],[315,201],[330,191],[345,196],[360,313],[375,380],[390,262],[405,291],[420,320],[435,135],[450,175],[465,284],[480,454],[495,493],[510,458],[525,308],[540,174],[555,177],[570,179],[585,69],[600,23],[617,25]];
+
+// Perfil: datos reales de la ruta, sin adorno
+(function(){
+  const W=1000,H=90,PAD=3;
+  const max=Math.max(...PROFILE.map(p=>p[1])), min=Math.min(...PROFILE.map(p=>p[1]));
+  const x=d=>PAD+(d/617)*(W-2*PAD);
+  const y=e=>H-PAD-((e-min)/(max-min))*(H-2*PAD);
+  const line=PROFILE.map((p,i)=>`${i?'L':'M'}${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(' ');
+  document.getElementById('profile-line').setAttribute('d',line);
+  document.getElementById('profile-area').setAttribute('d',`${line} L${W-PAD},${H-PAD} L${PAD},${H-PAD} Z`);
+  const stop=PROFILE.reduce((a,b)=>Math.abs(b[0]-320)<Math.abs(a[0]-320)?b:a);
+  document.getElementById('profile-stop').setAttribute('cx',x(stop[0]));
+  document.getElementById('profile-stop').setAttribute('cy',y(stop[1]));
+})();
+
+const PALETTE = {
+  day:  { bg:"#EFE7D5", water:"#B7CFCB", line:"#C9B79A", hill:{s:"#6B5A44",h:"#FFF8E6",a:"#8A7355"} },
+  night:{ bg:"#080B09", water:"#143830", line:"#2E4E45", hill:{s:"#14221D",h:"#454032",a:"#6A9B81"} }
+};
+let map;
+
+function recolor(pal){
+  if (!map) return;
+  for (const l of map.getStyle().layers) {
+    const id = l.id;
+    if (id === "background") map.setPaintProperty(id,"background-color",pal.bg);
+    else if (id === "water") map.setPaintProperty(id,"fill-color",pal.water);
+    else if (id === "waterway") map.setPaintProperty(id,"line-color",pal.water);
+    else if (l.type === "boundary") map.setPaintProperty(id,"line-color",pal.line);
+    else if (l.type === "line" && /road|street|highway|bridge|tunnel|aeroway|rail/i.test(id)) map.setPaintProperty(id,"line-color",pal.line);
+    else if (id === "relief") {
+      map.setPaintProperty(id,"hillshade-shadow-color",pal.hill.s);
+      map.setPaintProperty(id,"hillshade-highlight-color",pal.hill.h);
+      map.setPaintProperty(id,"hillshade-accent-color",pal.hill.a);
+    }
+    else if (id === "route-case") map.setPaintProperty(id,"line-color",pal.bg);
+    else if (id === "route-core") map.setPaintProperty(id,"line-color",window.__routeColor);
+  }
+}
+
+const KEY = "voltieri-theme";
+const mql = matchMedia("(prefers-color-scheme: dark)");
+function resolveTheme(){
+  const pref = localStorage.getItem(KEY) || "auto";
+  if (pref === "day") return "day";
+  if (pref === "night") return "night";
+  return mql.matches ? "night" : "day";
+}
+function applyTheme(){
+  const resolved = resolveTheme();
+  const pref = localStorage.getItem(KEY) || "auto";
+  document.documentElement.dataset.theme = resolved;
+  window.__routeColor = resolved === "night" ? "#E0953A" : "#B23A17";
+  for (const b of document.querySelectorAll(".modes button")) {
+    const on = b.dataset.mode === pref;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on);
+  }
+  recolor(PALETTE[resolved]);
+}
+document.querySelectorAll(".modes button").forEach(b => b.addEventListener("click", () => {
+  localStorage.setItem(KEY, b.dataset.mode);
+  applyTheme();
+}));
+applyTheme();
+mql.addEventListener?.("change", applyTheme);
+
+const style = await (await fetch("https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json")).json();
+for (const l of style.layers) {
+  l.paint = l.paint || {};
+  const id = l.id || "", p = PALETTE.day;
+  if (l.type === "background") l.paint["background-color"] = p.bg;
+  else if (l.type === "water") l.paint["fill-color"] = p.water;
+  else if (l.type === "waterway") l.paint["line-color"] = p.water;
+  else if (l.type === "landcover") { l.paint["fill-color"] = p.line; l.paint["fill-opacity"] = .35; }
+  else if (l.type === "landuse") { l.paint["fill-color"] = p.line; l.paint["fill-opacity"] = .22; }
+  else if (l.type === "park") l.paint["fill-color"] = p.line;
+  else if (l.type === "boundary") { l.paint["line-color"] = p.line; l.paint["line-dasharray"] = [3,2]; }
+  else if (l.type === "line" && /road|street|highway|bridge|tunnel|aeroway|rail/i.test(id)) {
+    l.paint["line-color"] = p.line; l.paint["line-opacity"] = .9;
+  }
+}
+style.sources.terrain = {
+  type:"raster-dem",
+  tiles:["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+  encoding:"terrarium", tileSize:256, maxzoom:15
+};
+style.layers.splice(1, 0, { id:"relief", type:"hillshade", source:"terrain", paint:{
+  "hillshade-exaggeration":.38,
+  "hillshade-shadow-color":PALETTE.day.hill.s,
+  "hillshade-highlight-color":PALETTE.day.hill.h,
+  "hillshade-accent-color":PALETTE.day.hill.a,
+  "hillshade-illumination-direction":315
+}});
+
+map = new maplibregl.Map({
+  container:"map", style, center:[-3.4,40.3], zoom:4.35, pitch:0, bearing:0,
+  attributionControl:false, scrollZoom:false, dragRotate:false
+});
+map.addControl(new maplibregl.ScaleControl({maxWidth:110, unit:"metric"}), "bottom-right");
+const bounds = ROUTE.reduce((b,c)=>[[Math.min(b[0][0],c[0]),Math.min(b[0][1],c[1])],[Math.max(b[1][0],c[0]),Math.max(b[1][1],c[1])]],[[ROUTE[0][0],ROUTE[0][1]],[ROUTE[0][0],ROUTE[0][1]]]);
+
+map.on("load", () => {
+  map.addSource("route", {type:"geojson", data:{type:"Feature", geometry:{type:"LineString", coordinates:ROUTE}}});
+  map.addLayer({id:"route-case",type:"line",source:"route",layout:{"line-cap":"round","line-join":"round"},paint:{"line-color":PALETTE.day.bg,"line-width":7}});
+  map.addLayer({id:"route-core",type:"line",source:"route",layout:{"line-cap":"round","line-join":"round"},paint:{"line-color":window.__routeColor,"line-width":2.6}});
+  for (const c of [{n:"Madrid",p:[-3.7038,40.4168]},{n:"Zaragoza",p:[-0.8896,41.6488]},{n:"Barcelona",p:[2.1686,41.3874]}]) {
+    const el=document.createElement("div"); el.className="city"; el.textContent=c.n;
+    new maplibregl.Marker({element:el,anchor:"bottom",offset:[0,-6]}).setLngLat(c.p).addTo(map);
+  }
+  map.setTerrain({source:"terrain", exaggeration:1.12});
+  const cs=getComputedStyle(document.documentElement);
+  const railW=parseFloat(cs.getPropertyValue("--rail-w"))||0;
+  const stripH=parseFloat(cs.getPropertyValue("--strip-h"))||0;
+  const compact=innerWidth<=760;
+  map.fitBounds(bounds, {
+    padding:{top:40,bottom:compact?30:stripH+30,left:compact?30:railW+40,right:70},
+    pitch:44,bearing:-12,duration:2200,easing:t=>1-Math.pow(1-t,4)
+  });
+});
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>

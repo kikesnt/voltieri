@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voltieri — Coste total de propiedad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+header{display:flex;align-items:center;gap:28px;padding:14px 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+.brand{font-size:12px;font-weight:600;letter-spacing:.22em}
+nav{display:flex;gap:20px;font-size:12px}
+nav a{color:var(--muted);text-decoration:none}
+.head-right{margin-left:auto}
+main{max-width:1180px;margin:0 auto;padding:52px 32px 88px}
+h1{font-size:46px;line-height:1.04;letter-spacing:-.03em;font-weight:500;max-width:700px}
+.lede{margin-top:16px;font-size:14px;line-height:1.6;color:var(--muted);max-width:660px}
+.workspace{display:grid;grid-template-columns:320px 1fr;gap:24px;margin-top:42px;align-items:start}
+.panel{padding:24px}
+.controls input{width:92px;padding:6px 8px;border:1px solid var(--rule);background:transparent;color:var(--text);font-family:var(--font-data);font-size:13px;text-align:right}
+.controls .field{align-items:center}
+.result .data-grid{margin:0 -24px 24px;border-bottom:1px solid var(--rule)}
+.chart{margin-top:24px}
+.chart svg{width:100%;height:150px;display:block}
+.calc-note{margin-top:18px;font-size:12px;line-height:1.6;color:var(--muted)}
+footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
+@media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<header>
+  <span class="brand">VOLTIERI</span>
+  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <div class="head-right modes" role="group" aria-label="Modo de pantalla">
+    <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
+  </div>
+</header>
+
+<main>
+  <h1>Lo que de verdad cuesta tu coche.</h1>
+  <p class="lede">Energía, mantenimiento, seguro y depreciación a lo largo de los años que lo vas a tener. Frente a un coche de gasolina equivalente, con tus kilómetros.</p>
+
+  <div class="workspace">
+    <form class="panel controls" onsubmit="return false">
+      <span class="k">Tus números</span>
+      <div class="field"><label class="k" for="evPrice">Precio eléctrico</label><span><input id="evPrice" type="number" value="42000" step="1000"> <span class="k">€</span></span></div>
+      <div class="field"><label class="k" for="gasPrice">Precio gasolina</label><span><input id="gasPrice" type="number" value="38000" step="1000"> <span class="k">€</span></span></div>
+      <div class="field"><label class="k" for="km">Kilómetros al año</label><span><input id="km" type="number" value="15000" step="1000"> <span class="k">km</span></span></div>
+      <div class="field"><label class="k" for="useEv">Consumo eléctrico</label><span><input id="useEv" type="number" value="16.8" step="0.1"> <span class="k">kWh/100</span></span></div>
+      <div class="field"><label class="k" for="priceKwh">Precio kWh</label><span><input id="priceKwh" type="number" value="0.24" step="0.01"> <span class="k">€</span></span></div>
+      <div class="field"><label class="k" for="useGas">Consumo gasolina</label><span><input id="useGas" type="number" value="7.5" step="0.1"> <span class="k">L/100</span></span></div>
+      <div class="field"><label class="k" for="priceL">Precio litro</label><span><input id="priceL" type="number" value="1.55" step="0.01"> <span class="k">€</span></span></div>
+      <div class="field"><label class="k" for="years">Años</label><span><input id="years" type="number" value="5" min="1" max="15"> <span class="k">años</span></span></div>
+      <button class="btn btn--wide" type="button" id="calc">Calcular TCO</button>
+    </form>
+
+    <div class="panel result">
+      <div class="data-grid">
+        <div class="data-cell"><span class="k">Coste eléctrico</span><span class="v" id="out-ev">—</span></div>
+        <div class="data-cell"><span class="k">Coste gasolina</span><span class="v" id="out-gas">—</span></div>
+        <div class="data-cell"><span class="k">EV frente a gas</span><span class="v" id="out-dif">—</span></div>
+        <div class="data-cell"><span class="k">Por km</span><span class="v" id="out-km">—</span></div>
+      </div>
+      <table class="table">
+        <thead><tr><th>Año</th><th>Eléctrico acumulado</th><th>Gasolina acumulado</th><th class="num">EV − gas</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="chart">
+        <span class="k">Coste acumulado</span>
+        <svg id="bars" viewBox="0 0 800 150" preserveAspectRatio="none" aria-label="Comparativa de coste acumulado"></svg>
+      </div>
+      <p class="calc-note">Depreciación estimada: 12 % anual el eléctrico, 9 % el de gasolina. Mantenimiento y seguro son orientativos. Puedes cambiar todos los datos.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span class="source">Fuentes: precio PVPC · REE/ESIOS · datos introducidos por el usuario</span>
+    <span class="source">Sin cuentas. Sin cookies.</span>
+  </footer>
+</main>
+
+<script src="data-live.js"></script>
+<script>
+const KEY="voltieri-theme",mql=matchMedia("(prefers-color-scheme: dark)");
+function resolve(){const p=localStorage.getItem(KEY)||"auto";return p==="auto"?(mql.matches?"night":"day"):p;}
+function applyTheme(){const r=resolve(),p=localStorage.getItem(KEY)||"auto";document.documentElement.dataset.theme=r;for(const b of document.querySelectorAll(".modes button")){const on=b.dataset.mode===p;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on);}}
+document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{localStorage.setItem(KEY,b.dataset.mode);applyTheme();}));
+applyTheme();mql.addEventListener?.("change",applyTheme);
+
+const money=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
+const c2=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2});
+function calc(){
+  const ev0=+document.getElementById("evPrice").value, gas0=+document.getElementById("gasPrice").value;
+  const km=+document.getElementById("km").value, useEv=+document.getElementById("useEv").value;
+  const pKwh=+document.getElementById("priceKwh").value, useGas=+document.getElementById("useGas").value;
+  const pL=+document.getElementById("priceL").value, years=+document.getElementById("years").value;
+  const annualEv=km/100*useEv*pKwh+240+650;
+  const annualGas=km/100*useGas*pL+480+720;
+  let rows="",max=0;
+  const data=[];
+  for(let y=1;y<=years;y++){
+    const ev=ev0-ev0*Math.pow(.88,y)+annualEv*y;
+    const gas=gas0-gas0*Math.pow(.91,y)+annualGas*y;
+    data.push([y,ev,gas]);
+    max=Math.max(max,ev,gas);
+    rows+=`<tr><td>${y}</td><td>${money.format(ev)}</td><td>${money.format(gas)}</td><td class="num">${money.format(ev-gas)}</td></tr>`;
+  }
+  document.getElementById("rows").innerHTML=rows;
+  const last=data[data.length-1], totalKm=km*years;
+  document.getElementById("out-ev").textContent=money.format(last[1]);
+  document.getElementById("out-gas").textContent=money.format(last[2]);
+  document.getElementById("out-dif").textContent=money.format(last[2]-last[1]);
+  document.getElementById("out-km").textContent=c2.format((last[2]-last[1])/totalKm)+"/km";
+  const bw=760/years, gap=8;
+  document.getElementById("bars").innerHTML=data.map(([y,ev,gas],i)=>{
+    const x=i*bw+20;
+    const he=ev/max*120,hg=gas/max*120;
+    return `<rect x="${x}" y="${150-he}" width="${(bw-gap)/2}" height="${he}" fill="var(--route)"/><rect x="${x+(bw-gap)/2}" y="${150-hg}" width="${(bw-gap)/2}" height="${hg}" fill="var(--contour)"/>`;
+  }).join("");
+}
+document.getElementById("calc").addEventListener("click",calc);calc();loadLivePrices().then(()=>calc());
+</script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+</body>
+</html>
