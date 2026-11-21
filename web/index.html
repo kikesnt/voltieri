@@ -116,7 +116,7 @@ h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;col
 
 <header>
   <div class="brand"><span class="mark"></span>VOLTIERI</div>
-  <nav><a href="catalog.html">Coches</a><a href="chargers.html">Cargadores</a><a href="compare.html">Comparadores</a><a href="finance.html">Costes</a><a href="service.html">Servicios</a></nav>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Planificador</a><a href="mapa-autonomia.html">Autonomía</a><a href="chargers.html">Cargadores</a><a href="compare.html">Comparadores</a><a href="finance.html">Costes</a><a href="service.html">Servicios</a></nav>
   <div class="head-right">
     <span class="status"><i></i>DATOS ABIERTOS · 21.11.2026</span>
     <div class="modes" role="group" aria-label="Modo de pantalla">
@@ -186,6 +186,7 @@ h1 em{font-family:"Instrument Serif",serif;font-style:italic;font-weight:400;col
 </section>
 
 <script src="https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.js"></script>
+<script src="routing.js"></script>
 <script>
 const ROUTE=[[-3.7037,40.4176],[-3.5634,40.4496],[-3.3993,40.4841],[-3.2616,40.5561],[-3.1429,40.6368],[-3.0366,40.7407],[-2.9062,40.8326],[-2.7533,40.9013],[-2.6137,40.9781],[-2.4631,41.0348],[-2.4257,41.1522],[-2.299,41.2036],[-2.1725,41.2864],[-2.0095,41.3148],[-1.8477,41.3193],[-1.6804,41.3218],[-1.5455,41.3984],[-1.4425,41.4845],[-1.2815,41.5198],[-1.1303,41.5552],[-0.996,41.6285],[-0.8469,41.6776],[-0.6962,41.61],[-0.5561,41.543],[-0.3888,41.5232],[-0.214,41.5192],[-0.0412,41.5128],[0.1174,41.4976],[0.2863,41.4652],[0.4463,41.5153],[0.6066,41.5544],[0.7637,41.5065],[0.9007,41.4496],[1.0631,41.4096],[1.2324,41.3911],[1.3425,41.3072],[1.5034,41.2806],[1.649,41.3264],[1.773,41.3964],[1.9149,41.4658],[2.0241,41.3929],[2.1686,41.3874]];
 const PROFILE=[[0,667],[15,590],[30,596],[45,615],[60,734],[75,930],[90,1024],[105,1054],[120,1083],[135,1196],[150,1020],[165,883],[180,759],[195,688],[210,716],[225,567],[240,683],[255,552],[270,366],[285,612],[300,292],[315,201],[330,191],[345,196],[360,313],[375,380],[390,262],[405,291],[420,320],[435,135],[450,175],[465,284],[480,454],[495,493],[510,458],[525,308],[540,174],[555,177],[570,179],[585,69],[600,23],[617,25]];
@@ -257,6 +258,36 @@ applyTheme();mql.addEventListener?.("change",applyTheme);
     const compact=innerWidth<=760;
     map.fitBounds(b,{padding:{top:50,bottom:compact?40:60,left:compact?40:80,right:compact?40:60},pitch:42,bearing:-14,duration:2200,easing:t=>1-Math.pow(1-t,4)});
     applyTheme();
+
+    // Ruta real: OSRM + elevación y clima de Open-Meteo + cargadores MITECO
+    VoltieriRouting.planRoute("Madrid","Barcelona",{car:{battery:75,use:16.8,dc:250,name:"Tesla Model 3 LR"},speed:100})
+      .then(async r=>{
+        map.getSource("route").setData({type:"Feature",geometry:{type:"LineString",coordinates:r.coords}});
+        const kpis=document.querySelectorAll(".kpi .n");
+        kpis[0].innerHTML=`${Math.round(r.km)}<small>km</small>`;
+        kpis[1].innerHTML=`${Math.floor(r.hours)}h${String(Math.round((r.hours%1)*60)).padStart(2,"0")}<small>m</small>`;
+        kpis[2].innerHTML=`${r.stops.length}<small>parada${r.stops.length===1?"":"s"}</small>`;
+        kpis[3].innerHTML=`${r.use.toLocaleString("es-ES",{minimumFractionDigits:1,maximumFractionDigits:1})}<small>kWh/100</small>`;
+        const hud=document.querySelector(".hud .time");
+        hud.innerHTML=`${Math.floor(r.hours)}h ${String(Math.round((r.hours%1)*60)).padStart(2,"0")}m<span>${r.chargeMin} min de carga · ${Math.round(r.energy*.7)} kWh</span>`;
+        const stopName=document.querySelector(".stopcard strong");
+        if(stopName) stopName.textContent=r.stops.length?`${r.stops[0].name.slice(0,26)} · ${r.stops[0].kw} kW`:"Sin parada necesaria";
+        const pv=await (await fetch("data/pvpc.txt")).text();
+        const price=(r.energy*.7)*(pv.split("|")[1].split(",").map(Number).reduce((a,b)=>a+b,0)/24/1000);
+        const priceEl=document.querySelector(".stopcard .price");
+        if(priceEl) priceEl.textContent=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(price);
+        const strip=document.querySelectorAll(".strip .v");
+        strip[0].innerHTML=`${r.energy.toFixed(1)}<small>kWh</small>`;
+        const stamp=document.querySelector(".stamp");
+        if(stamp) stamp.innerHTML=`RUTA REAL · ${r.weather.temp.toFixed(0)} °C<br>${Math.round(r.km)} KM · ${r.weather.wind.toFixed(0)} KM/H VIENTO`;
+        const W=600,H=60,P=2,max=Math.max(...r.legs.map(p=>p.e)),min=Math.min(...r.legs.map(p=>p.e));
+        const x=d=>P+(d/r.km)*(W-2*P), y=e=>H-P-((e-min)/((max-min)||1))*(H-2*P);
+        const line=r.legs.map((p,i)=>`${i?'L':'M'}${x(p.d).toFixed(1)},${y(p.e).toFixed(1)}`).join(' ');
+        document.getElementById('p-line').setAttribute('d',line);
+        document.getElementById('p-area').setAttribute('d',`${line} L${W-P},${H-P} L${P},${H-P} Z`);
+        document.querySelector(".profile .k").textContent=`Perfil real · +${Math.round(r.climb)} m / −${Math.round(r.descent)} m · máx ${r.maxAlt} m`;
+      })
+      .catch(e=>console.warn("Ruta real no disponible:",e.message));
   });
 })();
 </script>

@@ -1,12 +1,12 @@
 // Voltieri — service worker: la web funciona sin cobertura.
 const CACHE = "voltieri-v1";
 const CORE = [
-  "hoja.html", "catalog.html", "compare.html", "finance.html", "sim.html", "routes.html", "service.html",
+  "index.html", "hoja.html", "planificador.html", "mapa-autonomia.html", "catalog.html", "compare.html", "finance.html", "sim.html", "routes.html", "service.html",
   "tool-shell.html", "range.html", "charge.html", "tco.html", "chargers.html", "components.html",
   "tokens.css", "components.css", "tools.css",
-  "tools-data.js", "tools.js", "tools-data.js", "data-live.js",
+  "tools-data.js", "tools.js", "data-live.js", "routing.js", "car3d.js",
   "data/vehicles.txt", "data/specs.txt", "data/curves.txt", "data/chargers.txt",
-  "data/pvpc.txt", "data/fuel.txt", "data/news.txt", "data/workshops.txt", "api/data.json",
+  "data/pvpc.txt", "data/fuel.txt", "data/news.txt", "data/workshops.txt", "data/safety.txt", "api/data.json",
   "icon.svg", "manifest.webmanifest"
 ];
 

@@ -18,12 +18,18 @@ Total objetivo: **45 herramientas**.
 | `charge.html` | Herramienta #19 (curva de carga) | 15 min · 52,5 kWh · 210,5 kW de media |
 | `tco.html` | Herramienta #10 (TCO) | 27.309 € vs 29.006 € · 0,02 €/km |
 | `chargers.html` | Herramienta #24 (mapa de cargadores) | 12 puntos, 12 marcadores, filtros |
+| `planificador.html` | Planificador con ruta real (OSRM + clima + paradas) | 617,7 km, 1 parada, sin errores |
+| `mapa-autonomia.html` | Mapa de autonomía con anillos isócronos por clic | 4 anillos, 48 destinos OSRM |
 | `compare.html` · `finance.html` · `sim.html` · `routes.html` · `service.html` | Las 40 herramientas restantes | Todas sin `NaN`, 0 errores de consola |
 | `tools-data.js` · `tools.js` · `tools.css` | Registro y renderizador del hub | URL compartible por `#id?par=valor` |
 
 Todas pasan `node scripts/check-design.mjs web`.
 
-**Deuda consciente:** los estilos de mapa están duplicados entre `hoja.html` y `chargers.html`; se extraerán a `web/map-base.js` antes de la herramienta de mapas número dos.
+Motor real: `web/routing.js` usa **OSRM** para la geometría, **Open-Meteo** para elevación y clima, **Nominatim** para geocodificar y `data/chargers.txt` para las paradas. La portada (`index.html`) y `web/planificador.html` ya calculan en vivo: Madrid→Barcelona da 617,7 km, 7h08m, 14,1 kWh/100, 87,3 kWh y una parada, con perfil de +1.785 m / −2.427 m.
+
+**Mapa de autonomía** (`web/mapa-autonomia.html`): reproduce y supera la función estrella de nogas. Clic en cualquier punto de España → 48 destinos a 240 km consultados a OSRM `table` → anillos isócronos deformados por la red vial para 100 %, 80 %, 1 y 2 paradas, con desglose de km. No son círculos: la forma depende de la distancia real por carretera en cada dirección.
+
+**Deuda consciente:** los estilos de mapa están duplicados entre `index.html` y `chargers.html`; se extraerán a `web/map-base.js` antes de la herramienta de mapas número dos.
 
 ## Hub de herramientas (las 40 restantes)
 
