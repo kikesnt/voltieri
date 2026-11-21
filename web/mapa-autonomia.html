@@ -81,57 +81,122 @@ function destination(lat,lon,bearingDeg,distKm){
 }
 function inSpain(lat,lon){return lat>35.5&&lat<44.5&&lon>-9.8&&lon<3.5;}
 
-function ringsFor(car,soc,speed){
-  const base=car.range||500;
-  const v=+speed, factor=v<=90?1.22:v<=110?1.0:v<=120?.9:.82;
-  const r=base*soc/100*factor;
-  return [
-    {id:"100",name:"100% de batería",km:r},
-    {id:"80",name:"80% de batería",km:r*.8},
-    {id:"s1",name:"Con 1 parada rápida",km:r*1.65},
-    {id:"s2",name:"Con 2 paradas",km:r*2.25}
-  ];
+function bearing(a,b){
+  const rad=d=>d*Math.PI/180;
+  const y=Math.sin(rad(b[0]-a[0]))*Math.cos(rad(b[1]));
+  const x=Math.cos(rad(a[1]))*Math.sin(rad(b[1]))-Math.sin(rad(a[1]))*Math.cos(rad(b[1]))*Math.cos(rad(b[0]-a[0]));
+  return (Math.atan2(y,x)*180/Math.PI+360)%360;
+}
+function angDiff(a,b){let d=Math.abs(a-b)%360;return d>180?360-d:d;}
+
+let CHARGERS=[];
+async function loadChargers(){
+  if(CHARGERS.length)return;
+  const txt=await (await fetch("data/chargers.txt")).text();
+  CHARGERS=txt.trim().split("\n").map(l=>{
+    const [name,lat,lon,kw,operator,connector]=l.split("|");
+    return {name,lat:+lat,lon:+lon,kw:+kw,operator,connector};
+  });
 }
 
 async function drawRings(){
   if(!origin)return;
   document.getElementById("loading").style.display="block";
-  const carName=document.getElementById("car").value, c=CARS[carName]||{range:500};
-  const soc=+document.getElementById("soc").value, speed=document.getElementById("speed").value;
-  const rings=ringsFor(c,soc,speed);
+  const carName=document.getElementById("car").value, c=CARS[carName]||{range:500,battery:75,dc:150};
+  const soc=+document.getElementById("soc").value, speed=+document.getElementById("speed").value;
+  await loadChargers();
+  const speedFactor=speed<=90?1.22:speed<=110?1:speed<=120?.9:.82;
   const R=240, coords=[];
   for(let i=0;i<48;i++) coords.push(destination(origin[1],origin[0],i*7.5,R));
-  const pts=[origin,...coords].map(p=>p.join(",")).join(";");
+  const near=CHARGERS.filter(ch=>{
+    const dy=(ch.lat-origin[1])*111, dx=(ch.lon-origin[0])*111*Math.cos(origin[1]*Math.PI/180);
+    return Math.hypot(dx,dy)<520;
+  }).slice(0,40);
+  const all=[origin,...coords,...near.map(ch=>[ch.lon,ch.lat])].map(p=>p.join(",")).join(";");
   let road=[];
   try{
-    const u=`https://router.project-osrm.org/table/v1/driving/${pts}?sources=0&annotations=distance`;
+    const u=`https://router.project-osrm.org/table/v1/driving/${all}?sources=0&annotations=distance`;
     const d=await (await fetch(u)).json();
-    road=(d.distances?.[0]||[]).slice(1).map(x=>x/1000||R);
-  }catch(e){ road=coords.map(()=>R); }
+    road=(d.distances?.[0]||[]).map(x=>x/1000||R);
+  }catch(e){ road=all.split(";").map(()=>R); }
+  const roadRay=road.slice(0,48), roadCh=road.slice(48);
+  let elev=[];
   try{
+    const lats=[origin[1],...coords.map(p=>p[1])].join(","), lons=[origin[0],...coords.map(p=>p[0])].join(",");
+    const d=await (await fetch(`https://api.open-meteo.com/v1/elevation?latitude=${lats}&longitude=${lons}`)).json();
+    elev=d.elevation||[];
+  }catch(e){}
+  const alt0=elev[0]||0;
+  let temp=18;
+  try{
+    const d=await (await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${origin[1]}&longitude=${origin[0]}&current=temperature_2m`)).json();
+    temp=d.current?.temperature_2m??18;
+  }catch(e){}
+  const tempFactor=1-Math.min(.25,Math.max(0,(20-temp)*.012));
+  const base=(c.range||500)*soc/100*speedFactor*tempFactor;
+  const window=.70;
+
+  const rings=[
+    {id:"100",name:"100% de batería"},
+    {id:"80",name:"80% de batería"},
+    {id:"s1",name:"1 parada en cargador real"},
+    {id:"s2",name:"2 paradas en cargadores reales"}
+  ];
+  const used={s1:[],s2:[]};
+  const perRing={};
+  rings.forEach(r=>perRing[r.id]=[]);
+
+  for(let i=0;i<48;i++){
+    const dh=(elev[i+1]||alt0)-alt0;
+    const terrain=1-Math.max(-.12,Math.min(.12,dh/1200*.10));
+    const range=base*terrain;
+    const cands=near.map((ch,j)=>({ch,d:roadCh[j],b:bearing(origin,[ch.lon,ch.lat])}))
+      .filter(x=>angDiff(x.b,i*7.5)<=22.5&&x.d>5&&x.d<range*.95).sort((a,b)=>a.d-b.d);
+    const r100=range, r80=range*.8;
+    let r1=range, r2=range;
+    if(cands.length){
+      const best1=cands.reduce((best,x)=>(x.d+range*window)>(best.d+range*window)?x:best,cands[0]);
+      r1=best1.d+range*window;
+      used.s1.push(best1.ch.name);
+      let best2=null;
+      for(const a of cands) for(const b of cands){
+        if(b.d<=a.d+20) continue;
+        if(b.d>a.d+range*window*.95) continue;
+        const score=b.d+range*window;
+        if(!best2||score>best2.score) best2={score,a,b};
+      }
+      if(best2){ r2=best2.score; used.s2.push(best2.a.ch.name+" → "+best2.b.ch.name); }
+      else { r2=r1; used.s2.push(best1.ch.name); }
+    }
+    perRing["100"].push(r100);perRing["80"].push(r80);perRing["s1"].push(r1);perRing["s2"].push(r2);
+    const vals={"100":r100,"80":r80,s1:r1,s2:r2};
     rings.forEach(ring=>{
-      const poly=coords.map((p,i)=>{
-        const real=road[i]||R;
-        let r=R*(ring.km/real);
-        r=Math.max(25,Math.min(R*1.7,r));
-        return destination(origin[1],origin[0],i*7.5,r);
-      });
-      poly.push(poly[0]);
+      const real=roadRay[i]||R;
+      let rad=R*(vals[ring.id]/real);
+      rad=Math.max(25,Math.min(R*1.8,rad));
+      const polyPoint=destination(origin[1],origin[0],i*7.5,rad);
       const id="ring-"+ring.id;
-      if(map.getSource(id)){
-        map.getSource(id).setData({type:"Feature",geometry:{type:"Polygon",coordinates:[poly]}});
-      }else{
-        map.addSource(id,{type:"geojson",data:{type:"Feature",geometry:{type:"Polygon",coordinates:[poly]}}});
+      let src=map.getSource(id);
+      if(!src){
+        map.addSource(id,{type:"geojson",data:{type:"FeatureCollection",features:[]}});
         map.addLayer({id:id+"-fill",type:"fill",source:id,paint:{"fill-color":COLORS[ring.id],"fill-opacity":ring.id==="100"?.13:.09}});
         map.addLayer({id:id+"-line",type:"line",source:id,paint:{"line-color":COLORS[ring.id],"line-width":ring.id==="100"?2.4:1.3,"line-opacity":.9,"line-dasharray":ring.id==="100"?[1,0]:[3,2]}});
+        src=map.getSource(id);
       }
+      if(!src.__pts)src.__pts=[];
+      src.__pts[i]=polyPoint;
+      const poly=src.__pts.filter(Boolean);
+      if(poly.length===48){ poly.push(poly[0]); src.setData({type:"Feature",geometry:{type:"Polygon",coordinates:[poly]}}); }
     });
-  }catch(e){
-    setTimeout(drawRings,1500);
-    return;
   }
-  document.getElementById("total").textContent=Math.round(rings[3].km)+" km";
-  document.getElementById("rings").innerHTML=rings.map(r=>`<div class="ring"><span class="name"><i class="sw" style="background:${COLORS[r.id]}"></i>${r.name}</span><span class="km">${Math.round(r.km)} km</span></div>`).join("");
+  const avg=id=>perRing[id].reduce((a,b)=>a+b,0)/48;
+  const top=arr=>{const m={};arr.forEach(x=>m[x]=(m[x]||0)+1);return Object.entries(m).sort((a,b)=>b[1]-a[1])[0]?.[0]||"—";};
+  document.getElementById("total").textContent=Math.round(avg("s2"))+" km";
+  document.getElementById("rings").innerHTML=rings.map(r=>{
+    const extra=r.id==="s1"||r.id==="s2"?` · ${used[r.id].length}/48 direcciones`: "";
+    const ch=r.id==="s1"?` · ${top(used.s1).slice(0,22)}`:r.id==="s2"?` · ${top(used.s2).slice(0,22)}`: "";
+    return `<div class="ring"><span class="name"><i class="sw" style="background:${COLORS[r.id]}"></i>${r.name}${extra}${ch}</span><span class="km">${Math.round(avg(r.id))} km</span></div>`;
+  }).join("");
   document.getElementById("loading").style.display="none";
 }
 

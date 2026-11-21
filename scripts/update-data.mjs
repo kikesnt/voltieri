@@ -105,19 +105,18 @@ async function chargers() {
   const txt = new TextDecoder("utf-16le").decode(buf);
   const lines = txt.split("\n").map(x => x.replace("\r","")).filter(x => x.length > 2);
   const clean = s => s.replace(/^="?|"?$/g,"").replace(/^"|"$/g,"").trim();
-  const provinces = ["Madrid","Barcelona","Zaragoza","Valencia","Sevilla","Bizkaia","Malaga","Málaga"];
   const seen = new Set(), out = [];
   for (let i = 1; i < lines.length; i++) {
     const c = lines[i].split(";").map(clean);
     const [prov, lat, lon, name, op, charge, kwRaw] = [c[1], c[3], c[4], c[5], c[11], c[23], c[25]];
-    if (!provinces.some(p => prov.includes(p)) || charge !== "DC") continue;
+    if (charge !== "DC") continue;
     const kw = parseFloat(kwRaw.replace(",", "."));
     if (!(kw >= 50) || !parseFloat(lat) || !parseFloat(lon)) continue;
     const key = `${name}|${lat}`;
     if (seen.has(key)) continue;
     seen.add(key);
     out.push([name.slice(0,44), (+lat).toFixed(5), (+lon).toFixed(5), Math.round(kw), op.slice(0,26), c[22] || "", prov].join("|"));
-    if (out.length >= 300) break;
+    if (out.length >= 2500) break;
   }
   await save("chargers.txt", out.join("\n"));
 }
