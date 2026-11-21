@@ -2,8 +2,8 @@
 <html lang="es" data-skin="2027" data-theme="night">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Voltieri — Equipamiento recomendado</title>
-<meta name="description" content="Cables, wallbox y adaptadores útiles para tu coche, con enlaces transparentes y configurables.">
+<title>Voltieri — Equipamiento EV con precios reales</title>
+<meta name="description" content="Cables Tipo 2, wallbox, adaptadores CCS2 y cargadores portátiles con precios reales de Amazon.es y tag de afiliado volteri-21.">
 <link rel="canonical" href="https://kikesnt.github.io/voltieri/productos.html">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,40 +11,36 @@
 <link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css">
 <style>
 header{display:flex;align-items:center;gap:20px;padding:14px 30px;background:var(--paper);border-bottom:1px solid var(--ink)}
-.brand{font-size:12px;font-weight:600;letter-spacing:.2em}
+.brand{font-size:12px;font-weight:600;letter-spacing:.2em;color:var(--ink);text-decoration:none}
 nav{margin-left:auto;display:flex;gap:16px;font-size:12px}nav a{color:var(--muted);text-decoration:none}
 main{max-width:1000px;margin:0 auto;padding:46px 30px 90px}
 h1{font-size:clamp(32px,4vw,46px);letter-spacing:-.04em;font-weight:500;line-height:1.05}
 .lede{margin-top:14px;color:var(--muted);font-size:13.5px;line-height:1.6;max-width:680px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:34px}
-.cat{border:1px solid var(--rule);padding:20px}
-.cat h2{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:500}
-.cat a{display:block;padding:8px 0;border-bottom:1px solid var(--rule);font-size:12.5px;color:var(--text);text-decoration:none}
-.cat a:hover{color:var(--amber)}
-.card{border:1px solid var(--rule);padding:16px;display:flex;flex-direction:column;gap:8px}
-.card strong{font-size:13px;font-weight:500}
-.card span{font-size:11px;color:var(--muted)}
-.card a{color:var(--amber);font-family:var(--font-data);font-size:10px;text-decoration:none}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:34px}
+.cat{border:1px solid var(--ink);padding:20px;display:flex;flex-direction:column;gap:10px}
+.cat h2{font-size:18px;font-weight:500;letter-spacing:-.02em}
+.cat p{font-size:12px;color:var(--muted);line-height:1.6;flex:1}
+.cat a.compare{align-self:flex-start;padding:9px 12px;background:var(--ink);color:var(--paper);font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.cat a.compare:hover{background:var(--amber)}
+.source{font-size:10px;color:var(--muted);line-height:1.6;margin-top:20px}
 footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:flex;gap:18px;flex-wrap:wrap;font-family:var(--font-data);font-size:9px;color:var(--muted)}
 footer a{color:var(--muted)}
-@media(max-width:760px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 70px}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 70px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><span class="brand">VOLTIERI</span><nav><a href="index.html">Inicio</a><a href="herramientas.html">Herramientas</a><a href="productos.html">Equipamiento</a></nav></header>
+<header><a class="brand" href="index.html">VOLTIERI</a><nav><a href="comparativas.html">Comparativas</a><a href="herramientas.html">Herramientas</a><a href="blog/">Blog</a></nav></header>
 <main>
-<h1>Equipamiento recomendado</h1>
-<p class="lede">Cables, wallbox y adaptadores útiles para tu coche, con enlaces transparentes y configurables.</p>
-<div class="grid" id="products"></div>
-<p class="lede" style="margin-top:26px">Los enlaces se configuran en <code>web/data/affiliates.json</code>. Mientras no tengas programas propios, apuntan a búsquedas sin tracking. Ver <a href="afiliados.html">política de afiliados</a>.</p>
-<script>
-(async()=>{
-  const d=await (await fetch("data/affiliates.json")).json();
-  document.getElementById("products").innerHTML=Object.entries(d).map(([k,v])=>
-    `<div class="card"><strong>${v.label}</strong><span>Programa: ${v.program}</span><a href="${v.url}" target="_blank" rel="sponsored nofollow">Ver producto →</a><span>Enlace de afiliado · el precio no cambia</span></div>`).join("");
-})();
-</script>
-<footer><a href="index.html">Inicio</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a><span>© 2027 Voltieri</span></footer>
+<h1>Equipamiento para tu eléctrico</h1>
+<p class="lede">Productos concretos, con ASIN, precio y valoración recogidos de Amazon.es. El tag de afiliado <strong>volteri-21</strong> se aplica desde un único archivo de configuración.</p>
+<div class="grid" id="cats"></div>
+<p class="source">Precios del 21/11/2026. Enlaces de afiliado con <code>rel="sponsored nofollow"</code>. El precio no cambia para ti. Ver <a href="afiliados.html">política de afiliados</a>.</p>
+<footer><a href="index.html">Inicio</a><a href="comparativas.html">Comparativas</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a><span>© 2027 Voltieri</span></footer>
 </main>
+<script type="module">
+const data=await (await fetch("data/amazon-products.json")).json();
+const files={"cables-tipo2":"comparativa-cables-tipo2.html","wallbox":"comparativa-wallbox-7400.html","adaptadores-ccs2":"comparativa-adaptadores-ccs2.html","cargador-portatil":"comparativa-cargador-portatil.html"};
+document.getElementById("cats").innerHTML=data.categories.map(c=>`<div class="cat"><h2>${c.name}</h2><p>${c.intro}</p><span class="source">${c.products.length} productos · desde ${c.products.map(p=>parseFloat(p.price.replace(/[^\d,]/g,'').replace(',','.'))).sort((a,b)=>a-b)[0].toFixed(2)} €</span><a class="compare" href="${files[c.id]}">Ver comparativa →</a></div>`).join("");
+</script>
 </body>
 </html>

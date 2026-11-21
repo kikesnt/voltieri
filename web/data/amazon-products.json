@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-21",
+  "source": "Amazon.es · búsqueda pública · precios y valoraciones scrapeados el 21/11/2026",
+  "categories": [
+    {
+      "id": "cables-tipo2",
+      "name": "Cables Tipo 2",
+      "intro": "Cables Mode 3 Tipo 2 a Tipo 2 para cargar en puntos públicos. Longitud, trifásico y protección IP marcan la diferencia.",
+      "products": [
+        {"asin":"B0CN2Q246Y","title":"GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico","price":"94,99 €","rating":"4,6","best":"Mejor precio"},
+        {"asin":"B0CKSG4G98","title":"bokman EV Cable Tipo 2 22 kW · 5 m","price":"94,99 €","rating":"4,7","best":"Mejor valoración"},
+        {"asin":"B0CRR369BM","title":"Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m","price":"99,99 €","rating":"4,7","best":"Alternativa"},
+        {"asin":"B0DT6WYJH4","title":"bokman EV Cable Tipo 2 7,4 kW · 5 m","price":"90,24 €","rating":"4,7","best":"Monofásico"},
+        {"asin":"B0BNBR336V","title":"LAPP Mobility Cable Tipo 2 22 kW · 32 A","price":"168,52 €","rating":"4,6","best":"Gama alta"},
+        {"asin":"B0BNBQ8THM","title":"Lapp Mobility Cable Tipo 2 22 kW · trifásico","price":"151,64 €","rating":"4,6","best":"Gama alta"}
+      ]
+    },
+    {
+      "id": "wallbox",
+      "name": "Wallbox 7,4 kW",
+      "intro": "Puntos de recarga domésticos monofásicos. Fija la potencia, la longitud del cable y si incluye protección RCD.",
+      "products": [
+        {"asin":"B0G7WY45P6","title":"Wallbox 7,4 kW · 7 m · 6–32 A","price":"169,99 €","rating":"4,4","best":"Precio"},
+        {"asin":"B0DTHYC2RD","title":"dé Wallbox 7,4 kW con app · 6 m","price":"169,95 €","rating":"4,6","best":"Equilibrio"},
+        {"asin":"B0GLFKVHFK","title":"Wallbox 7,4 kW monofásico con app","price":"224,19 €","rating":"4,3","best":"App"},
+        {"asin":"B0DJTYBY2W","title":"dé Wallbox 7,4 kW · cable 7,5 m","price":"246,95 €","rating":"4,6","best":"Cable largo"},
+        {"asin":"B0CTCL7RRB","title":"Wallbox 7,4 kW con RCD tipo A + 6 mA CC","price":"246,72 €","rating":"4,4","best":"Protección"},
+        {"asin":"B0GLP11DQQ","title":"Wallbox 22 kW trifásico · app · 6 m","price":"284,05 €","rating":"4,8","best":"Trifásico"}
+      ]
+    },
+    {
+      "id": "adaptadores-ccs2",
+      "name": "Adaptadores CCS2",
+      "intro": "Adaptadores para combinar conectores CCS2, Tipo 2, CCS1 y NACS. Revisa corriente continua, tensión y compatibilidad real.",
+      "products": [
+        {"asin":"B0FK2JJKDF","title":"Adaptador CCS2 a Tipo 2 para Tesla","price":"98,00 €","rating":"2,6","best":"Barato · valorar reseñas"},
+        {"asin":"B0CJ536JSN","title":"Adaptador CCS2 a CCS1 · 1000 V · 500 A","price":"139,99 €","rating":"4,7","best":"DC"},
+        {"asin":"B0HKJ6MC58","title":"Adaptador CCS2 a NACS · 250 A","price":"155,13 €","rating":"","best":"NACS"},
+        {"asin":"B0FL25Z4P4","title":"MCEVKELN CCS2 a Tesla 250 kW","price":"159,99 €","rating":"4,1","best":"Tesla"},
+        {"asin":"B0G5X3LZ95","title":"Adaptador CCS1 a CCS2 · 1000 V · 400 A","price":"109,86 €","rating":"4,8","best":"CCS1"}
+      ]
+    },
+    {
+      "id": "cargador-portatil",
+      "name": "Cargadores portátiles",
+      "intro": "Cargadores Tipo 2 con enchufe Schuko para llevar en el coche. Útiles como respaldo, no como sustituto de un wallbox.",
+      "products": [
+        {"asin":"B0H33CGXZM","title":"Junsun Cargador EV portátil 3,6 kW · 6–16 A","price":"89,99 €","rating":"4,6","best":"Precio"},
+        {"asin":"B0FKGT9Q5M","title":"Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A","price":"99,99 €","rating":"4,5","best":"Ajustable"},
+        {"asin":"B0G7XK241Q","title":"Cargador 3,7 kW · 7 m · 6–16 A con LCD","price":"109,99 €","rating":"4,4","best":"Pantalla"},
+        {"asin":"B0FPM7K4TF","title":"GONEO Schuko 3,68 kW · sensor de temperatura","price":"113,99 €","rating":"4,5","best":"Protección"},
+        {"asin":"B0DGT8PRHH","title":"dé Cargador Schuko 3,7 kW · 7 m con app","price":"118,70 €","rating":"4,6","best":"App"},
+        {"asin":"B0C8SFXJHM","title":"dé Cargador Schuko 3,7 kW · 6 m","price":"119,95 €","rating":"4,7","best":"Cable corto"}
+      ]
+    }
+  ]
+}

@@ -23,7 +23,7 @@
 - [x] Fase 3: simuladores, PWA, contenido, SEO programático y afiliados.
 - [x] Motor de rutas real (OSRM + Open-Meteo) y mapa de autonomía con anillos isócronos por clic.
 - [x] **56 herramientas**: optimizador PVPC, carrera en ruta, V2G solar y 7 herramientas nuevas en el hub.
-- [x] SEO (meta, canonical, OG, JSON-LD, sitemap, robots, llms.txt), páginas legales, afiliados configurables y PWA.
+- [x] Afiliados Amazon reales: tag `volteri-21` en `web/data/affiliate-config.json`, 23 productos con ASIN en `web/data/amazon-products.json`, 4 comparativas y botones de compra en la portada.
 - [x] Investigación de 200 keywords reales de Google Suggest y plan de 12 artículos (`docs/KEYWORDS.md`).
 - [x] Métricas reales de 40 keywords desde Ubersuggest (`data/keywords-metrics.txt`). 12 artículos de 1.600+ palabras con linter de humanización (`docs/HUMANIZER.md`).
 - [x] PWA instalable, API JSON pública y alertas sin cuenta.
