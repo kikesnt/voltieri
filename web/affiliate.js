@@ -42,6 +42,7 @@ const COMPARATIVA = {
   "nevera-v2l":"comparativa-nevera-v2l.html","invierno":"comparativa-invierno.html"
 };
 const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mill = n => new Intl.NumberFormat("es-ES").format(Math.round(n));
 let SHOW = false;
 const photosOn = () => localStorage.getItem("voltieri-consent") === "all";
 // La foto se pide solo con consentimiento; mientras tanto (o si falla) queda el hueco con el icono.
@@ -64,7 +65,7 @@ const card = p => `
     <span class="thumb-slot" data-src="${imgUrl(p)}" aria-hidden="true"></span>
     ${SHOW ? `<span class="badge">${esc(p.best)}</span>` : ""}
     <h3>${esc(p.title)}</h3>
-    ${SHOW ? `<div class="pmeta"><span class="price">${esc(p.price)}</span>${p.rating?`<span>★ ${esc(p.rating)}</span>`:""}</div>` : ""}
+    ${SHOW ? `<div class="pmeta"><span class="price">${esc(p.price)}</span>${p.rating?`<span>★ ${esc(p.rating)}${p.reviews?` <span class="rev">(${mill(p.reviews)})</span>`:""}</span>`:""}</div>` : ""}
     <a class="buy" data-asin="${esc(p.asin)}" href="${amazonUrl(p.asin)}" rel="sponsored nofollow noopener" target="_blank">${SHOW ? "Ver oferta en Amazon" : "Ver precio en Amazon"}</a>
   </article>`;
 

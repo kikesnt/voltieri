@@ -219,6 +219,9 @@ for (const cat of catalogo.categories) {
       title: p?.title || tituloCurado || curarTitulo(c.titulo || "", cat.id),
       price: pr ? euros(pr) : (p?.price || ""),
       rating: dec(c.nota || f.nota || p?.rating),
+      // Cuántas personas han valorado: sin esto, un 5,0 de tres opiniones
+      // parece lo mismo que un 4,8 de ochocientas.
+      reviews: (c.valoraciones || f.valoraciones || f.valoraciones_busqueda || p?.reviews || 0) || 0,
       image: f.imagen || c.imagen || p?.image || "",
     };
   };

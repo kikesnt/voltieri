@@ -12,6 +12,7 @@
           "title": "MCEVKELN Cable Tipo 2 11 kW · 7 m · trifásico",
           "price": "98,79 €",
           "rating": "4,9",
+          "reviews": 78,
           "image": "https://m.media-amazon.com/images/I/61+ZRUbBlGL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -20,6 +21,7 @@
           "title": "ELEGRP Cable Tipo 2 22 kW · 5 m · 32 A trifásico",
           "price": "105,99 €",
           "rating": "4,8",
+          "reviews": 65,
           "image": "https://m.media-amazon.com/images/I/71Msa2a2E7L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -28,6 +30,7 @@
           "title": "GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico",
           "price": "84,74 €",
           "rating": "4,7",
+          "reviews": 7,
           "image": "https://m.media-amazon.com/images/I/61Ui1zGJWXL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -36,6 +39,7 @@
           "title": "GONEO Cable Tipo 2 11 kW · 5 m · 16 A trifásico",
           "price": "85,49 €",
           "rating": "4,7",
+          "reviews": 274,
           "image": "https://m.media-amazon.com/images/I/612M58WlDiL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -44,6 +48,7 @@
           "title": "bokman EV Cable Tipo 2 7,4 kW · 5 m",
           "price": "90,24 €",
           "rating": "4,7",
+          "reviews": 224,
           "image": "https://m.media-amazon.com/images/I/610iNoMCZTL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -52,6 +57,7 @@
           "title": "bokman EV Cable Tipo 2 22 kW · 5 m",
           "price": "94,99 €",
           "rating": "4,7",
+          "reviews": 1047,
           "image": "https://m.media-amazon.com/images/I/61PBwOEDTxL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -60,6 +66,7 @@
           "title": "Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m",
           "price": "99,99 €",
           "rating": "4,7",
+          "reviews": 330,
           "image": "https://m.media-amazon.com/images/I/6133dXojdlL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -68,6 +75,7 @@
           "title": "tomons Cable Tipo 2 22 kW · 7 m · 32 A trifásico",
           "price": "110,26 €",
           "rating": "4,7",
+          "reviews": 261,
           "image": "https://m.media-amazon.com/images/I/71lmwdm74eL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -83,6 +91,7 @@
           "title": "dé Wallbox 7,4 kW con app · cable 7,5 m",
           "price": "246,95 €",
           "rating": "4,8",
+          "reviews": 333,
           "image": "https://m.media-amazon.com/images/I/61QIUItHseL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -91,6 +100,7 @@
           "title": "dé Mobile Wallbox 11 kW · app · cable 7 m",
           "price": "189,95 €",
           "rating": "4,7",
+          "reviews": 512,
           "image": "https://m.media-amazon.com/images/I/613TW0vaYZL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -99,6 +109,7 @@
           "title": "AIMILER Cargador 11 kW trifásico · app · OLED",
           "price": "239,99 €",
           "rating": "4,7",
+          "reviews": 254,
           "image": "https://m.media-amazon.com/images/I/71IbxJDjXlL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -107,6 +118,7 @@
           "title": "Wallbox 7,4 kW con app · 6 m",
           "price": "169,95 €",
           "rating": "4,6",
+          "reviews": 471,
           "image": "https://m.media-amazon.com/images/I/61HXlnFxySL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -115,6 +127,7 @@
           "title": "Wallbox 7,4 kW · cable 7,5 m",
           "price": "246,95 €",
           "rating": "4,6",
+          "reviews": 361,
           "image": "https://m.media-amazon.com/images/I/61dcCtYuhPL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -123,6 +136,7 @@
           "title": "Wallbox 7,4 kW · 7 m · 6–32 A",
           "price": "237,15 €",
           "rating": "4,5",
+          "reviews": 192,
           "image": "https://m.media-amazon.com/images/I/71CIlUDpfqL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -131,6 +145,7 @@
           "title": "Wallbox 7,4 kW con RCD tipo A + 6 mA CC",
           "price": "246,72 €",
           "rating": "4,4",
+          "reviews": 99,
           "image": "https://m.media-amazon.com/images/I/61q5wwlVS9L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -146,6 +161,7 @@
           "title": "Adaptador CCS1 a CCS2 · 1000 V · 250 A",
           "price": "43,83 €",
           "rating": "4,8",
+          "reviews": 101,
           "image": "https://m.media-amazon.com/images/I/61gRKSAHyqL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -154,6 +170,7 @@
           "title": "Adaptador Tipo 1 a Tipo 2 · SAE J1772",
           "price": "58,36 €",
           "rating": "4,8",
+          "reviews": 230,
           "image": "https://m.media-amazon.com/images/I/61clYpH2MTL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -162,6 +179,7 @@
           "title": "Adaptador CCS1 a CCS2 · 1000 V · 400 A",
           "price": "109,86 €",
           "rating": "4,8",
+          "reviews": 161,
           "image": "https://m.media-amazon.com/images/I/61PX9wiR9mL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -170,6 +188,7 @@
           "title": "Adaptador Tipo 2 a NACS · 60 A",
           "price": "79,99 €",
           "rating": "4,7",
+          "reviews": 7,
           "image": "https://m.media-amazon.com/images/I/6130eB2ueYL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -178,6 +197,7 @@
           "title": "Adaptador CCS2 a CCS1 · 1000 V · 500 A",
           "price": "139,99 €",
           "rating": "4,7",
+          "reviews": 64,
           "image": "https://m.media-amazon.com/images/I/61bszGAnNXL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -193,6 +213,7 @@
           "title": "EzGoGo Cargador portátil 3,7 kW · 7 m · 6–16 A",
           "price": "112,25 €",
           "rating": "4,8",
+          "reviews": 251,
           "image": "https://m.media-amazon.com/images/I/71-28K5OLTL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -201,6 +222,7 @@
           "title": "Cargador portátil Tipo 2 · 3,6 kW · 6 m con bolsa",
           "price": "99,70 €",
           "rating": "4,7",
+          "reviews": 224,
           "image": "https://m.media-amazon.com/images/I/616CdcEpA3L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -209,6 +231,7 @@
           "title": "Cargador Schuko 3,7 kW · 6 m",
           "price": "119,95 €",
           "rating": "4,7",
+          "reviews": 3714,
           "image": "https://m.media-amazon.com/images/I/711HVsqznhL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -217,6 +240,7 @@
           "title": "Junsun Cargador EV portátil 3,6 kW · 6–16 A",
           "price": "89,99 €",
           "rating": "4,6",
+          "reviews": 12,
           "image": "https://m.media-amazon.com/images/I/61L7JxjC0wL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -225,6 +249,7 @@
           "title": "Cargador Schuko 3,7 kW · 7 m con app",
           "price": "118,70 €",
           "rating": "4,6",
+          "reviews": 1500,
           "image": "https://m.media-amazon.com/images/I/61+4fRX1sOL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -233,6 +258,7 @@
           "title": "Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A",
           "price": "99,99 €",
           "rating": "4,5",
+          "reviews": 0,
           "image": "https://m.media-amazon.com/images/I/61juNzMDxpL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -241,6 +267,7 @@
           "title": "GONEO Schuko 3,68 kW · sensor de temperatura",
           "price": "113,99 €",
           "rating": "4,5",
+          "reviews": 652,
           "image": "https://m.media-amazon.com/images/I/61egDPb8u4L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -249,6 +276,7 @@
           "title": "Cargador 3,7 kW · 7 m · 6–16 A con LCD",
           "price": "109,99 €",
           "rating": "4,4",
+          "reviews": 397,
           "image": "https://m.media-amazon.com/images/I/71iy02YR3xL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -257,13 +285,14 @@
     {
       "id": "estaciones-22kw",
       "name": "Estaciones 22 kW",
-      "intro": "Wallbox trifásicos de alta potencia para quienes tienen acometida y coche compatibles. Precios de 207,57 € a 594,15 €.",
+      "intro": "Wallbox trifásicos de alta potencia para quienes tienen acometida y coche compatibles. Precios de {min} a {max}.",
       "products": [
         {
           "asin": "B0GLP11DQQ",
           "title": "Wallbox 22 kW · 6–32 A trifásico · app · 6 m",
           "price": "284,05 €",
           "rating": "4,8",
+          "reviews": 18,
           "image": "https://m.media-amazon.com/images/I/61Np9Pu1JIL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -272,6 +301,7 @@
           "title": "dé Cargador 22 kW · 7 m · 6–32 A trifásico",
           "price": "279,95 €",
           "rating": "4,7",
+          "reviews": 55,
           "image": "https://m.media-amazon.com/images/I/61Qq-QrkKCL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -280,6 +310,7 @@
           "title": "AIMILER Wallbox 11 kW trifásico · app · 7,6 m",
           "price": "369,00 €",
           "rating": "4,7",
+          "reviews": 33,
           "image": "https://m.media-amazon.com/images/I/71ScT7g5aHL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -288,6 +319,7 @@
           "title": "Wallbox 22 kW app · 7,5 m · RFID",
           "price": "319,95 €",
           "rating": "4,5",
+          "reviews": 233,
           "image": "https://m.media-amazon.com/images/I/61Jqa4F-JaL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -296,6 +328,7 @@
           "title": "Wallbox 22 kW con app · 400 V · 6–32 A · 8 m",
           "price": "339,99 €",
           "rating": "4,5",
+          "reviews": 94,
           "image": "https://m.media-amazon.com/images/I/71JYfcGiMLL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -311,6 +344,7 @@
           "title": "Adaptador V2L XPeng · 3,5 kW · 16 A · IP54",
           "price": "41,99 €",
           "rating": "5",
+          "reviews": 4,
           "image": "https://m.media-amazon.com/images/I/61qHtmc3s3L._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -319,6 +353,7 @@
           "title": "Adaptador Tipo 2 a Schuko · 3,5 kW · 16 A · 70 cm",
           "price": "45,99 €",
           "rating": "4,8",
+          "reviews": 11,
           "image": "https://m.media-amazon.com/images/I/612TxAgxhQL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -327,6 +362,7 @@
           "title": "JULIK Adaptador V2L Atto 3, Dolphin, Seal · 3,5 kW",
           "price": "49,99 €",
           "rating": "4,7",
+          "reviews": 94,
           "image": "https://m.media-amazon.com/images/I/61yuosrz57L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -335,6 +371,7 @@
           "title": "Adaptador V2L para Smart · 10 A · vehículo a enchufe",
           "price": "46,99 €",
           "rating": "4,6",
+          "reviews": 46,
           "image": "https://m.media-amazon.com/images/I/61RHA1iIpeL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -343,6 +380,7 @@
           "title": "Adaptador de descarga V2L · 3,5 kW · 16 A · 220 V",
           "price": "67,99 €",
           "rating": "4,5",
+          "reviews": 26,
           "image": "https://m.media-amazon.com/images/I/61kyzF4qx6L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -358,6 +396,7 @@
           "title": "ETENWOLF Zephyr S3 · 7800 mAh · 11,03 bar",
           "price": "62,26 €",
           "rating": "4,8",
+          "reviews": 782,
           "image": "https://m.media-amazon.com/images/I/61SERB7ZHPL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -366,6 +405,7 @@
           "title": "ETENWOLF T500 · manómetro digital · 0-17,24 bar",
           "price": "26,16 €",
           "rating": "4,6",
+          "reviews": 1412,
           "image": "https://m.media-amazon.com/images/I/71wiG98cmPL._SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -374,6 +414,7 @@
           "title": "Xiaomi Mijia Compact · compresor portátil",
           "price": "39,01 €",
           "rating": "4,6",
+          "reviews": 1496,
           "image": "https://m.media-amazon.com/images/I/61BeDIlka-L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -382,6 +423,7 @@
           "title": "Xiaomi Portable Air Compressor 2 · inflador portátil",
           "price": "48,39 €",
           "rating": "4,6",
+          "reviews": 9764,
           "image": "https://m.media-amazon.com/images/I/61Vv7YKRjUL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -390,6 +432,7 @@
           "title": "Xiaomi Air Compressor 2 Pro · 11,03 bar",
           "price": "54,99 €",
           "rating": "4,6",
+          "reviews": 1496,
           "image": "https://m.media-amazon.com/images/I/51BLV70c1DL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -398,6 +441,7 @@
           "title": "AstroAI Manómetro digital · pilas AAA",
           "price": "14,52 €",
           "rating": "4,5",
+          "reviews": 9788,
           "image": "https://m.media-amazon.com/images/I/71Fwc55sf-L._SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -406,6 +450,7 @@
           "title": "Oasser Compresor portátil · 150 PSI · 4000 mAh",
           "price": "21,99 €",
           "rating": "4,5",
+          "reviews": 5670,
           "image": "https://m.media-amazon.com/images/I/71hgeHoJWwL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -414,6 +459,7 @@
           "title": "AstroAI Inflador digital · 250 PSI · con manómetro",
           "price": "23,73 €",
           "rating": "4,5",
+          "reviews": 33632,
           "image": "https://m.media-amazon.com/images/I/71htdGAkASL._SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -429,6 +475,7 @@
           "title": "Soporte de pared tipo 2 · organizador de cable",
           "price": "14,99 €",
           "rating": "4,9",
+          "reviews": 50,
           "image": "https://m.media-amazon.com/images/I/61bEFijN5uL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -437,6 +484,7 @@
           "title": "igadgitz Xtra U7225 · funda para cable de carga",
           "price": "13,99 €",
           "rating": "4,7",
+          "reviews": 304,
           "image": "https://m.media-amazon.com/images/I/716CWxcg+RL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -445,6 +493,7 @@
           "title": "Wallbox Soporte de pared · tipo 2 · ahorra espacio",
           "price": "37,29 €",
           "rating": "4,7",
+          "reviews": 274,
           "image": "https://m.media-amazon.com/images/I/71zqjafBDQL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -453,6 +502,7 @@
           "title": "Alex Tech Manguito de cable · auto-cierre · 3,1 m",
           "price": "8,54 €",
           "rating": "4,6",
+          "reviews": 83166,
           "image": "https://m.media-amazon.com/images/I/71t6eXtVD6L._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -461,6 +511,7 @@
           "title": "Adiwo Soporte de pared · cable de carga tipo 2",
           "price": "8,99 €",
           "rating": "4,6",
+          "reviews": 520,
           "image": "https://m.media-amazon.com/images/I/31l1NG-pB5L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -469,6 +520,7 @@
           "title": "MCEVKELN Soporte de pared · cable de carga tipo 2",
           "price": "14,24 €",
           "rating": "4,6",
+          "reviews": 874,
           "image": "https://m.media-amazon.com/images/I/610BU2YJ-XL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -477,6 +529,7 @@
           "title": "Green Cell EV PowerCase · funda para cable tipo 2",
           "price": "31,99 €",
           "rating": "4,6",
+          "reviews": 259,
           "image": "https://m.media-amazon.com/images/I/91CxkUYj7XL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -485,6 +538,7 @@
           "title": "Soporte de cargador tipo 2 con candado · IEC 62196-2",
           "price": "42,60 €",
           "rating": "4,6",
+          "reviews": 164,
           "image": "https://m.media-amazon.com/images/I/61O9WdwJcxL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -500,6 +554,7 @@
           "title": "K KNODEL Organizador de maletero · mini",
           "price": "11,99 €",
           "rating": "4,8",
+          "reviews": 4250,
           "image": "https://m.media-amazon.com/images/I/81M7ozfn2DL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -508,6 +563,7 @@
           "title": "achilles Organizador de maletero · XL · con bolsillo de red",
           "price": "15,15 €",
           "rating": "4,6",
+          "reviews": 9090,
           "image": "https://m.media-amazon.com/images/I/91Jvks3ggzL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -516,6 +572,7 @@
           "title": "Praknu Organizador de maletero · 45 L · 3 compartimentos",
           "price": "22,99 €",
           "rating": "4,6",
+          "reviews": 153,
           "image": "https://m.media-amazon.com/images/I/81bvuLCGeZL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -524,6 +581,7 @@
           "title": "FORTEM Organizador de maletero · 50 L · plegable",
           "price": "28,49 €",
           "rating": "4,6",
+          "reviews": 50828,
           "image": "https://m.media-amazon.com/images/I/51GNNFlV3xL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -532,6 +590,7 @@
           "title": "Oasser Organizador de maletero · 95 L · con bolsa nevera",
           "price": "37,99 €",
           "rating": "4,6",
+          "reviews": 3522,
           "image": "https://m.media-amazon.com/images/I/71Q5N1HRbyL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -540,6 +599,7 @@
           "title": "FORTEM Organizador de maletero · 105 L · con bolsa térmica",
           "price": "55,09 €",
           "rating": "4,6",
+          "reviews": 50828,
           "image": "https://m.media-amazon.com/images/I/81o4Ki59eOL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -548,6 +608,7 @@
           "title": "Einesin Bolsa de herramientas de fieltro · 40 × 15 × 25 cm",
           "price": "15,08 €",
           "rating": "4,5",
+          "reviews": 706,
           "image": "https://m.media-amazon.com/images/I/71KIE5Mn0HL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -556,6 +617,7 @@
           "title": "EINESIN Red de almacenamiento · organizador de maletero",
           "price": "8,49 €",
           "rating": "4,4",
+          "reviews": 5162,
           "image": "https://m.media-amazon.com/images/I/811rvIWHE4L._AC_SL500_.jpg",
           "best": "Mejor precio"
         }
@@ -571,6 +633,7 @@
           "title": "JULIK Adaptador V2L · Atto 3, Dolphin, Seal · 3,5 kW",
           "price": "49,99 €",
           "rating": "4,7",
+          "reviews": 94,
           "image": "https://m.media-amazon.com/images/I/61yuosrz57L._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -579,6 +642,7 @@
           "title": "Berger Nevera termoeléctrica · 25 L · 12/230 V",
           "price": "79,99 €",
           "rating": "4,6",
+          "reviews": 141,
           "image": "https://m.media-amazon.com/images/I/41J-DjSZhfL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -587,6 +651,7 @@
           "title": "KESSER Nevera de compresor · 50 L · con app",
           "price": "187,80 €",
           "rating": "4,6",
+          "reviews": 751,
           "image": "https://m.media-amazon.com/images/I/91pIt17JPGL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -595,6 +660,7 @@
           "title": "AAOBOSI Nevera portátil · 50 L · 12 V/230 V · IPX4",
           "price": "309,00 €",
           "rating": "4,6",
+          "reviews": 281,
           "image": "https://m.media-amazon.com/images/I/81uvVXEQRBL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -603,6 +669,7 @@
           "title": "AAOBOSI Nevera portátil · 75 L · 12 V/230 V · IPX4",
           "price": "350,55 €",
           "rating": "4,6",
+          "reviews": 281,
           "image": "https://m.media-amazon.com/images/I/71Z8fiQXkKL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -611,6 +678,7 @@
           "title": "TZS First Austria Nevera eléctrica · 32 L · 12 V/230 V",
           "price": "92,95 €",
           "rating": "4,5",
+          "reviews": 1820,
           "image": "https://m.media-amazon.com/images/I/61X2aNAZuzL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -619,6 +687,7 @@
           "title": "Alpicool K25 · nevera de viaje · 25 L · 12/24 V",
           "price": "162,89 €",
           "rating": "4,5",
+          "reviews": 1325,
           "image": "https://m.media-amazon.com/images/I/61AFnGlubsL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -627,6 +696,7 @@
           "title": "BINGI Nevera de compresor · 12,8 L · 12 V/220 V",
           "price": "166,05 €",
           "rating": "4,5",
+          "reviews": 352,
           "image": "https://m.media-amazon.com/images/I/715W8pNGa3L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
@@ -642,6 +712,7 @@
           "title": "Cubierta de parabrisas de invierno · 240 × 148 cm · 5 capas",
           "price": "18,99 €",
           "rating": "4,8",
+          "reviews": 46,
           "image": "https://m.media-amazon.com/images/I/710ieiFHbCL._AC_SL500_.jpg",
           "best": "Mejor valorado"
         },
@@ -650,6 +721,7 @@
           "title": "Fiskars Raspador de hielo Solid · 26 cm",
           "price": "11,36 €",
           "rating": "4,7",
+          "reviews": 71,
           "image": "https://m.media-amazon.com/images/I/61EnI6E0R8L._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -658,6 +730,7 @@
           "title": "NIGRIN Raspador de hielo · mango ergonómico",
           "price": "6,58 €",
           "rating": "4,6",
+          "reviews": 887,
           "image": "https://m.media-amazon.com/images/I/61LBseO12ML._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
@@ -666,6 +739,7 @@
           "title": "Carpoint Raspador de hielo Vileda",
           "price": "7,29 €",
           "rating": "4,6",
+          "reviews": 1875,
           "image": "https://m.media-amazon.com/images/I/61N2B5xvylL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -674,6 +748,7 @@
           "title": "Protector de parabrisas antihielo · magnético",
           "price": "13,52 €",
           "rating": "4,6",
+          "reviews": 158,
           "image": "https://m.media-amazon.com/images/I/71vMwnYloyL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -682,6 +757,7 @@
           "title": "Parasol y protector de parabrisas · 116 × 160 cm",
           "price": "13,99 €",
           "rating": "4,6",
+          "reviews": 153,
           "image": "https://m.media-amazon.com/images/I/71RAlZmwHLL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -690,6 +766,7 @@
           "title": "Raspador de hielo Murska · 2 piezas",
           "price": "14,67 €",
           "rating": "4,5",
+          "reviews": 5803,
           "image": "https://m.media-amazon.com/images/I/71BYrV9wtkL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         },
@@ -698,6 +775,7 @@
           "title": "Tevlaphee Protector magnético de parabrisas · 197 × 128 cm",
           "price": "25,26 €",
           "rating": "4,5",
+          "reviews": 10305,
           "image": "https://m.media-amazon.com/images/I/71n3D5vEyZL._AC_SL500_.jpg",
           "best": "Selección Voltieri"
         }
