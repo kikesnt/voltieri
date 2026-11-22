@@ -147,7 +147,12 @@ async function chargers() {
     const key = `${name}|${lat}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    if (out.length < 2500) out.push([name.slice(0,44), (+lat).toFixed(5), (+lon).toFixed(5), Math.round(kw), op.slice(0,26), c[22] || "", prov].join("|"));
+    // El fichero es separado por "|", así que el nombre y el operador no
+    // pueden llevar pipes: hay estaciones de RIPREE que los traen (p. ej.
+    // "E.S. bonÀrea Flix | Cafeteria - Botiga") y descolocaban todas las
+    // columnas, dejando la latitud en NaN.
+    const limpio = s => String(s || "").replace(/\|/g, " / ").trim();
+    if (out.length < 2500) out.push([limpio(name).slice(0,44), (+lat).toFixed(5), (+lon).toFixed(5), Math.round(kw), limpio(op).slice(0,26), c[22] || "", limpio(prov)].join("|"));
   }
   await save("chargers.txt", out.join("\n"));
   const prov = [...byProv.entries()].map(([p, o]) => { const pts = [...o.pts.values()]; return [p, pts.length, pts.filter(x => x.dc && x.kw >= 50).length, o.inst.size]; })
@@ -218,16 +223,28 @@ async function preciosES(){
 async function api(){
   const read = n => fs.readFile(path.join(OUT,n),"utf8");
   const [v, c, p] = await Promise.all([read("vehicles.txt"), read("chargers.txt"), read("pvpc.txt")]);
-  const models = v.trim().split("\n").slice(0,25).map(l => {
+  const models = v.trim().split("\n").map(l => {
     const x = l.split("|");
     return { brand:x[0], model:x[1], year:+x[2], battery_kwh:+x[3], wltp_km:+x[4], dc_kw:+x[5] };
   });
-  const chargers = c.trim().split("\n").slice(0,20).map(l => {
-    const x = l.split("|");
-    return { name:x[0], lat:+x[1], lon:+x[2], kw:+x[3], operator:x[4] };
+  const chargers = c.trim().split("\n").slice(0,100).map(l => {
+    // El formato de origen es nombre|lat|lon|kW|operador|conector|provincia:
+    // los 6 últimos campos son fijos y se leen desde la derecha, por si el
+    // nombre trajera un pipe dentro. La API publica solo los 5 primeros.
+    const f = l.split("|");
+    return { name:f.slice(0, f.length-6).join(" / "), lat:+f[f.length-6], lon:+f[f.length-5],
+             kw:+f[f.length-4], operator:f[f.length-3] };
   });
   const pv = p.trim().split("|");
-  const payload = { source:"Voltieri open data", version:"1.0", license:"CC BY 4.0",
+  // La licencia no es una sola: cada bloque conserva la de su fuente. No se
+  // relicencian datos de terceros, así que no puede decir "CC BY 4.0".
+  const payload = { source:"Voltieri open data", version:"1.1",
+    license:"Cada bloque conserva la licencia de su fuente (ver sources).",
+    sources:[
+      { block:"models", source:"OpenEV Data v1.24.0", license:"CDLA-Permissive-2.0", url:"https://github.com/open-ev-data/open-ev-data-dataset" },
+      { block:"chargers", source:"MITECO · RIPREE", license:"Datos públicos del Estado", url:"https://catalogo.datosabiertos.miteco.gob.es/catalogo/en/dataset/6ee8d46f-93bd-478f-8e29-3ba4f6d8405c" },
+      { block:"pvpc", source:"ESIOS · REE", license:"Datos públicos de REE", url:"https://api.esios.ree.es/archives/70/download_json" }
+    ],
     models, chargers, pvpc:{ date:pv[0], prices_eur_mwh:pv[1].split(",").map(Number) } };
   const dir = path.resolve("web/api");
   await fs.mkdir(dir,{recursive:true});

@@ -75,7 +75,7 @@ Cada artículo se escribe con datos propios del proyecto, lleva un enlace a la h
 | 8 | Instalar un wallbox: coste y trámites | cargador coche eléctrico en casa | `finance.html#instalacion` | presupuesto y REBT |
 | 9 | El mejor coche eléctrico familiar según datos reales | mejor coche eléctrico familiar | `catalog.html` | maletero y precio reales |
 | 10 | Seguro de coche eléctrico: por qué cambia el precio | seguro coche eléctrico precio | `finance.html#seguros` | modelo comparativo |
-| 11 | Mantenimiento de un eléctrico frente a un diésel | mantenimiento coche eléctrico vs diésel | `service.html#mantenimiento` | hecho del 0,3 % de baterías |
+| 11 | Mantenimiento de un eléctrico frente a un diésel | mantenimiento coche eléctrico vs diésel | `service.html#mantenimiento` | estudio de Recurrent: 0,3 % de reemplazo de batería |
 | 12 | Neumáticos para eléctricos: qué importa realmente | mejores neumáticos coche eléctrico | `sim.html#neumaticos` | consumo y presión |
 
 ## Reglas para los artículos

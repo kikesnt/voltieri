@@ -26,7 +26,7 @@ Todo lo que se sirve en la web está **descargado de una fuente real, convertido
 ## PWA y API
 
 - `web/manifest.webmanifest` + `web/icon.svg` + `web/sw.js` hacen la web instalable y la dejan funcionar sin cobertura. El service worker cachea las páginas, los CSS/JS y todos los archivos de `data/`.
-- `web/api/data.json` es una API pública real servida como archivo estático: 25 modelos, 20 cargadores y los 24 precios PVPC del día, sin clave y con licencia CC BY 4.0. Lo regenera el cron diario.
+- `web/api/data.json` es una API pública real servida como archivo estático: los 113 modelos del catálogo, 100 puntos de recarga y los 24 precios PVPC del día, sin clave ni backend. No lleva una licencia única: cada bloque conserva la de su fuente (OpenEV Data CDLA-Permissive-2.0, MITECO/RIPREE y ESIOS-REE, datos públicos) y el campo `sources` dice cuál es cuál. No relicenciamos datos de terceros. Lo regenera el cron diario.
 
 ## Actualización automática
 

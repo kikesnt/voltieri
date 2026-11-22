@@ -105,7 +105,12 @@ for (const f of files) {
     // El <meta name="theme-color"> es la excepción: no admite variables CSS,
     // así que su color va en hexadecimal aunque el resto del sitio use tokens.
     const sinThemeColor = withoutScripts.replace(/<meta[^>]+name=["']theme-color["'][^>]*>/gi, "");
-    const hexes = [...sinThemeColor.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map(m => m[0]);
+    // Los fragmentos de URL no son colores: "service.html#360" es el ancla de
+    // una herramienta, no un hex. Se vacían los atributos href y src antes de
+    // buscar hexadecimales; un color suelto solo puede estar en el CSS o en
+    // un style en línea.
+    const sinUrls = sinThemeColor.replace(/\s(href|src)=["'][^"']*["']/gi, "");
+    const hexes = [...sinUrls.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map(m => m[0]);
     report(hexes.length === 0, `${f}: sin hexadecimales sueltos`, hexes.slice(0,4).join(" "));
   }
 }

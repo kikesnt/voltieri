@@ -2,7 +2,7 @@
 // Sobre normativa y mercado se redacta de forma general y se pide verificar la fuente oficial.
 const eur = n => new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(n) + " €";
 
-export default ({ P, UL, NOTE, T, hbar, top, chinese }) => [
+export default ({ P, UL, NOTE, T, hbar, top, chinese, FECHA, FECHA_PVPC }) => [
   {
     slug: "coches-electricos-con-mas-autonomia",
     cat: "Autonomía",
@@ -49,7 +49,7 @@ export default ({ P, UL, NOTE, T, hbar, top, chinese }) => [
     sections: [
       ["Marcas de coche eléctrico chino en nuestro catálogo", [
         T(["Modelo", "WLTP", "Carga DC", "Batería", "Precio"], chinese.map(c => [c.name, c.wltp + " km", c.dc + " kW", c.chem.toUpperCase(), c.price ? eur(c.price) : "Sin dato"])),
-        NOTE("Fuente: OpenEV Data v1.24.0. Precios mínimos de Autocasion, 21/11/2026, donde existen."),
+        NOTE(`Fuente: OpenEV Data v1.24.0. Precios mínimos de Autocasion, ${FECHA}, donde existen.`),
         P("BYD es la marca con más modelos del catálogo. Zeekr apuesta por prestaciones y autonomías altas. Leapmotor y GAC Aion completan la oferta con propuestas más económicas."),
       ]],
       ["Baterías LFP: la marca de la casa", [
@@ -67,9 +67,9 @@ export default ({ P, UL, NOTE, T, hbar, top, chinese }) => [
       ]],
     ],
     shelves: [{ after: 4, cat: "wallbox", title: "Wallbox para tu coche", lede: "Cargar en casa es lo que más ahorra, sea cual sea la marca." }, { after: 4, cat: "cables-tipo2", title: "Cable Tipo 2", lede: "Para cargar en puntos públicos." }],
-    faq: [["¿Cuál es el coche eléctrico chino más barato?", "El BYD Dolphin, desde 21.498 € según Autocasion (21/11/2026)."], ["¿Los coches eléctricos chinos usan baterías LFP?", "Muchos sí. En nuestro catálogo, la mayoría de BYD, Leapmotor y GAC Aion usan LFP."], ["¿Se pueden cargar en los mismos cargadores?", "Sí, los vendidos en Europa usan el estándar CCS2."], ["¿Tienen garantía en España?", "Sí, pero varía por marca. Comprueba el detalle y la cobertura de la batería."]],
+    faq: [["¿Cuál es el coche eléctrico chino más barato?", `El BYD Dolphin, desde 21.498 € según Autocasion (${FECHA}).`], ["¿Los coches eléctricos chinos usan baterías LFP?", "Muchos sí. En nuestro catálogo, la mayoría de BYD, Leapmotor y GAC Aion usan LFP."], ["¿Se pueden cargar en los mismos cargadores?", "Sí, los vendidos en Europa usan el estándar CCS2."], ["¿Tienen garantía en España?", "Sí, pero varía por marca. Comprueba el detalle y la cobertura de la batería."]],
     tools: ["catalog", "tco", "chem"], related: ["bateria-lfp-nmc-coche-electrico", "coches-electricos-baratos-espana-2026", "coche-electrico-segunda-mano", "mejor-coche-electrico-familiar"],
-    note: "Datos recogidos el 21/11/2026 · OpenEV Data, Autocasion.",
+    note: `OpenEV Data v1.24.0 · Autocasion: ${FECHA}.`,
   },
   {
     slug: "hibrido-enchufable-o-electrico",
@@ -84,7 +84,7 @@ export default ({ P, UL, NOTE, T, hbar, top, chinese }) => [
         P("Un coche eléctrico (BEV) usa solo batería y motor eléctrico. Un híbrido enchufable (PHEV) combina un motor térmico con una batería más pequeña que se carga en un enchufe, y puede circular en modo eléctrico durante un tramo limitado antes de recurrir a la gasolina."),
       ]],
       ["Coste de uso: la diferencia que se nota", [
-        P("Con el PVPC medio de 0,212 €/kWh (ESIOS, 21/11/2026), un eléctrico de 16 kWh/100 km cuesta 3,39 € cada 100 km. Un gasolina de 7,5 L/100 km a 1,585 €/L cuesta 11,89 €. Un híbrido enchufable queda entre ambos solo si lo cargas con frecuencia."),
+        P(`Con el PVPC medio de 0,212 €/kWh (ESIOS, ${FECHA_PVPC}), un eléctrico de 16 kWh/100 km cuesta 3,39 € cada 100 km. Un gasolina de 7,5 L/100 km a 1,585 €/L cuesta 11,89 €. Un híbrido enchufable queda entre ambos solo si lo cargas con frecuencia.`),
         P("Un híbrido enchufable que nunca se enchufa funciona como un coche de gasolina con un peso extra de batería, y su consumo suele ser peor que el de un híbrido sin enchufe equivalente."),
       ]],
       ["Mantenimiento y averías", [
@@ -103,7 +103,7 @@ export default ({ P, UL, NOTE, T, hbar, top, chinese }) => [
     shelves: [{ after: 5, cat: "wallbox", title: "Wallbox para casa", lede: "Sirve tanto para eléctricos como para híbridos enchufables." }, { after: 5, cat: "cables-tipo2", title: "Cables Tipo 2", lede: "Para cargar en cualquier punto público." }],
     faq: [["¿Qué es mejor, un híbrido enchufable o un eléctrico?", "Si cargas a diario en casa, el eléctrico. Si no tienes dónde cargar, un híbrido enchufable puede ser una transición."], ["¿Un híbrido enchufable consume más si no se carga?", "Suele consumir más que un híbrido equivalente sin enchufe, por el peso de la batería."], ["¿Un híbrido enchufable se puede cargar en casa?", "Sí, con un wallbox o con cable de carga lenta, usando el conector Tipo 2."]],
     tools: ["tco", "homepub", "install"], related: ["cargar-coche-electrico-en-casa-frente-a-la-calle", "mantenimiento-coche-electrico-vs-diesel", "coches-electricos-baratos-espana-2026", "wallbox-que-es-cual-comprar"],
-    note: "Datos recogidos el 21/11/2026 · ESIOS. Consumos de referencia de la guía de costes.",
+    note: `Datos recogidos el ${FECHA_PVPC} · ESIOS. Consumos de referencia de la guía de costes.`,
   },
   {
     slug: "cargador-coche-electrico-parking-comunitario",

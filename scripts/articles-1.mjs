@@ -1,7 +1,7 @@
 // Guías 1 a 6. Cada guía usa su palabra clave principal en título, descripción, primer párrafo y un H2,
 // y las secundarias de data/keywords-metrics.txt de forma natural. Sin cifras inventadas: solo datos del proyecto.
 const eur = n => new Intl.NumberFormat("es-ES", { maximumFractionDigits: 0 }).format(n) + " €";
-export default ({ P, UL, NOTE, T, hbar, cheap, ioniq5 }) => {
+export default ({ P, UL, NOTE, T, hbar, cheap, ioniq5, FECHA, FECHA_PVPC }) => {
   const [c1, c2, c3, c4, c5] = cheap;
   const diff5 = Math.round(ioniq5 - c1.price);
   return [
@@ -18,17 +18,17 @@ export default ({ P, UL, NOTE, T, hbar, cheap, ioniq5 }) => {
         P("Esta es la lista de los coches eléctricos más baratos con precio de venta comprobado. Todos son coches nuevos y los precios no incluyen ayudas."),
         T(["#", "Modelo", "Precio", "Autonomía real est.", "Carga DC"], cheap.map((c, i) => [String(i + 1), c.name, eur(c.price), c.real + " km", c.dc + " kW"])),
         hbar(cheap.map(c => ({ label: c.name, values: [c.price] })), { unit: " €", label: "Precio mínimo de los coches eléctricos más baratos" }),
-        NOTE("Precios mínimos de coches nuevos en Autocasion, 21/11/2026, sin ayudas. Pueden corresponder a la versión de entrada del modelo. Autonomía real estimada como WLTP × 0,85, y potencia de carga rápida según la ficha de OpenEV Data."),
+        NOTE(`Precios mínimos de coches nuevos en Autocasion, ${FECHA}, sin ayudas. Pueden corresponder a la versión de entrada del modelo. Autonomía real estimada como WLTP × 0,85, y potencia de carga rápida según la ficha de OpenEV Data.`),
         P(`Si lo único que buscas es el coche eléctrico más barato en España, el ${c1.name} no tiene rival. Si piensas hacer algún viaje, el salto al ${c2.name} o al ${c4.name} compra potencia de carga y autonomía. Y si tu prioridad es la autonomía por euro, el ${c4.name} es el que más kilómetros da por menos de ${eur(c4.price + 1000)}.`),
       ]],
       ["Cómo hemos calculado qué coche eléctrico es más barato", [
-        P("Los precios son los mínimos de anuncios de coches nuevos de Autocasion recogidos el 21/11/2026. Filtramos por modelo exacto para no atribuir a un coche el precio de otro modelo recomendado. Batería útil, WLTP y potencia de carga rápida vienen de OpenEV Data v1.24.0."),
+        P(`Los precios son los mínimos de anuncios de coches nuevos de Autocasion recogidos el ${FECHA}. Filtramos por modelo exacto para no atribuir a un coche el precio de otro modelo recomendado. Batería útil, WLTP y potencia de carga rápida vienen de OpenEV Data v1.24.0.`),
         P("La autonomía real procede de ev-database.org cuando existe. Si no, aplicamos WLTP × 0,85 como modelo declarado. El consumo se deriva de la batería útil dividida entre el WLTP por 100 km y no es una cifra homologada, sino una forma de comparar."),
         P("No incluimos ayudas, financiación, gastos de transferencia ni la instalación de un cargador en casa. Si un modelo no tiene precio publicado, mostramos «Sin dato» en lugar de estimarlo."),
       ]],
       ["Qué significa barato en un coche eléctrico", [
         P(`El precio de compra es solo una parte de la cuenta. Un IONIQ 5 cuesta unos ${eur(diff5)} más que un ${c1.name}, pero carga a 220 kW frente a ${c1.dc} kW. En un viaje de 600 km esa diferencia se mide en minutos de parada, y en comodidad.`),
-        P("Con el PVPC medio de 0,212 €/kWh (ESIOS, 21/11/2026), 16 kWh/100 km cuestan 3,39 €. Un gasolina de 7,5 L/100 km a 1,585 €/L cuesta 11,89 €. A 15.000 km al año la diferencia supera los 1.200 €. Cuantos más kilómetros haces, antes compensa pagar algo más por un eléctrico mejor equipado."),
+        P(`Con el PVPC medio de 0,212 €/kWh (ESIOS, ${FECHA_PVPC}), 16 kWh/100 km cuestan 3,39 €. Un gasolina de 7,5 L/100 km a 1,585 €/L cuesta 11,89 €. A 15.000 km al año la diferencia supera los 1.200 €. Cuantos más kilómetros haces, antes compensa pagar algo más por un eléctrico mejor equipado.`),
         P("Por eso en la herramienta de coste total comparamos el precio de compra con el gasto de energía, mantenimiento y seguro a varios años. Un coche eléctrico barato que no se adapta a tu uso acaba saliendo caro."),
       ]],
       ["Coches eléctricos baratos de segunda mano y chinos", [
@@ -43,9 +43,9 @@ export default ({ P, UL, NOTE, T, hbar, cheap, ioniq5 }) => {
       ]],
     ],
     shelves: [{ after: 5, cat: "wallbox", title: "Los wallbox mejor valorados", lede: "Cargar en casa es lo que de verdad abarata un eléctrico. Estas son las opciones más vendidas de 7,4 kW." }, { after: 5, cat: "cables-tipo2", title: "Y el cable para cargar fuera", lede: "Un Tipo 2 de 5 m te saca de apuros en cualquier punto público." }],
-    faq: [["¿Cuál es el coche eléctrico más barato de España?", `El ${c1.name}, desde ${eur(c1.price)} sin ayudas, según los precios de Autocasion del 21/11/2026.`], ["¿Merece la pena un coche eléctrico barato como el BYD Dolphin?", `Si haces más de 10.000 km al año, probablemente sí: carga a ${c2.dc} kW frente a ${c1.dc} kW y tiene bastante más autonomía.`], ["¿Los precios incluyen ayudas?", "No. Son precios antes de ayudas y deducciones."], ["¿Qué coche eléctrico barato es mejor para viajar?", `El ${c4.name}, por su potencia de carga de ${c4.dc} kW y ${c4.real} km de autonomía estimada.`]],
+    faq: [["¿Cuál es el coche eléctrico más barato de España?", `El ${c1.name}, desde ${eur(c1.price)} sin ayudas, según los precios de Autocasion del ${FECHA}.`], ["¿Merece la pena un coche eléctrico barato como el BYD Dolphin?", `Si haces más de 10.000 km al año, probablemente sí: carga a ${c2.dc} kW frente a ${c1.dc} kW y tiene bastante más autonomía.`], ["¿Los precios incluyen ayudas?", "No. Son precios antes de ayudas y deducciones."], ["¿Qué coche eléctrico barato es mejor para viajar?", `El ${c4.name}, por su potencia de carga de ${c4.dc} kW y ${c4.real} km de autonomía estimada.`]],
     tools: ["catalog", "tco", "aids"], related: ["coche-electrico-segunda-mano", "ayudas-coche-electrico-2026", "wallbox-instalacion-coche-electrico", "mejor-coche-electrico-familiar"],
-    note: "Datos recogidos el 21/11/2026 · Autocasion, OpenEV Data, ev-database.org, ESIOS.",
+    note: `Datos de coches: ${FECHA} (Autocasion) · OpenEV Data v1.24.0, ev-database.org · ESIOS: ${FECHA_PVPC}.`,
   },
   {
     slug: "autonomia-real-coche-electrico-120-km-h",
@@ -207,7 +207,7 @@ export default ({ P, UL, NOTE, T, hbar, cheap, ioniq5 }) => {
     shelves: [{ after: 4, cat: "wallbox", title: "Wallbox con programación horaria", lede: "La forma más fácil de cargar cuando la luz es barata." }, { after: 3, cat: "cables-tipo2", title: "Cable Tipo 2 para cargar fuera", lede: "Indispensable si dependes de la red pública." }],
     faq: [["¿Cuánto cuesta cargar un coche eléctrico en un punto público?", "Depende de la red. IONITY publica 0,39 €/kWh, por lo que 50 kWh cuestan 19,50 €."], ["¿Cuánto cuesta cargar en casa?", "Con un PVPC medio de 0,212 €/kWh, 50 kWh cuestan 10,60 €."], ["¿Hay tarifas planas?", "Algunas redes las publican, pero no hay un agregador abierto y verificable."], ["¿Cuál es la hora más barata?", "Varía cada día. La ventana barata se sitúa en torno a 0,13 €/kWh y la herramienta de optimización la calcula."]],
     tools: ["optimizer", "homepub", "tariffs"], related: ["wallbox-instalacion-coche-electrico", "tarifa-luz-coche-electrico", "coches-electricos-baratos-espana-2026", "planificador-ruta-coche-electrico"],
-    note: "Datos recogidos el 21/11/2026 · ESIOS, IONITY.",
+    note: `Datos recogidos el ${FECHA_PVPC} · ESIOS, IONITY.`,
   },
 ];
 };

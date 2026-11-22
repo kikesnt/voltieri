@@ -47,17 +47,21 @@ function renderTool() {
     return `<div class="field"><label class="k" for="${id}">${i.label||LABELS[i.id]||i.id}</label><span><input id="${id}" type="number" min="${i.min}" max="${i.max}" step="${i.step}" value="${i.value}"> <span class="k">${i.unit||""}</span></span></div>`;
   }).join("");
 
+  // Una herramienta sin entradas no necesita panel de controles ni botón:
+  // su resultado es fijo y se pinta solo.
+  const hayEntradas = inputs.length > 0;
   host.innerHTML = `
-    <form class="panel controls" onsubmit="return false">
+    ${hayEntradas ? `<form class="panel controls" onsubmit="return false">
       <span class="k">Entradas</span>
       ${fields}
       <button class="btn btn--wide" type="button" id="run">Calcular</button>
-    </form>
+    </form>` : ""}
     <div class="panel result">
       <div class="data-grid" id="outputs"></div>
       <div id="extras"></div>
       <p class="calc-note" id="note"></p>
     </div>`;
+  host.classList.toggle("workspace--full", !hayEntradas);
 
   const rawHash = location.hash.replace(/^#/, "");
   const query = rawHash.split("?")[1];
@@ -80,7 +84,8 @@ function renderTool() {
     return v;
   };
   const run = () => {
-    const r = t.calc(read());
+    const v = read();
+    const r = t.calc(v);
     document.getElementById("outputs").innerHTML = r.out.map(o =>
       `<div class="data-cell"><span class="k">${o.l}</span><span class="v">${o.v}</span></div>`).join("");
     let extra = "";
@@ -89,8 +94,10 @@ function renderTool() {
     document.getElementById("extras").innerHTML = extra;
     document.getElementById("note").textContent = r.note || "";
     if (window.__afterRender) window.__afterRender(t);
+    if (t.after) t.after(v, document.getElementById("extras"), r);
   };
-  document.getElementById("run").addEventListener("click", run);
+  const btn = document.getElementById("run");
+  if (btn) btn.addEventListener("click", run);
   run();
   renderList();
   renderToolShelf(t);

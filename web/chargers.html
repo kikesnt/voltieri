@@ -114,9 +114,13 @@ for(const b of document.querySelectorAll("[data-f]")) b.addEventListener("click"
 async function loadStations(){
   const txt = await (await fetch("data/chargers.txt")).text();
   STATIONS = txt.trim().split("\n").map(line=>{
-    const [name,lat,lon,kw,op,connector,prov] = line.split("|");
-    return { name, p:[+lon,+lat], kw:+kw, op, connector, prov };
-  });
+    // Los 6 últimos campos son fijos (lat, lon, kW, operador, conector,
+    // provincia): se leen desde la derecha, por si el nombre trajera un pipe
+    // dentro y descolocara la latitud.
+    const f = line.split("|");
+    const prov=f.pop(), connector=f.pop(), op=f.pop(), kw=f.pop(), lon=f.pop(), lat=f.pop();
+    return { name:f.join(" / "), p:[+lon,+lat], kw:+kw, op, connector, prov };
+  }).filter(s => Number.isFinite(s.p[0]) && Number.isFinite(s.p[1]));
 }
 
 await loadStations();

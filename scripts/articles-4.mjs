@@ -3,7 +3,7 @@ const nf = n => new Intl.NumberFormat("es-ES").format(n);
 const pct = n => new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1 }).format(n);
 const NAMES = { ESP: "España", PRT: "Portugal", FRA: "Francia", DEU: "Alemania", ITA: "Italia", GBR: "Reino Unido", NOR: "Noruega", CHN: "China", USA: "Estados Unidos" };
 
-export default ({ P, UL, NOTE, T, hbar, line, prov, market }) => {
+export default ({ P, UL, NOTE, T, hbar, line, prov, market, FECHA, FECHA_PVPC }) => {
   // ---- puntos de recarga por provincia
   const pretty = n => n.replace(/^(.*), (Las|Illes|A|La)$/, "$2 $1");
   const rows = prov.map(r => ({ ...r, name: pretty(r.name), share: r.fast / r.points * 100 }));

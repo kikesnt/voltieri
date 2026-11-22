@@ -1,5 +1,5 @@
 // Guías 7 a 17. Mismo criterio que articles-1.mjs: palabra clave natural, datos del proyecto, sin cifras inventadas.
-export default ({ P, UL, NOTE, T }) => [
+export default ({ P, UL, NOTE, SRC, T, FECHA, FECHA_PVPC }) => [
   {
     slug: "ayudas-coche-electrico-2026",
     cat: "Comprar",
@@ -83,14 +83,15 @@ export default ({ P, UL, NOTE, T }) => [
         P("El ahorro anual estimado ronda los 270 € frente a un diésel, principalmente en aceite, filtros y frenos. Es una estimación con hipótesis declaradas y varía con tu uso. Con la herramienta de mantenimiento puedes ver las partidas y con la de coste total sumarlas a energía y seguro."),
       ]],
       ["La batería: el miedo más extendido", [
-        P("Un estudio recogido en nuestras noticias sitúa la sustitución de baterías en el 0,3 % de los casos. Es poco frecuente, pero conviene conocer la garantía de tu modelo y la química de la batería, porque determina cuánto aguantará."),
+        P("El estudio de Recurrent sobre más de 30.000 vehículos eléctricos, publicado el 11 de noviembre de 2025, sitúa el reemplazo de batería en el 0,3 % de los coches de 2022 en adelante (excluidas las campañas de servicio) y por debajo del 4 % en el total de la flota analizada. Es poco frecuente, pero conviene conocer la garantía de tu modelo y la química de la batería, porque determina cuánto aguantará."),
+        SRC("Recurrent · How long do EV batteries last? (11/11/2025)", "https://www.recurrentauto.com/research/how-long-do-ev-batteries-last"),
       ]],
       ["Pequeñas compras que evitan sustos", [
         P("Un buen cable Tipo 2 y un cargador de respaldo evitan visitas innecesarias al taller por cargas fallidas o cables dañados. Es el mantenimiento más barato: no quedarte sin poder cargar."),
       ]],
     ],
     shelves: [{ after: 1, cat: "inflador-neumaticos", title: "Para cuidar los neumáticos", lede: "La presión correcta alarga la vida de los neumáticos y mejora la autonomía." }, { after: 4, cat: "cables-tipo2", title: "Un cable de repuesto de calidad", lede: "Cables a buen precio con valoraciones reales." }],
-    faq: [["¿Cuánto cuesta el mantenimiento de un coche eléctrico?", "Menos que el de un diésel. El ahorro estimado ronda los 270 € al año."], ["¿Se desgastan menos los frenos?", "Sí, por la regeneración."], ["¿Hay que cambiar la batería?", "Es poco frecuente: un estudio la sitúa en el 0,3 % de los casos."]],
+    faq: [["¿Cuánto cuesta el mantenimiento de un coche eléctrico?", "Menos que el de un diésel. El ahorro estimado ronda los 270 € al año."], ["¿Se desgastan menos los frenos?", "Sí, por la regeneración."], ["¿Hay que cambiar la batería?", "Es poco frecuente: el estudio de Recurrent (11/11/2025) la sitúa en el 0,3 % de los coches de 2022 en adelante."]],
     tools: ["maint", "tco", "tyres"], related: ["neumaticos-coche-electrico", "bateria-lfp-nmc-coche-electrico", "seguro-coche-electrico-precio", "coche-electrico-segunda-mano"],
     note: "Estimación orientativa con hipótesis explícitas.",
   },
@@ -304,7 +305,7 @@ export default ({ P, UL, NOTE, T }) => [
     shelves: [{ after: 4, cat: "wallbox", title: "Wallbox con programación horaria", lede: "Para cargar solo cuando la luz es barata." }],
     faq: [["¿Qué tarifa de luz es mejor para un coche eléctrico?", "La que tenga precio bajo en las horas en que cargas. Si cargas de noche, una con discriminación horaria o el PVPC en horas valle."], ["¿Cuál es la hora más barata para cargar?", "Varía cada día. En el día de publicación, la ventana barata se sitúa en torno a 0,13 €/kWh."], ["¿Necesito aumentar la potencia contratada?", "Depende de tu wallbox y de lo que uses a la vez. Puedes limitar la potencia de carga."]],
     tools: ["optimizer", "tariffs", "homepub"], related: ["cargar-coche-electrico-en-casa-frente-a-la-calle", "wallbox-que-es-cual-comprar", "cargador-coche-electrico-guia-compra", "ayudas-coche-electrico-2026"],
-    note: "Datos recogidos el 21/11/2026 · ESIOS. Las tarifas del mercado libre cambian con frecuencia.",
+    note: `Datos recogidos el ${FECHA_PVPC} · ESIOS. Las tarifas del mercado libre cambian con frecuencia.`,
   },
   {
     slug: "coche-electrico-7-plazas",

@@ -12,6 +12,8 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
 const P = t => `<p>${t}</p>`;
 const UL = items => `<ul>${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
 const NOTE = t => `<p class="note">${t}</p>`;
+// Cita con enlace: el crédito va junto al dato, no escondido en las legales.
+const SRC = (label, url) => `<p class="source">Fuente: <a href="${url}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a></p>`;
 const isNum = c => /^[\d~]/.test(String(c));
 const T = (head, rows) => `<div class="table-wrap"><table><thead><tr>${head.map((h, i) => `<th${i && isNum(rows[0][i]) ? ' class="num"' : ""}>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i && isNum(c) ? ' class="num"' : ""}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
 
@@ -53,10 +55,15 @@ if (cheap.length < 5) throw new Error("web/data/prices-es.txt vacío o incomplet
 const prov = (await rd("provincias.txt")).map(([name, points, fast, inst]) => ({ name, points: +points, fast: +fast, inst: +inst }));
 const market = (await rd("market.txt")).map(([kind, c, y, v]) => ({ kind, c, y, v }));
 const priceOf = Object.fromEntries(prices.map(p => [p.name, p.price]));
+// Las fechas de los datos salen de los propios ficheros, no se escriben a mano:
+// si el cron refresca los precios, el texto se actualiza con ellos.
+const metaPrecios = JSON.parse(await fs.readFile(path.resolve("web/data/prices-es-meta.json"), "utf8"));
+const FECHA = metaPrecios.fecha.split("-").reverse().join("/");
+const FECHA_PVPC = (await rd("pvpc.txt"))[0][0].split("-").reverse().join("/");
 const top = Object.entries(vehicles).sort((a, b) => b[1].wltp - a[1].wltp).slice(0, 8).map(([name, v]) => ({ name, ...v, real: Math.round(v.wltp * 0.85) }));
 const CHINESE = ["BYD", "Zeekr", "Leapmotor", "GAC Aion"];
 const chinese = Object.entries(vehicles).filter(([, v]) => CHINESE.includes(v.brand)).sort((a, b) => CHINESE.indexOf(a[1].brand) - CHINESE.indexOf(b[1].brand) || b[1].wltp - a[1].wltp).map(([name, v]) => ({ name, ...v, price: priceOf[name] || null }));
-const ARTICLES = [...part1({ P, UL, NOTE, T, hbar, line, cheap, ioniq5: prices.find(p => p.name === "Hyundai IONIQ 5").price }), ...part2({ P, UL, NOTE, T }), ...part3({ P, UL, NOTE, T, hbar, line, top, chinese }), ...part4({ P, UL, NOTE, T, hbar, line, prov, market })];
+const ARTICLES = [...part1({ P, UL, NOTE, SRC, T, hbar, line, cheap, ioniq5: prices.find(p => p.name === "Hyundai IONIQ 5").price, FECHA, FECHA_PVPC }), ...part2({ P, UL, NOTE, SRC, T, FECHA, FECHA_PVPC }), ...part3({ P, UL, NOTE, SRC, T, hbar, line, top, chinese, FECHA, FECHA_PVPC }), ...part4({ P, UL, NOTE, SRC, T, hbar, line, prov, market, FECHA, FECHA_PVPC })];
 
 const bySlug = Object.fromEntries(ARTICLES.map(a => [a.slug, a]));
 const words = html => html.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;

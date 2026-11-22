@@ -123,12 +123,16 @@ const TOOLS = [
     desc:"Según tu contrato, tus kilómetros diarios y las horas que tienes enchufado, qué potencia de cargador basta.",
     inputs:[selx("contrato",["Monofásico","Trifásico"]),num("km","Km al día",50,"km",10,300,10),num("use","Consumo",16.8,"kWh/100",10,30,0.1),num("horas","Horas enchufado",8,"h",2,16,1)],
     calc:v=>{ const kwh=v.km/100*v.use, need=kwh/(v.horas*.9);
-      const opts=v.contrato==="Monofásico"?[7.4]:[7.4,11,22];
-      const rec=opts.find(p=>p>=need)||opts[opts.length-1];
+      const opts=v.contrato==="Monofásico"?[3.7,7.4]:[3.7,7.4,11,22];
+      // 7,4 kW es la recomendación estándar en casa: barata y con margen.
+      // Solo se sube a 11 o 22 kW si la potencia mínima lo pide de verdad.
+      const rec=need<=7.4?7.4:(opts.find(p=>p>=need)||opts[opts.length-1]);
       const link=rec>7.4?`<a class="chip" href="comparativa-estaciones-22kw.html">Ver estaciones de 22 kW →</a>`:`<a class="chip" href="comparativa-wallbox-7400.html">Ver wallbox de 7,4 kW →</a>`;
+      const filas=opts.map(p=>[nf1.format(p)+" kW", nf1.format(kwh/(p*.9))+" h", p>=need?"cubre tu necesidad":"no llega", p===rec?"← la que te conviene":""]);
       return {out:[{l:"Energía al día",v:nf1.format(kwh)+" kWh"},{l:"Potencia mínima",v:nf1.format(need)+" kW"},{l:"Recomendado",v:nf1.format(rec)+" kW"},{l:"Tiempo de carga",v:nf1.format(kwh/(rec*.9))+" h"}],
+        table:table(["Potencia disponible","Carga de tus "+nf1.format(kwh)+" kWh","¿Sirve?",""],filas),
         html:`<div style="margin-top:16px">${link}</div>`,
-        note:"Supone un 10 % de pérdidas al cargar. 7,4 kW es la potencia más habitual en wallbox y el límite práctico con contrato monofásico. Comprueba también la potencia que admite tu coche en corriente alterna."}; }},
+        note:"Con contrato monofásico el máximo práctico es 7,4 kW; con trifásico puedes llegar a 11 o 22 kW si tu coche y tu instalación lo admiten. La tabla muestra las potencias que puedes instalar. Supone un 10 % de pérdidas al cargar. Comprueba también la potencia que admite tu coche en corriente alterna."}; }},
 
   { id:"tarifas", cat:"finance", name:"Tarifas eléctricas", h1:"Qué pagas por cada kWh.",
     desc:"PVPC, tarifa valle y precio medio de carga rápida.",
@@ -197,9 +201,12 @@ const TOOLS = [
   { id:"degradacion", cat:"sim", name:"Degradación de batería", h1:"Cómo envejece tu batería.",
     desc:"Estado de salud estimado tras años, kilómetros y clima.",
     inputs:[car("a"),num("anos","Años",8,"",1,15,1),num("km","Km al año",15000,"km",5000,40000,1000),selx("clima",["Templado","Frío","Caluroso"])],
-    calc:v=>{ const c=CARS[v.a]; const cl={"Templado":0.012,"Frío":0.018,"Caluroso":0.021}[v.clima]; const soh=1-cl*v.anos-Math.min(.08,v.km*v.anos/500000); return {
+    calc:v=>{ const c=CARS[v.a]; const cl={"Templado":0.012,"Frío":0.018,"Caluroso":0.021}[v.clima];
+      const kmTot=v.km*v.anos, calendario=cl*v.anos, uso=Math.min(.25, kmTot*5e-7);
+      const soh=Math.max(.55, 1-calendario-uso); return {
       out:[{l:"Salud estimada",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(c.battery*soh)+" kWh"},{l:"Autonomía real",v:nf0.format(c.range*soh)+" km"},{l:"Años",v:String(v.anos)}],
-      note:"Modelo orientativo de pérdida por años, kilómetros y clima, no una medición. Cargar al 80 % y evitar el calor alarga la vida de la batería."}; }},
+      table:table(["Desgaste","Cuánto pesa"],[["Kilómetros recorridos",nf0.format(kmTot)+" km"],["Envejecimiento por el paso del tiempo ("+v.clima.toLowerCase()+")",nf1.format(calendario*100)+" %"],["Desgaste por cargas y descargas",nf1.format(uso*100)+" %"],["Pérdida total",nf1.format((1-soh)*100)+" %"]]),
+      note:"Modelo orientativo, no una medición: 1,2 % de salud al año por el paso del tiempo (1,8 % en frío, 2,1 % en caluroso) y 0,05 % por cada 1.000 km recorridos. Cargar al 80 % y evitar el calor alarga la vida de la batería."}; }},
 
   { id:"aerodinamico", cat:"sim", name:"Aerodinámica", h1:"El viento también cuenta.",
     desc:"Consumo según velocidad, coeficiente aerodinámico y viento.",
@@ -255,15 +262,27 @@ const TOOLS = [
   { id:"perfil", cat:"routes", name:"Perfil de elevación", h1:"La carretera tiene forma.",
     desc:"Desnivel acumulado y efecto en el consumo de tu ruta.",
     inputs:[num("km","Distancia",617,"km",50,2000,10),num("subida","Desnivel +",4000,"m",0,10000,100),num("bajada","Desnivel −",4668,"m",0,10000,100)],
-    calc:v=>({out:[{l:"Sube",v:nf0.format(v.subida)+" m"},{l:"Baja",v:nf0.format(v.bajada)+" m"},{l:"Diferencia",v:nf0.format(v.bajada-v.subida)+" m"},{l:"Efecto consumo",v:nf1.format((v.subida/1000)*.54)+" kWh/100"}],
-      note:"En bajada no se recupera todo: el freno regenerativo tiene límites."})},
+    calc:v=>{ const por100=m=>m/v.km*100, kwhPorM=1900*9.81/3.6e6;
+      const neto=(v.subida-v.bajada)*0.35;
+      const efecto=por100(neto)*kwhPorM;
+      return {out:[{l:"Sube",v:nf0.format(v.subida)+" m"},{l:"Baja",v:nf0.format(v.bajada)+" m"},{l:"Desnivel neto",v:nf0.format(neto)+" m"},{l:"Efecto en el consumo",v:(efecto>0?"+":"")+nf1.format(efecto)+" kWh/100"}],
+        table:table(["Desnivel en la ruta","Metros por cada 100 km"],[["Subida",nf0.format(por100(v.subida))+" m"],["Bajada",nf0.format(por100(v.bajada))+" m"],["Neto",nf0.format(por100(neto))+" m"]]),
+        note:"Modelo: 1.900 kg de masa y un 35 % neto tras la regeneración, el mismo criterio que la calculadora de autonomía. 1.000 m de desnivel por cada 100 km son unos 1,8 kWh/100. Si la bajada supera a la subida, el desnivel te devuelve energía y el efecto sale en negativo."}}},
 
   { id:"compartir", cat:"routes", name:"Rutas compartibles", h1:"Comparte sin cuenta.",
-    desc:"Genera un enlace con origen, destino y coche ya cargados.",
+    desc:"Comparte tu cálculo con un enlace: coche y distancia ya cargados.",
     inputs:[car("a"),num("km","Distancia",617,"km",50,2000,10)],
-    calc:v=>({out:[{l:"Coche",v:v.a},{l:"Distancia",v:v.km+" km"},{l:"Estado",v:"Sin cuenta"},{l:"Enlace",v:"Copiable"}],
-      html:`<p class="mono" style="margin-top:16px;padding:10px;border:1px solid var(--rule);word-break:break-all">${location.origin}${location.pathname}#compartir?a=${encodeURIComponent(v.a)}&km=${v.km}</p>`,
-      note:"El enlace contiene todos los parámetros; no guardamos nada en un servidor."})},
+    calc:v=>{ const url=`${location.origin}${location.pathname}#compartir?a=${encodeURIComponent(v.a)}&km=${v.km}`;
+      return {out:[{l:"Coche",v:v.a},{l:"Distancia",v:v.km+" km"},{l:"Estado",v:"Sin cuenta"},{l:"Enlace",v:"Listo"}],
+        html:`<div style="margin-top:16px"><p class="mono" id="enlace-compartir" style="margin:0;padding:10px;border:1px solid var(--rule);word-break:break-all">${url}</p><div style="margin-top:10px"><button class="btn" id="copiar-enlace">Copiar enlace</button></div></div>`,
+        note:"El enlace lleva el coche y la distancia ya cargados: quien lo abre ve tu mismo cálculo. No guardamos nada en un servidor."}; },
+    after:(v,root)=>{ const b=root.querySelector("#copiar-enlace"); if(!b) return;
+      b.addEventListener("click", async()=>{ const p=root.querySelector("#enlace-compartir"), url=p.textContent;
+        try{ await navigator.clipboard.writeText(url); b.textContent="Enlace copiado"; }
+        catch(e){ // Sin permiso de portapapeles: se selecciona el texto para copiar con ⌘C.
+          const r=document.createRange(); r.selectNodeContents(p);
+          const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+          b.textContent="Enlace seleccionado: pulsa ⌘C"; } }); } },
 
   { id:"alertas", cat:"routes", name:"Alertas de precio", h1:"Carga cuando vale la pena.",
     desc:"Precio objetivo y franja horaria, sin notificaciones invasivas.",
@@ -286,12 +305,12 @@ const TOOLS = [
   // ---------- SERVICIO ----------
   { id:"talleres", cat:"service", name:"Talleres EV", h1:"Quién te lo arregla.",
     desc:"Red oficial de servicio por marca: localizador del fabricante, sin intermediarios.",
-    inputs:[selx("prov",["Madrid","Barcelona","Valencia","Sevilla","Bilbao"])],
+    inputs:[],
     calc:v=>{
       const list=(typeof LIVE!=="undefined"&&LIVE.workshops?LIVE.workshops:[]);
       const html=`<div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">${list.map(w=>`<a href="${w.url}" target="_blank" rel="noopener noreferrer" style="padding:9px 10px;border:1px solid var(--rule);text-decoration:none;color:var(--text);font-size:11px;display:flex;justify-content:space-between"><span>${w.brand}</span><span class="k">Oficial ↗</span></a>`).join("")}</div>`;
-      return {out:[{l:"Provincia",v:v.prov},{l:"Marcas",v:String(list.length)},{l:"Red",v:"Oficial"},{l:"Cita",v:"En la web"}],
-        html,note:"Enlaces a los sitios oficiales de cada fabricante. Cada marca publica su propio localizador de talleres autorizados; no mostramos direcciones sin verificar."};
+      return {out:[{l:"Marcas",v:String(list.length)},{l:"Red",v:"Oficial"},{l:"Cobertura",v:"Nacional"},{l:"Cita",v:"En la web"}],
+        html,note:"Enlaces a los sitios oficiales de cada fabricante. Cada marca publica su propio localizador de talleres autorizados, con las provincias donde tiene servicio; no mostramos direcciones sin verificar."};
     }},
 
   { id:"noticias", cat:"service", name:"Actualidad EV", h1:"Solo lo que importa.",
@@ -319,28 +338,40 @@ const TOOLS = [
       note:"El visor usa geometría procedural a escala real; no es una fotografía ni un render de marketing."}; }},
 
   { id:"pwa", cat:"service", name:"Modo offline", h1:"Que no te falle el móvil.",
-    desc:"Comprueba que la app está instalada y que los datos quedan en el dispositivo.",
+    desc:"Comprueba que la app está instalada y guarda tu ruta en el dispositivo.",
     inputs:[car("a"),num("km","Distancia",617,"km",50,2000,10)],
-    calc:v=>({out:[{l:"Ruta",v:v.km+" km"},{l:"Coche",v:v.a},{l:"Modo",v:matchMedia("(display-mode: standalone)").matches?"Instalada":"Navegador"},{l:"Caché",v:("serviceWorker" in navigator && navigator.serviceWorker.controller)?"Activa":"Iniciando"}],
-      note:"La web tiene manifest y service worker: funciona sin cobertura y se puede instalar desde el menú del navegador. El estado de la ruta se guarda en tu dispositivo, sin cuenta."})},
+    calc:v=>{ let guardada=null;
+      try{ guardada=JSON.parse(localStorage.getItem("voltieri-ruta")||"null"); }catch(e){}
+      const fecha=guardada&&guardada.at?new Date(guardada.at).toLocaleDateString("es-ES"):null;
+      return {out:[{l:"Ruta",v:v.km+" km"},{l:"Coche",v:v.a},{l:"Modo",v:matchMedia("(display-mode: standalone)").matches?"Instalada":"Navegador"},{l:"Caché",v:("serviceWorker" in navigator && navigator.serviceWorker.controller)?"Activa":"Iniciando"}],
+        html:`<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn" id="guardar-ruta">Guardar esta ruta en el dispositivo</button>${guardada?`<span class="source">Ya guardada: ${guardada.a} · ${guardada.km} km · ${fecha}</span>`:""}</div>`,
+        note:"La web tiene manifest y service worker: funciona sin cobertura y se puede instalar desde el menú del navegador. La ruta se guarda en tu propio dispositivo (localStorage), sin cuenta ni servidor."}; },
+    after:(v,root)=>{ const b=root.querySelector("#guardar-ruta"); if(!b) return;
+      b.addEventListener("click",()=>{ try{ localStorage.setItem("voltieri-ruta", JSON.stringify({a:v.a,km:v.km,at:new Date().toISOString()})); b.textContent="Ruta guardada"; b.disabled=true; }
+      catch(e){ b.textContent="Este navegador no deja guardar"; } }); } },
 
   { id:"api", cat:"service", name:"API pública", h1:"Datos abiertos para todos.",
     desc:"Consulta los mismos datos que usa la web.",
-    inputs:[car("a")],
-    calc:v=>{
-      const c=CARS[v.a];
-      const sample={model:v.a,year:c.year,battery_kwh:c.battery,range_real_km:c.range,wltp_km:c.wltp,consumption_kwh_100:c.use,dc_peak_kw:c.dc,boot_l:c.boot,price_de_eur:c.price};
-      return {html:`<pre class="mono" style="margin-top:16px;padding:12px;border:1px solid var(--rule);overflow:auto">GET api/data.json\n\n${JSON.stringify(sample,null,2)}</pre>
+    inputs:[],
+    calc:v=>({
+      html:`<pre class="mono" id="api-sample" style="margin-top:16px;padding:12px;border:1px solid var(--rule);overflow:auto">Cargando api/data.json…</pre>
         <p class="source" style="margin-top:10px"><a href="api/data.json" target="_blank" rel="noopener noreferrer">Abrir api/data.json en el navegador ↗</a></p>`,
-        out:[{l:"Formato",v:"JSON estático"},{l:"Autenticación",v:"No"},{l:"Modelos",v:"25"},{l:"Licencia",v:"CC BY 4.0"}],
-        note:"API real servida como archivo JSON estático en el CDN, sin clave ni backend. Lo regenera el cron diario."};
-    }},
+        out:[{l:"Formato",v:"JSON estático"},{l:"Autenticación",v:"No"},{l:"Licencia",v:"La de cada fuente"}],
+        note:"API real servida como archivo JSON estático en el CDN, sin clave ni backend. Lo regenera el cron diario. Cada bloque conserva la licencia de su fuente: los modelos son de OpenEV Data (CDLA-Permissive-2.0), los cargadores de MITECO/RIPREE y la tarifa de ESIOS-REE; son datos públicos y se pueden usar citando la fuente."}),
+    after:async(v,root)=>{ const pre=root.querySelector("#api-sample"); if(!pre) return;
+      try{ const d=await (await fetch("api/data.json",{cache:"no-store"})).json();
+        const m=(d.models||[])[0], ch=(d.chargers||[])[0];
+        pre.textContent="GET api/data.json\n\n"+JSON.stringify({source:d.source,version:d.version,license:d.license,sources:d.sources,
+          counts:{modelos:(d.models||[]).length,cargadores:(d.chargers||[]).length,precios_pvpc:((d.pvpc&&d.pvpc.prices_eur_mwh)||[]).length},
+          ejemplo_de_modelo:m, ejemplo_de_cargador:ch, pvpc:d.pvpc},null,2);
+      }catch(e){ pre.textContent="No se pudo leer api/data.json."; } } },
 
   { id:"mantenimiento", cat:"service", name:"Mantenimiento EV", h1:"Lo que se ahorra en taller.",
     desc:"Revisiones, frenos y fluidos frente a un motor de combustión.",
     inputs:[num("anos","Años",8,"",1,15,1)],
     calc:v=>({out:[{l:"EV (modelo)",v:eur(v.anos*210)},{l:"Gasolina (modelo)",v:eur(v.anos*480)},{l:"Ahorro",v:eur(v.anos*270)},{l:"Por año",v:eur(270)}],
-      note:"Estimación de modelo, no tarifa de taller. Se apoya en dos hechos publicados: menos piezas móviles y regeneración de frenos; un estudio de 2026 citado en nuestras noticias sitúa la sustitución de batería en el 0,3 % de los casos."})},
+      html:`<p class="source" style="margin-top:14px">Fuente del dato de baterías: <a href="https://www.recurrentauto.com/research/how-long-do-ev-batteries-last" target="_blank" rel="noopener noreferrer">Recurrent · How long do EV batteries last? (11/11/2025) ↗</a></p>`,
+      note:"Estimación de modelo, no tarifa de taller. Se apoya en dos hechos publicados: menos piezas móviles y regeneración de frenos; y el estudio de Recurrent sobre 30.000+ vehículos eléctricos (11/11/2025), que sitúa el reemplazo de batería en el 0,3 % de los coches de 2022 en adelante excluyendo campañas de servicio, y por debajo del 4 % en el total de la flota analizada."})},
 
   { id:"viaje-coste", cat:"finance", name:"Coste total del viaje", h1:"Cuánto te sale el viaje entero.",
     desc:"Energía real, peajes y aparcamiento. No solo el kWh.",
@@ -358,10 +389,12 @@ const TOOLS = [
     inputs:[car("a"),selx("quim",["NMC","LFP"]),num("anos","Años",6,"",1,15,1),num("km","Km",90000,"km",10000,300000,5000)],
     calc:v=>{
       const rate=v.quim==="LFP"?.008:.013;
-      const soh=Math.max(.55,1-rate*v.anos-Math.min(.12,v.km/500000));
+      const calendario=rate*v.anos, uso=Math.min(.25, v.km*5e-7);
+      const soh=Math.max(.55,1-calendario-uso);
       const c=CARS[v.a], cap=c.battery*soh, range=Math.round(c.range*soh);
       return {out:[{l:"Salud",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(cap)+" kWh"},{l:"Autonomía",v:range+" km"},{l:"Química",v:v.quim}],
-        note:"Modelo de degradación por ciclos y calendario. No sustituye a un informe SOH real del vehículo; para comprar pide siempre el certificado."};
+        table:table(["Desgaste","Cuánto pesa"],[["Antigüedad ("+v.anos+" años)",nf1.format(calendario*100)+" %"],["Kilometraje ("+nf0.format(v.km)+" km)",nf1.format(uso*100)+" %"],["Pérdida total",nf1.format((1-soh)*100)+" %"]]),
+        note:"Modelo de degradación por ciclos y calendario: 1,3 % de salud al año en NMC (0,8 % en LFP) y 0,05 % por cada 1.000 km recorridos. No sustituye a un informe SOH real del vehículo; para comprar pide siempre el certificado."};
     }},
 
   { id:"remolque", cat:"sim", name:"Remolque y carga útil", h1:"Lo que pesa de verdad.",
@@ -379,7 +412,7 @@ const TOOLS = [
     inputs:[car("a"),num("km","Km al año",15000,"km",5000,40000,1000)],
     calc:v=>{
       const c=CARS[v.a];
-      const txt=`VOLTIERI · INFORME DE DECISIÓN\n\nModelo: ${v.a} (${c.year})\nAutonomía real: ${c.range} km (${c.rangeSource})\nWLTP: ${c.wltp} km · Batería: ${c.battery} kWh\nConsumo derivado: ${c.use} kWh/100\nCarga DC: ${c.dc} kW · Maletero: ${nd(c.boot)} L\nPrecio España: ${c.price?eur(c.price)+" ("+c.priceSource+")":"Sin dato"}\nUso anual: ${v.km} km\n\nFuentes: OpenEV Data v1.24.0, ev-database.org, Autocasion, ESIOS, MITECO.`;
+      const txt=`VOLTIERI · INFORME DE DECISIÓN\n\nModelo: ${v.a} (${c.year})\nAutonomía real: ${c.range} km (${c.rangeSource})\nWLTP: ${c.wltp} km · Batería: ${c.battery} kWh\nConsumo derivado: ${c.use} kWh/100\nCarga DC: ${c.dc} kW · Maletero: ${nd(c.boot)} L\nPrecio España: ${c.price?eur(c.price)+" ("+c.priceSource+")":"Sin dato"}\nUso anual: ${v.km} km\n\nFuentes: OpenEV Data v1.24.0, ev-database.org, Autocasión, ESIOS, MITECO.`;
       return {out:[{l:"Modelo",v:v.a},{l:"Autonomía",v:c.range+" km"},{l:"Consumo",v:c.use+" kWh/100"},{l:"Fuentes",v:"4"}],
         html:`<pre class="mono" style="margin-top:16px;padding:14px;border:1px solid var(--rule);white-space:pre-wrap">${txt}</pre>`,
         note:"Informe generado con datos verificados. Se puede copiar y compartir sin cuenta."};
