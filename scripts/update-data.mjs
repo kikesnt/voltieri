@@ -11,19 +11,39 @@ const get = async (url, opts={}) => {
 };
 const save = async (name, text) => {
   await fs.mkdir(OUT, { recursive:true });
+  // Si una fuente falla y devuelve vacío, se conserva el archivo anterior (así se vació prices-es.txt y el catálogo perdió los precios).
+  if (!text.trim()) { console.warn(`SKIP ${name}: datos vacíos, se conserva el archivo anterior`); return; }
+  if (name === "prices-es.txt" && text.trim().split("\n").length < 20) { console.warn(`SKIP ${name}: menos de 20 precios, se conserva el archivo anterior`); return; }
   await fs.writeFile(path.join(OUT, name), text.endsWith("\n") ? text : text + "\n");
   console.log(`OK  ${name}  ${text.length} chars`);
 };
 const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g," ").trim();
 const numES = s => parseFloat(String(s ?? "").replace(",", "."));
 
+// CSV RFC 4180 (campos entrecomillados con comas, comillas dobles escapadas)
+const parseCSV = text => {
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) { if (ch === '"') { if (text[i+1] === '"') { cur += '"'; i++; } else q = false; } else cur += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cur); cur = ""; }
+    else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i+1] === "\n") i++; row.push(cur); cur = ""; if (row.some(Boolean)) rows.push(row); row = []; }
+    else cur += ch;
+  }
+  if (cur || row.length) { row.push(cur); rows.push(row); }
+  return rows;
+};
+console.assert(JSON.stringify(parseCSV('a,"b,c","d""e"\n1,2,3')) === JSON.stringify([["a","b,c",'d"e'],["1","2","3"]]), "parseCSV");
+
 // 1. Vehículos — OpenEV Data v1.24.0 (CDLA-Permissive-2.0)
 async function vehicles() {
   const csv = await (await get("https://github.com/open-ev-data/open-ev-data-dataset/releases/download/v1.24.0/open-ev-data-v1.24.0.csv")).text();
-  const lines = csv.split("\n").filter(Boolean);
-  const head = lines[0].split(",");
-  const rows = lines.slice(1).map(l => Object.fromEntries(head.map((h,i) => [h, (l.split(",")[i] ?? "").trim()])));
-  const brands = new Set(["Tesla","Hyundai","Kia","Volkswagen","Renault","Peugeot","Citroën","BMW","Mercedes-Benz","Audi","Polestar","Volvo","Nissan","Fiat","Ford","Opel","Škoda","Seat","Cupra","MG","BYD","Toyota","Mazda","Porsche","Mini","Jeep","Honda","Lexus","Dacia","Alpine","Smart","Abarth","Alfa Romeo","DS","Jaguar","Land Rover","Lucid","XPeng","NIO","Zeekr","Leapmotor","Geely","Chery","GAC Aion","Changan"]);
+  const table = parseCSV(csv);
+  const head = table[0].map(h => h.trim());
+  const rows = table.slice(1).map(r => Object.fromEntries(head.map((h,i) => [h, (r[i] ?? "").trim()])))
+    .sort((a, b) => +b.year - +a.year); // por modelo se conserva la versión más reciente
+  const brands = new Set(["Tesla","Hyundai","Kia","Volkswagen","Renault","Peugeot","Citroën","BMW","Mercedes-Benz","Audi","Polestar","Volvo","Nissan","Fiat","Ford","Opel","Škoda","Seat","Cupra","MG","BYD","Toyota","Mazda","Porsche","Mini","Jeep","Honda","Lexus","Dacia","Alpine","Smart","Abarth","Alfa Romeo","DS","Jaguar","Land Rover","Lucid","XPeng","NIO","Zeekr","Leapmotor","Geely","Chery","GAC Aion","Changan","Mitsubishi","Genesis","Lotus","Maserati","VinFast","Voyah","Dongfeng","Cadillac","DS Automobiles"]);
   const seen = new Set(), out = [];
   for (const r of rows) {
     if (!r.battery_capacity_net_kwh || !r.range_wltp_km || !r.dc_max_power_kw || !r.system_power_kw) continue;
@@ -32,6 +52,10 @@ async function vehicles() {
     if (seen.has(key)) continue;
     seen.add(key);
     out.push([r.make_name, r.model_name, r.year, r.battery_capacity_net_kwh, r.range_wltp_km, r.dc_max_power_kw, r.system_power_kw, r.acceleration_0_100_s || "", r.battery_chemistry].join("|"));
+  }
+  if (out.length < 80) { // una descarga rara no debe vaciar el catálogo
+    console.warn(`vehicles: solo ${out.length} modelos, se conserva el archivo anterior`);
+    return (await fs.readFile(path.join(OUT, "vehicles.txt"), "utf8")).trim().split("\n");
   }
   await save("vehicles.txt", out.join("\n"));
   return out;
@@ -106,19 +130,29 @@ async function chargers() {
   const lines = txt.split("\n").map(x => x.replace("\r","")).filter(x => x.length > 2);
   const clean = s => s.replace(/^="?|"?$/g,"").replace(/^"|"$/g,"").trim();
   const seen = new Set(), out = [];
+  const byProv = new Map(); // provincia -> { pts: Map(punto -> {kw, dc}), inst: Set }
   for (let i = 1; i < lines.length; i++) {
     const c = lines[i].split(";").map(clean);
     const [prov, lat, lon, name, op, charge, kwRaw] = [c[1], c[3], c[4], c[5], c[11], c[23], c[25]];
-    if (charge !== "DC") continue;
     const kw = parseFloat(kwRaw.replace(",", "."));
+    const pid = c[20] || c[15];
+    if (/^[A-Za-zÀ-ÿ]/.test(prov) && pid) { // cada fila es un conector: se cuenta el punto una vez, con su mayor potencia
+      const o = byProv.get(prov) || { pts: new Map(), inst: new Set() }; byProv.set(prov, o);
+      o.inst.add(c[14]);
+      const cur = o.pts.get(pid);
+      o.pts.set(pid, { kw: Math.max(kw || 0, cur?.kw || 0), dc: charge === "DC" || !!cur?.dc });
+    }
+    if (charge !== "DC") continue;
     if (!(kw >= 50) || !parseFloat(lat) || !parseFloat(lon)) continue;
     const key = `${name}|${lat}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    out.push([name.slice(0,44), (+lat).toFixed(5), (+lon).toFixed(5), Math.round(kw), op.slice(0,26), c[22] || "", prov].join("|"));
-    if (out.length >= 2500) break;
+    if (out.length < 2500) out.push([name.slice(0,44), (+lat).toFixed(5), (+lon).toFixed(5), Math.round(kw), op.slice(0,26), c[22] || "", prov].join("|"));
   }
   await save("chargers.txt", out.join("\n"));
+  const prov = [...byProv.entries()].map(([p, o]) => { const pts = [...o.pts.values()]; return [p, pts.length, pts.filter(x => x.dc && x.kw >= 50).length, o.inst.size]; })
+    .filter(r => r[1] >= 5).sort((a, b) => b[1] - a[1]);
+  await save("provincias.txt", prov.map(r => r.join("|")).join("\n"));
 }
 
 // 4. PVPC — ESIOS archive 70 (sin token)
@@ -211,6 +245,61 @@ async function api(){
   console.log("OK  api/data.json");
 }
 
+// 12. Mercado — Our World in Data (a partir de la AIE): cuota de coches nuevos eléctricos y ventas de España
+async function market(){
+  const base = "https://ourworldindata.org/grapher/";
+  const countries = "ESP~PRT~FRA~DEU~ITA~GBR~NOR~CHN~USA";
+  const parse = t => t.trim().split("\n").slice(1).map(l => l.split(","));
+  const share = parse(await (await get(`${base}electric-car-sales-share.csv?csvType=full&country=${countries}`)).text());
+  const units = parse(await (await get(`${base}electric-car-sales.csv?csvType=full&country=ESP`)).text());
+  const rows = [
+    ...share.filter(r => +r[2] >= 2019).map(r => `cuota|${r[1]}|${r[2]}|${r[3]}`),
+    ...units.filter(r => +r[2] >= 2015).map(r => `ventas|${r[1]}|${r[2]}|${r[3]}`)
+  ];
+  await save("market.txt", rows.join("\n"));
+}
+
+// 10. Red eléctrica — REData (REE): factor de emisión y % renovable de los últimos 10 días (sin token, con CORS)
+async function grid(){
+  const iso = d => d.toISOString().slice(0,10);
+  const end = new Date(), start = new Date(Date.now() - 10*864e5);
+  const q = `start_date=${iso(start)}T00:00&end_date=${iso(end)}T23:59&time_trunc=day`;
+  const base = "https://apidatos.ree.es/es/datos/generacion/";
+  const e = await (await get(base + "no-renovables-detalle-emisiones-CO2?" + q)).json();
+  const g = await (await get(base + "estructura-generacion?" + q)).json();
+  const fac = e.included.find(i => i.attributes.type === "tCO2 eq./MWh").attributes.values;
+  const tot = g.included.find(i => i.attributes.type === "total").attributes.values;
+  const ren = g.included.filter(i => i.attributes.type === "Renovable");
+  const rows = fac.map((v, i) => {
+    const t = tot[i]?.value; if (!t) return null;
+    const r = ren.reduce((a, x) => a + (x.attributes.values[i]?.value || 0), 0);
+    return `${v.datetime.slice(0,10)}|${v.value.toFixed(4)}|${(r / t * 100).toFixed(1)}`;
+  }).filter(Boolean);
+  await save("grid.txt", rows.join("\n"));
+}
+
+// 11. Ayudas — BDNS (Base de Datos Nacional de Subvenciones): convocatorias reales de movilidad eléctrica y recarga
+async function subsidies(){
+  const base = "https://www.infosubvenciones.es/bdnstrans/api/convocatorias/busqueda";
+  const queries = ["vehículos eléctricos", "vehículo eléctrico", "recarga vehículos eléctricos", "movilidad eléctrica", "puntos de recarga"];
+  const map = new Map();
+  for (const q of queries) for (const page of [0, 1]) {
+    try {
+      const d = await (await get(`${base}?pageSize=50&page=${page}&vpd=GE&descripcion=${encodeURIComponent(q)}`, { headers:{ Accept:"application/json" } })).json();
+      for (const c of d.content || []) if (!map.has(c.numeroConvocatoria)) map.set(c.numeroConvocatoria, c);
+    } catch(e) { console.warn("BDNS", q, page, e.message); }
+  }
+  const clean = t => String(t || "").replace(/\s+/g, " ").replace(/\|/g, "/").trim();
+  const since = Date.now() - 365*864e5;
+  const rows = [...map.values()]
+    .filter(c => Date.parse(c.fechaRecepcion) >= since)
+    .filter(c => /(veh[ií]culo|recarga|movilidad|moves)/i.test(c.descripcion))
+    .filter(c => !/(nominativ|redacci[oó]n del proyecto|dotaci[oó]n de infraestructura|cursos?|bicicleta|patinete|taxi|talleres|producci[oó]n de bater)/i.test(c.descripcion))
+    .sort((a, b) => b.fechaRecepcion.localeCompare(a.fechaRecepcion)).slice(0, 40)
+    .map(c => [c.numeroConvocatoria, c.fechaRecepcion, c.nivel1, clean(c.nivel2), clean(c.nivel3), clean(c.descripcion).slice(0, 220)].join("|"));
+  await save("ayudas.txt", rows.join("\n"));
+}
+
 const vehiclesLines = await vehicles();
-await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api(), pricesES()]);
+await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api(), pricesES(), grid(), subsidies(), market()]);
 console.log("Datos actualizados.");

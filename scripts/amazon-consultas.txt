@@ -1,0 +1,47 @@
+# Consultas de Amazon.es para el catálogo de equipamiento de Voltieri.
+# Formato: categoria<TAB>consulta de búsqueda en Amazon.es
+# Se ejecutan con: python3 scripts/amazon-scrape.py --fase busqueda
+
+# ── categorías nuevas ──────────────────────────────────────────────────────
+inflador-neumaticos	inflador de neumaticos coche electrico
+inflador-neumaticos	compresor de aire portatil coche 12V
+inflador-neumaticos	manometro de presion de neumaticos digital
+inflador-neumaticos	inflador de neumaticos recargable con bateria
+soporte-cable	bolsa para cable de carga de coche electrico
+soporte-cable	soporte de pared para cable de recarga wallbox
+soporte-cable	candado para cable de carga de coche electrico
+soporte-cable	organizador de cables para cargador electrico
+maleta-viaje	maleta para el maletero del coche electrico
+maleta-viaje	bolsa organizadora para maletero de coche
+maleta-viaje	neceser de viaje para coche familiar
+maleta-viaje	organizador de cables y cargadores para maletero
+nevera-v2l	nevera electrica portatil 12V compresor
+nevera-v2l	nevera de camping 12V 25 litros
+nevera-v2l	nevera portatil para coche 12 voltios
+nevera-v2l	adaptador V2L para coche electrico
+invierno	cubierta de parabrisas para invierno
+invierno	rascador de hielo para parabrisas
+invierno	cubierta magnetica para cristal del coche
+invierno	rascador de hielo magnetico
+
+# ── refuerzo de las categorías que ya existían ─────────────────────────────
+cables-tipo2	cable de carga tipo 2 para coche electrico
+cables-tipo2	cable tipo 2 22kW trifasico
+wallbox	wallbox 7,4 kW cargador de pared
+wallbox	cargador de pared para coche electrico con app
+adaptadores-ccs2	adaptador CCS2 a tipo 2 para coche electrico
+adaptadores-ccs2	adaptador CCS1 a CCS2
+cargador-portatil	cargador portatil para coche electrico 3,7 kW
+cargador-portatil	cargador EV portatil Schuko
+estaciones-22kw	wallbox 22 kW trifasico
+estaciones-22kw	punto de carga 22kW para coche electrico
+v2l	adaptador V2L para coche electrico
+v2l	cargador V2L coche 3,5 kW
+
+# ── consultas de refuerzo (faltaban tipos: candado EV y maleta de herramientas) ──
+soporte-cable	candado antirrobo para cable de carga de coche electrico
+maleta-viaje	carro de herramientas plegable profesional
+v2l	adaptador V2L BYD Dolphin Atto 3
+v2l	adaptador de carga V2L coche electrico schuko 3,5 kW
+v2l	adaptador V2L para BYD Seal Atto 3 Dolphin 3,5 kW schuko
+v2l	adaptador de descarga de coche electrico a enchufe 3,5 kW

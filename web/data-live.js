@@ -59,6 +59,19 @@ async function loadNews(){
   });
 }
 
+async function loadGrid(){
+  const txt = await (await fetch("data/grid.txt")).text();
+  const rows = txt.trim().split("\n").map(l => { const [date, kg, ren] = l.split("|"); return { date, kg:+kg, ren:+ren }; }).filter(r => r.kg > 0);
+  const last = rows[rows.length - 1];
+  const w = rows.slice(-7);
+  LIVE.grid = { date:last.date, kg:last.kg, ren:last.ren, kg7:w.reduce((a, r) => a + r.kg, 0) / w.length, ren7:w.reduce((a, r) => a + r.ren, 0) / w.length };
+}
+
+async function loadAids(){
+  const txt = await (await fetch("data/ayudas.txt")).text();
+  LIVE.aids = txt.trim().split("\n").map(l => { const [num, date, nivel, region, organo, title] = l.split("|"); return { num, date, nivel, region, organo, title }; });
+}
+
 async function loadWorkshops(){
   const txt = await (await fetch("data/workshops.txt")).text();
   LIVE.workshops = txt.trim().split("\n").map(line => {
@@ -83,6 +96,10 @@ function patchDefaults(){
       tarifas.note = `PVPC real ${LIVE.pvpcDate}: media ${LIVE.pvpcAvg.toFixed(3)} €/kWh, mínimo ${LIVE.pvpcMin.toFixed(3)}, máximo ${LIVE.pvpcMax.toFixed(3)}. Fuente: ${LIVE.source.pvpc}.`;
     }
   }
+  if (typeof TOOLS !== "undefined" && LIVE.grid) {
+    const h = TOOLS.find(t => t.id === "huella");
+    if (h) h.inputs[2].value = +LIVE.grid.kg7.toFixed(2);
+  }
   const kwh = document.getElementById("precio") || document.getElementById("priceKwh");
   if (kwh && LIVE.pvpcAvg) {
     kwh.value = LIVE.pvpcAvg.toFixed(3);
@@ -96,7 +113,7 @@ function patchDefaults(){
 }
 
 async function loadLivePrices(){
-  await Promise.allSettled([loadPvpc(), loadFuel(), loadNews(), loadWorkshops(), loadSafety()]);
+  await Promise.allSettled([loadPvpc(), loadFuel(), loadNews(), loadWorkshops(), loadSafety(), loadGrid(), loadAids()]);
   patchDefaults();
   return LIVE;
 }

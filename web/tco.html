@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Coste total de propiedad de un eléctrico frente a un coche de gasolina.">
@@ -37,12 +37,17 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
 @media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body>
 
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
   </div>
@@ -81,14 +86,12 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
         <span class="k">Coste acumulado</span>
         <svg id="bars" viewBox="0 0 800 150" preserveAspectRatio="none" aria-label="Comparativa de coste acumulado"></svg>
       </div>
-      <p class="calc-note">Depreciación estimada: 12 % anual el eléctrico, 9 % el de gasolina. Mantenimiento y seguro son orientativos. Puedes cambiar todos los datos.</p>
+      <p class="calc-note">Depreciación estimada: 12 % anual el eléctrico, 9 % el de gasolina. Supuestos fijos por año: mantenimiento 210 € el eléctrico y 480 € el de gasolina (los de la guía de mantenimiento), seguro 650 € y 720 €. No incluye financiación ni ayudas. Puedes cambiar todos los datos.</p>
     </div>
   </div>
 
-  <footer>
-    <span class="source">Fuentes: precio PVPC · REE/ESIOS · datos introducidos por el usuario</span>
-    <span class="source">Sin cuentas. Sin cookies.</span>
-  <span class="source"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></span></footer>
+  <div data-shelf="wallbox" data-title="Cargar en casa es donde más ahorras" data-lede="Una wallbox de 7,4 kW carga en una noche y aprovecha la tarifa valle. Estas son las mejor valoradas." data-limit="3"></div>
+  <footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 </main>
 
 <script src="data-live.js"></script>
@@ -106,7 +109,7 @@ function calc(){
   const km=+document.getElementById("km").value, useEv=+document.getElementById("useEv").value;
   const pKwh=+document.getElementById("priceKwh").value, useGas=+document.getElementById("useGas").value;
   const pL=+document.getElementById("priceL").value, years=+document.getElementById("years").value;
-  const annualEv=km/100*useEv*pKwh+240+650;
+  const annualEv=km/100*useEv*pKwh+210+650;
   const annualGas=km/100*useGas*pL+480+720;
   let rows="",max=0;
   const data=[];
@@ -133,5 +136,6 @@ function calc(){
 document.getElementById("calc").addEventListener("click",calc);calc();loadLivePrices().then(()=>calc());
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+<script type="module" src="affiliate.js"></script>
 </body>
 </html>

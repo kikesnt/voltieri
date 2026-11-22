@@ -56,32 +56,41 @@
   --rule: rgba(242, 237, 223, .13);
 }
 
-/* 2027 — instrumento de precisión: superficies oscuras, ion y ámbar */
+/* 2027 — sobrio y legible: papel cálido, tinta casi negra, un solo acento verde */
 :root[data-skin="2027"]{
-  --paper:#080B10;
-  --paper-deep:#0D1119;
-  --ink:#EEF3F9;
-  --text:#EEF3F9;
-  --muted:#8C99AB;
-  --contour:#5B8CFF;
-  --water:#14283F;
-  --route:#FFB020;
-  --rule:rgba(238,243,249,.12);
-  --ion:#5B8CFF;
-  --ion-2:#8FB0FF;
-  --amber:#FFB020;
-  --mint:#3DDC97;
-  --font-display:"Geist",sans-serif;
+  color-scheme:light;
+  --paper:#F8F7F3;
+  --paper-deep:#EFEDE6;
+  --ink:#0F1512;
+  --text:#1E2622;
+  --muted:#5C655E;
+  --contour:#0E7A53;
+  --water:#DCE7E4;
+  --route:#D9480F;
+  --rule:rgba(15,21,18,.12);
+  --ion:#0E7A53;
+  --ion-2:#0A5C3F;
+  --amber:#B4430C;
+  --mint:#0E7A53;
+  --font-display:"Geist",system-ui,sans-serif;
   --font-map:"Instrument Serif",serif;
+  --radius:10px;
 }
-:root[data-skin="2027"][data-theme="day"]{
-  --paper:#101720;
-  --paper-deep:#151D28;
-  --ink:#F4F7FB;
-  --text:#F4F7FB;
-  --muted:#A3AEBE;
-  --rule:rgba(244,247,251,.14);
-  --font-map:"Instrument Serif",serif;
+:root[data-skin="2027"][data-theme="night"]{
+  color-scheme:dark;
+  --paper:#0C100E;
+  --paper-deep:#121815;
+  --ink:#F1F3EF;
+  --text:#E4E8E2;
+  --muted:#98A19A;
+  --contour:#3DDC97;
+  --water:#13241F;
+  --route:#FF8A4C;
+  --rule:rgba(241,243,239,.13);
+  --ion:#3DDC97;
+  --ion-2:#7BE8B8;
+  --amber:#FF8A4C;
+  --mint:#3DDC97;
 }
 
 /* Superficies del navegador: señal barata de que el tema está diseñado */

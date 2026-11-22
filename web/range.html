@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Autonomía real desglosada por aerodinámica, rodadura, gravedad y clima.">
@@ -41,12 +41,17 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
 @media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body>
 
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
   </div>
@@ -63,6 +68,7 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
       <div class="field"><label class="k" for="base">Consumo de referencia</label><span><input id="base" type="number" min="8" max="30" step="0.1" value="14.5"> <span class="k">kWh/100</span></span></div>
       <div class="field"><label class="k" for="vel">Velocidad</label><span><input id="vel" type="number" min="50" max="150" step="5" value="120"> <span class="k">km/h</span></span></div>
       <div class="field"><label class="k" for="temp">Temperatura</label><span><input id="temp" type="number" min="-15" max="45" step="1" value="18"> <span class="k">°C</span></span></div>
+      <div class="field"><label class="k" for="dist">Distancia del viaje</label><span><input id="dist" type="number" min="20" max="3000" step="10" value="620"> <span class="k">km</span></span></div>
       <div class="field"><label class="k" for="desnivel">Desnivel acumulado</label><span><input id="desnivel" type="number" min="0" max="6000" step="100" value="1200"> <span class="k">m</span></span></div>
       <button class="btn btn--wide" type="button" id="calc">Calcular autonomía</button>
     </form>
@@ -76,14 +82,12 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
       </div>
       <span class="k">Desglose del consumo</span>
       <div class="bars" id="bars"></div>
-      <p class="calc-note">Modelo transparento: aerodinámica crece con el cuadrado de la velocidad, la climatización con la diferencia de temperatura y la gravedad con el desnivel acumulado. No es una medición de laboratorio; es una estimación explicable.</p>
+      <p class="calc-note">Modelo: el consumo de referencia equivale a ir a 90 km/h. La resistencia aerodinámica (el 30 % del consumo a esa velocidad) crece con el cuadrado de la velocidad, el frío añade hasta un 24 % y el desnivel se calcula con una masa supuesta de 1.900 kg y un 35 % neto tras la regeneración. No es una medición de laboratorio, es una estimación explicable.</p>
     </div>
   </div>
 
-  <footer>
-    <span class="source">Fuentes: OpenEV Data · Open-Meteo · modelo físico documentado en docs/DESIGN.md</span>
-    <span class="source">Sin cuentas. Sin cookies.</span>
-  <span class="source"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></span></footer>
+  <div data-shelf="cargador-portatil" data-title="Por si el cálculo se queda justo" data-lede="Un cargador portátil te saca de un apuro cuando el punto público falla o no hay ninguno cerca." data-limit="3"></div>
+  <footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 </main>
 
 <script>
@@ -96,25 +100,27 @@ applyTheme();mql.addEventListener?.("change",applyTheme);
 const n1=new Intl.NumberFormat("es-ES",{minimumFractionDigits:1,maximumFractionDigits:1});
 const n0=new Intl.NumberFormat("es-ES",{maximumFractionDigits:0});
 const tempAdj=t=>t>=20?Math.max(0,(t-20)*0.004):Math.min(0.24,(20-t)*0.014);
+// Modelo: el consumo de referencia equivale a ir a 90 km/h con un 30 % de aerodinámica. La resistencia aerodinámica crece con v².
 function calc(){
   const cap=+document.getElementById("cap").value, base=+document.getElementById("base").value;
   const v=+document.getElementById("vel").value, t=+document.getElementById("temp").value;
-  const climb=+document.getElementById("desnivel").value;
-  const aero=base*0.35*Math.pow(Math.max(0,v-90)/90,2);
-  const clim=(climb/1000)*cap*0.006;
-  const temp=base*tempAdj(t);
-  const roll=base*0.06;
-  const total=base+aero+clim+temp+roll;
+  const dist=Math.max(1,+document.getElementById("dist").value), climb=+document.getElementById("desnivel").value;
+  const speed=base*(0.70+0.30*Math.pow(v/90,2));
+  const aero=speed-base;
+  const temp=speed*tempAdj(t);
+  const grav=(climb/dist*100)*1900*9.81/3.6e6*0.35; // masa supuesta 1.900 kg, 35 % neto tras la regeneración
+  const total=speed+temp+grav;
   document.getElementById("out-use").textContent=n1.format(total)+" kWh/100";
   document.getElementById("out-range").textContent=n0.format(cap/total*100)+" km";
   document.getElementById("out-wltp").textContent=n0.format(cap/base*100)+" km";
   document.getElementById("out-loss").textContent=n0.format((1-base/total)*100)+" %";
-  const parts=[["Aerodinámica",aero],["Rodadura",roll],["Gravedad",clim],["Climatización",temp],["Referencia",base]];
-  const max=Math.max(...parts.map(p=>p[1]));
-  document.getElementById("bars").innerHTML=parts.map(([name,val])=>`<div class="barrow"><span>${name}</span><span class="track"><span class="fill" style="width:${(val/max*100).toFixed(1)}%"></span></span><span class="num">${n1.format(val)}</span></div>`).join("");
+  const parts=[["Velocidad",aero],["Climatización",temp],["Desnivel",grav],["Referencia",base]];
+  const max=Math.max(...parts.map(p=>Math.abs(p[1])));
+  document.getElementById("bars").innerHTML=parts.map(([name,val])=>`<div class="barrow"><span>${name}</span><span class="track"><span class="fill" style="width:${(Math.abs(val)/max*100).toFixed(1)}%"></span></span><span class="num">${n1.format(val)}</span></div>`).join("");
 }
 document.getElementById("calc").addEventListener("click",calc);calc();
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+<script type="module" src="affiliate.js"></script>
 </body>
 </html>

@@ -1,0 +1,51 @@
+Barcelona|5180|929|1534
+Madrid|4769|1349|1387
+Valencia/València|2036|581|702
+Alicante/Alacant|1886|515|669
+Sevilla|1051|303|377
+Balears, Illes|1028|222|535
+Málaga|983|287|352
+Tarragona|959|313|317
+Girona|940|312|358
+Bizkaia|923|198|227
+Palmas, Las|918|223|317
+Murcia|894|299|323
+Asturias|796|246|351
+Cádiz|776|207|250
+Granada|715|219|207
+Navarra|655|301|242
+Coruña, A|615|164|173
+Santa Cruz de Tenerife|575|115|200
+Lleida|575|266|198
+Gipuzkoa|563|148|188
+Zaragoza|560|233|220
+Castellón/Castelló|476|151|153
+Burgos|465|229|156
+Araba/Álava|457|154|119
+Cantabria|441|159|135
+Valladolid|435|197|151
+Toledo|431|173|130
+Almería|408|153|134
+Ciudad Real|405|211|132
+Salamanca|393|164|128
+Pontevedra|384|153|150
+Cáceres|377|149|154
+Córdoba|345|115|142
+Huelva|316|68|125
+Albacete|313|128|90
+Badajoz|312|176|104
+León|278|114|117
+Jaén|255|138|101
+Rioja, La|226|81|81
+Huesca|223|90|90
+Lugo|220|126|81
+Cuenca|199|98|54
+Zamora|195|92|80
+Guadalajara|181|71|82
+Ávila|154|64|51
+Ourense|154|85|62
+Segovia|148|54|64
+Teruel|145|72|54
+Palencia|137|66|55
+Soria|81|32|24
+Ceuta|6|0|1

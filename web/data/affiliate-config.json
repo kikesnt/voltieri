@@ -1,5 +1,12 @@
 {
   "provider": "Amazon.es",
   "tag": "volteri-21",
-  "note": "Escribe aquí tu tag de afiliado de Amazon. Si está vacío, los enlaces funcionan igual pero sin comisión. Ejemplo: voltieri21-21"
+  "note": "tag es el identificador general. En tags puedes poner un identificador de seguimiento distinto por tipo de página (créalos en Amazon Asociados > Gestionar identificadores de seguimiento) para ver qué convierte. Vacío = usa el general.",
+  "tags": {
+    "home": "",
+    "tool": "",
+    "guide": "",
+    "compare": "",
+    "hub": ""
+  }
 }

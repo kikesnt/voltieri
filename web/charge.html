@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Curvas de carga reales de 100 coches y tiempo 10-80 por modelo.">
@@ -39,12 +39,17 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
 @media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body>
 
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
   </div>
@@ -89,10 +94,8 @@ footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:
     </div>
   </div>
 
-  <footer>
-    <span class="source">Modelo documentado en docs/DESIGN.md · sin datos de fabricante</span>
-    <span class="source">Sin cuentas. Sin cookies.</span>
-  <span class="source"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></span></footer>
+  <div data-shelf="cables-tipo2" data-title="Un buen cable cambia la carga" data-lede="Con el cable adecuado cargas a la potencia que admite tu coche, también en puntos que no lo traen." data-limit="3"></div>
+  <footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 </main>
 
 <script src="tools-data.js"></script>
@@ -168,5 +171,6 @@ document.getElementById("calc").addEventListener("click",calc);calc();
 })();
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+<script type="module" src="affiliate.js"></script>
 </body>
 </html>

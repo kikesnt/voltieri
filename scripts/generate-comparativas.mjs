@@ -4,6 +4,10 @@ import path from "node:path";
 
 const OUT = path.resolve("web");
 const data = JSON.parse(await fs.readFile(path.join(OUT,"data/amazon-products.json"),"utf8"));
+const cfg = JSON.parse(await fs.readFile(path.join(OUT,"data/affiliate-config.json"),"utf8"));
+const TAG = cfg.tag;
+const SHOW = data.showPrices === true; // precios y valoraciones solo si vienen de la API oficial
+const img = asin => `https://ws-eu.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=ES&ASIN=${asin}&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=${TAG}`;
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
 const META = {
@@ -52,7 +56,7 @@ const META = {
     desc:"Comparativa de cargadores portátiles Tipo 2 y Schuko con precios y valoraciones reales de Amazon.es.",
     h2:["Cómo elegir un cargador portátil","Schuko frente a Tipo 2","Corriente ajustable y pantalla","Cuándo usarlo como respaldo","Preguntas frecuentes"],
     body:[
-      "Un cargador portátil sirve para visitas a familiares o como和安全 respaldo en viaje. No sustituye a un wallbox porque depende de un enchufe doméstico.",
+      "Un cargador portátil sirve para visitas a familiares o como respaldo seguro en viaje. No sustituye a un wallbox porque depende de un enchufe doméstico.",
       "Los modelos con enchufe Schuko cargan a 3,7 kW. Los que llevan conector Tipo 2 necesitan un punto con ese conector, por lo que son menos universales.",
       "Ajustar la intensidad de 6 a 16 A permite adaptarse a la instalación disponible. La pantalla ayuda a ver corriente y temperatura.",
       "Úsalo como plan B. Para cargar cada noche, un wallbox con instalación revisada es más seguro y cómodo.",
@@ -84,62 +88,135 @@ const META = {
       "Antes de usarlo, revisa la potencia total de lo que conectas y evita prolongadores largos. La protección IP54 es útil si lo usas al aire libre.",
       "¿Descarga mucha batería? Depende del consumo conectado. ¿Sirve para cargar otro coche? No: un V2L no es un cargador EV."
     ]
+  }  ,
+  "inflador-neumaticos": {
+    file:"comparativa-inflador-neumaticos.html",
+    title:"Mejores infladores y medidores de presión para coche eléctrico (2026)",
+    desc:"Comparativa de infladores portátiles y manómetros para revisar la presión de los neumáticos de tu coche eléctrico.",
+    h2:["Por qué importa la presión en un eléctrico","Inflador portátil o solo medidor","Qué mirar al comprar","Cómo usarlo bien","Preguntas frecuentes"],
+    body:[
+      "Una clase energética peor y una presión baja pueden añadir hasta un 10 % de consumo en un eléctrico. Revisar la presión cada mes es la comprobación más barata que existe y la que más autonomía devuelve.",
+      "Un manómetro digital basta para comprobar. Un inflador portátil de 12 V te permite además corregir en el momento, sin buscar una gasolinera. Si quieres una sola compra, elige un inflador con manómetro integrado.",
+      "Fíjate en la parada automática al llegar a la presión elegida, en que muestre bar y PSI, en la longitud del cable de alimentación y en que sea compatible con las válvulas de tu coche.",
+      "Mide siempre en frío, con los neumáticos sin rodar, y usa los valores de la etiqueta del marco de la puerta, no el máximo del neumático. Vuelve a comprobar tras un cambio fuerte de temperatura.",
+      "¿Necesito inflador si el coche tiene sensor de presión? El sensor avisa, pero no corrige. ¿Cada cuánto debo medir? Cada mes y antes de un viaje largo."
+    ]
+  },
+  "soporte-cable": {
+    file:"comparativa-soporte-cable.html",
+    title:"Mejores bolsas, soportes y candados para el cable de carga (2026)",
+    desc:"Comparativa de bolsas, soportes de pared y candados para guardar y proteger el cable de carga de tu coche eléctrico.",
+    h2:["Por qué cuidar el cable","Soporte de pared o bolsa","Candado para el cable","Qué mirar al comprar","Preguntas frecuentes"],
+    body:[
+      "El cable de carga es una de las piezas más caras que llevas fuera del coche. Enrollado a la fuerza, arrastrado por el suelo o dejado a la intemperie se deteriora antes.",
+      "Un soporte de pared junto al wallbox mantiene el cable colgado y fuera del suelo. Una bolsa o funda lo protege en el maletero y evita que se ensucie el resto del equipaje.",
+      "Si cargas en un punto público, un candado para el cable lo asegura mientras está conectado. No impide un robo determinado, pero disuade el oportunista. Comprueba que sea compatible con tu conector.",
+      "Revisa la longitud del cable que vas a guardar, el material resistente a la intemperie y que el soporte aguante el peso del cable. Si lo cuelgas en la pared, usa tacos adecuados a tu pared.",
+      "¿Puedo dejar el cable colgado en la intemperie? Mejor protegido. ¿Sirve el mismo soporte para cables de 5 y 7 m? Normalmente sí, comprobando el diámetro."
+    ]
+  },
+  "maleta-viaje": {
+    file:"comparativa-maleta-viaje.html",
+    title:"Mejores maletas y organizadores de maletero para el cable y los adaptadores (2026)",
+    desc:"Comparativa de bolsas y maletas para llevar ordenados en el maletero el cable de carga, los adaptadores y el cargador portátil.",
+    h2:["Qué llevar siempre en el maletero","Maleta rígida o bolsa blanda","Cómo organizarlo","Qué mirar al comprar","Preguntas frecuentes"],
+    body:[
+      "En un viaje largo conviene llevar el cable Tipo 2, los adaptadores que uses y, si quieres un respaldo, un cargador portátil. Sueltos ruedan por el maletero y se ensucian.",
+      "Una bolsa blanda se adapta a cualquier hueco y pesa poco. Una maleta rígida protege mejor los adaptadores y los conectores, a cambio de ocupar más espacio.",
+      "Guarda el cable enrollado en grandes vueltas sin forzar y los conectores en un compartimento propio. Deja el cable cargado al final, listo para sacar sin deshacer el equipaje.",
+      "Mira las dimensiones interiores, la cremallera, el material resistente al agua y si tiene separadores para los adaptadores. Que se pueda limpiar fácilmente es un plus.",
+      "¿Cabe un cable de 7,5 m? Casi siempre, enrollado. ¿Sirve también para el cargador portátil? Si el tamaño lo permite, sí."
+    ]
+  },
+  "nevera-v2l": {
+    file:"comparativa-nevera-v2l.html",
+    title:"Mejores neveras de 12 V y accesorios V2L para viajar y acampar (2026)",
+    desc:"Comparativa de neveras eléctricas y accesorios para usar con la batería del coche o con un adaptador V2L en viajes y camping.",
+    h2:["Qué puedes alimentar con V2L","Nevera de 12 V o de 220 V","Cuánto consume","Qué mirar al comprar","Preguntas frecuentes"],
+    body:[
+      "Un adaptador V2L convierte la batería del coche en una toma de corriente. Sirve para una nevera, una cafetera, herramientas o iluminación en un camping o una parada larga, si tu coche admite la función.",
+      "Las neveras de compresor de 12 V se conectan a la toma del coche y consumen poco. Las de 220 V se enchufan al V2L y suelen ofrecer más capacidad. Elige según el espacio y de dónde vayas a alimentarla.",
+      "El consumo depende del modelo y de la temperatura exterior. Compara el dato de potencia o de consumo medio que dé el fabricante y no superes la potencia máxima de tu adaptador V2L.",
+      "Mira la capacidad en litros, si es de compresor, el nivel de ruido, que tenga protección de batería y que el cable llegue a la toma. Consulta que tu coche permite el V2L antes de comprar.",
+      "¿Descarga mucho la batería? Depende del consumo y las horas. ¿Puedo usarla con el coche apagado? Con V2L, según el manual de tu modelo."
+    ]
+  },
+  "invierno": {
+    file:"comparativa-invierno.html",
+    title:"Mejores cubiertas y raspadores para el coche eléctrico en invierno (2026)",
+    desc:"Comparativa de cubiertas de parabrisas y raspadores para el invierno, junto con consejos para no perder autonomía con el frío.",
+    h2:["Qué cambia en invierno","Cubierta de parabrisas y raspador","Precalentar sin gastar batería","Qué mirar al comprar","Preguntas frecuentes"],
+    body:[
+      "Con el frío, un eléctrico pierde entre un 10 % y un 25 % de autonomía según la temperatura. Parte de esa pérdida es la calefacción, y parte, la batería.",
+      "Una cubierta de parabrisas evita rascar el hielo por la mañana. Un raspador resistente es el complemento básico. Las dos cosas reducen el tiempo que necesitas con el coche encendido.",
+      "Precalentar el coche enchufado usa la electricidad de la red en lugar de la batería, y es la mejor forma de empezar el viaje con el habitáculo templado sin perder kilómetros.",
+      "Fíjate en que la cubierta cubra todo el parabrisas y los retrovisores, que tenga sujeciones fiables y que el raspador no raye el cristal. Mejor materiales resistentes a bajas temperaturas.",
+      "¿La cubierta evita que se hiele? Evita que el hielo se pegue directamente al cristal. ¿Cuánto cuesta calentar el coche enchufado? Muy poco comparado con el consumo en carretera."
+    ]
   }
 };
 
+const card = p => `<article class="product">
+  <span class="thumb-slot" data-src="${p.image && /^https:\/\/(m\.media-amazon\.com|images-eu\.ssl-images-amazon\.com|ws-eu\.amazon-adsystem\.com)\//.test(p.image) ? p.image : img(p.asin)}" aria-hidden="true"></span>
+  ${SHOW ? `<span class="badge">${esc(p.best)}</span>` : ""}
+  <h3>${esc(p.title)}</h3>
+  ${SHOW ? `<div class="pmeta"><span class="price">${esc(p.price)}</span>${p.rating ? `<span>★ ${esc(p.rating)}</span>` : ""}</div>` : ""}
+  <a class="buy" data-asin="${p.asin}" href="https://www.amazon.es/dp/${p.asin}?tag=${TAG}" rel="sponsored nofollow noopener" target="_blank">${SHOW ? "Ver oferta en Amazon" : "Ver precio en Amazon"}</a>
+</article>`;
+
 const tpl = (cat, meta) => `<!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(meta.title)} | Voltieri</title>
 <meta name="description" content="${esc(meta.desc)}">
 <link rel="canonical" href="https://kikesnt.github.io/voltieri/${meta.file}">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png"><meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css">
-<style>
-header{display:flex;align-items:center;gap:20px;padding:14px 30px;background:var(--paper);border-bottom:1px solid var(--ink)}
-.brand{font-size:12px;font-weight:600;letter-spacing:.2em;color:var(--ink);text-decoration:none}
-nav{margin-left:auto;display:flex;gap:16px;font-size:12px}nav a{color:var(--muted);text-decoration:none}
-main{max-width:860px;margin:0 auto;padding:50px 26px 90px}
-h1{font-size:clamp(32px,4vw,48px);line-height:1.06;letter-spacing:-.04em;font-weight:500}
-.meta{font-family:var(--font-data);font-size:9px;letter-spacing:.12em;color:var(--muted);margin-top:16px;text-transform:uppercase}
-.lede{font-size:15px;line-height:1.7;margin-top:22px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
-h2{font-size:24px;letter-spacing:-.03em;font-weight:500;margin-top:40px;padding-top:16px;border-top:1px solid var(--rule)}
-h3{font-size:16px;font-weight:500;margin-top:22px}
-p,li{font-size:14px;line-height:1.7;margin-top:12px}
-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}
-th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--rule)}
-th{font-family:var(--font-data);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.buy{display:inline-block;padding:7px 10px;background:var(--ink);color:var(--paper);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
-.buy:hover{background:var(--amber)}
-.best{font-family:var(--font-data);font-size:8px;color:var(--amber);text-transform:uppercase}
-.source{font-size:10px;color:var(--muted);line-height:1.6;margin-top:12px}
-footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:flex;gap:18px;flex-wrap:wrap;font-family:var(--font-data);font-size:9px;color:var(--muted)}
-footer a{color:var(--muted)}
-@media(max-width:700px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 70px}table{font-size:10px}}
-</style>
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css"><link rel="stylesheet" href="blog.css">
+<script src="theme.js"></script>
+<script src="cookies.js" defer></script>
 </head>
 <body>
-<header><a class="brand" href="index.html">VOLTIERI</a><nav><a href="comparativas.html">Comparativas</a><a href="productos.html">Productos</a><a href="blog/">Blog</a></nav></header>
-<main>
+<header><a class="brand" href="index.html">Voltieri</a><nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav></header>
+<main class="post">
+<p class="crumbs"><a href="productos.html">Equipamiento</a> / ${esc(cat.name)}</p>
 <h1>${esc(meta.title)}</h1>
-<div class="meta">Comparativa · 21 de noviembre de 2026 · datos de Amazon.es · tag volteri-21</div>
-<p class="lede">${esc(cat.intro)} Hemos recogido ${cat.products.length} productos con su ASIN, precio y valoración del día de publicación. Los enlaces son de afiliado y el precio no cambia para ti.</p>
-${meta.h2.map((h,i)=>`<h2>${esc(h)}</h2><p>${esc(meta.body[i])}</p>${i===0?productTable(cat):""}${i===2?`<h3>Productos destacados</h3><ul>${cat.products.slice(0,3).map(p=>`<li>${esc(p.title)} — ${esc(p.price)} — ${p.rating?esc(p.rating)+" ★":"sin valoración"} · <a class="buy" data-asin="${p.asin}" href="https://www.amazon.es/dp/${p.asin}?tag=volteri-21" rel="sponsored nofollow" target="_blank">Ver en Amazon →</a></li>`).join("")}</ul>`:""}`).join("\n")}
-<h2>Todos los productos comparados</h2>
-${productTable(cat)}
-<p class="source">Precios y valoraciones recogidos el 21/11/2026 de Amazon.es. Pueden cambiar. Enlaces con <code>rel="sponsored nofollow"</code>. Ver política de afiliados.</p>
-<footer><a href="comparativas.html">Comparativas</a><a href="index.html">Inicio</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a><span>© 2027 Voltieri</span></footer>
+<p class="meta">Comparativa · ${cat.products.length} productos de Amazon.es · actualizada el 22 de noviembre de 2026</p>
+<p class="lede">${esc(cat.intro)} Los enlaces son de afiliado y el precio no cambia para ti.</p>
+<section><h2>${esc(meta.h2[0])}</h2><p>${esc(meta.body[0])}</p>
+<div class="products">${cat.products.map(card).join("")}</div></section>
+${meta.h2.slice(1).map((h,i)=>`<section><h2>${esc(h)}</h2><p>${esc(meta.body[i+1])}</p></section>`).join("\n")}
+<p class="note">Como afiliado de Amazon, Voltieri obtiene ingresos por las compras adscritas que cumplen los requisitos aplicables.${SHOW ? ` Precios y valoraciones de Amazon.es del ${esc(data.date.split("-").reverse().join("/"))}, pueden cambiar.` : " El precio actual y la disponibilidad los ves en Amazon.es."} <a href="afiliados.html">Cómo lo hacemos</a>.</p>
+<footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 </main>
-<script type="module">import { loadAffiliateConfig } from "./affiliate.js"; loadAffiliateConfig();</script>
+<script type="module" src="affiliate.js"></script>
 </body>
 </html>`;
-const productTable = cat => `<table><thead><tr><th>#</th><th>Producto</th><th class="num">Precio</th><th class="num">Valoración</th><th>Compra</th></tr></thead><tbody>${cat.products.map((p,i)=>`<tr><td>${String(i+1).padStart(2,"0")}</td><td><span class="best">${esc(p.best)}</span><br>${esc(p.title)}<br><span class="source">ASIN ${p.asin}</span></td><td class="num">${esc(p.price)}</td><td class="num">${p.rating?esc(p.rating)+" ★":"—"}</td><td><a class="buy" data-asin="${p.asin}" href="https://www.amazon.es/dp/${p.asin}?tag=volteri-21" rel="sponsored nofollow" target="_blank">Ver en Amazon →</a></td></tr>`).join("")}</tbody></table>`;
 
-for (const cat of data.categories) {
+const live = data.categories.filter(c => c.products.length && META[c.id]); // las categorías sin productos no generan página
+for (const cat of live) {
   const meta = META[cat.id];
   await fs.writeFile(path.join(OUT, meta.file), tpl(cat, meta));
   console.log("OK", meta.file);
 }
+
+// Página de equipamiento: solo las categorías que ya tienen productos
+const hubHead = (await fs.readFile(path.join(OUT, "productos.html"), "utf8")).split("<main")[0];
+const hubFoot = (await fs.readFile(path.join(OUT, "productos.html"), "utf8")).match(/<footer class="site-footer">[\s\S]*?<\/footer>/)[0];
+const hub = `${hubHead}<main class="post post--wide">
+<h1>Equipamiento para tu coche eléctrico</h1>
+<p class="lede">Lo que de verdad necesitas para cargar en casa, en la calle y de viaje, con los modelos mejor valorados de cada categoría. Cada bloque enlaza a su comparativa completa.</p>
+<nav class="toc" aria-label="Categorías"><strong>Categorías</strong><ol>${live.map(c => `<li><a href="#${c.id}">${esc(c.name)}</a></li>`).join("")}</ol></nav>
+${live.map(c => `<section id="${c.id}"><div data-shelf="${c.id}" data-title="${esc(c.name)}" data-lede="${esc(c.intro)}" data-limit="3"></div></section>`).join("")}
+<p class="note">Como afiliado de Amazon, Voltieri obtiene ingresos por las compras adscritas que cumplen los requisitos aplicables. El precio para ti no cambia. <a href="afiliados.html">Cómo lo hacemos</a>.</p>
+${hubFoot}
+</main>
+<script type="module" src="affiliate.js"></script>
+</body>
+</html>
+`;
+await fs.writeFile(path.join(OUT, "productos.html"), hub);

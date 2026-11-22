@@ -2,3 +2,12 @@
 *.log
 .env
 .env.*
+
+# Catálogo crudo de Amazon (se regenera con scripts/amazon-scrape.py)
+data/amazon-candidatos.json
+data/amazon-fichas.json
+data/amazon-seleccion.json
+
+# Config local de desarrollo
+.claude/
+__pycache__/

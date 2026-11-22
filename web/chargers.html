@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Mapa de 2.500 puntos de recarga DC en España del registro MITECO.">
@@ -18,12 +18,12 @@
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
 <style>
-header{position:absolute;inset:0 0 auto;z-index:20;height:56px;display:flex;align-items:center;gap:26px;padding:0 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
+header{position:absolute;inset:0 0 auto;z-index:20;height:64px;display:flex;align-items:center;gap:26px;padding:0 32px;background:var(--paper);border-bottom:1px solid var(--ink)}
 .brand{font-size:12px;font-weight:600;letter-spacing:.22em}
 nav{display:flex;gap:20px;font-size:12px}
 nav a{color:var(--muted);text-decoration:none}
 .head-right{margin-left:auto}
-#map{position:absolute;inset:56px 0 0 0;background:var(--paper)}
+#map{position:absolute;inset:64px 0 0 0;background:var(--paper)}
 .panel{position:absolute;left:24px;top:84px;z-index:15;width:340px;padding:20px;max-height:calc(100vh - 130px);overflow:auto}
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
 .list{margin-top:18px;display:flex;flex-direction:column}
@@ -35,12 +35,17 @@ nav a{color:var(--muted);text-decoration:none}
 @media(max-width:760px){header{padding:0 18px}nav{display:none}.panel{left:12px;right:12px;top:auto;bottom:12px;width:auto;max-height:44vh}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body>
 
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
   </div>
@@ -63,8 +68,8 @@ nav a{color:var(--muted);text-decoration:none}
 <script type="module">
 let STATIONS = [];
 const PAL = {
-  day:  { bg:"#EFE7D5", water:"#B7CFCB", line:"#C9B79A", hill:{s:"#6B5A44",h:"#FFF8E6",a:"#8A7355"} },
-  night:{ bg:"#080B09", water:"#143830", line:"#2E4E45", hill:{s:"#14221D",h:"#454032",a:"#6A9B81"} }
+  day:  { bg:"#EEF0EA", water:"#D3E2E3", line:"#D8DCD2", hill:{s:"#D9DDD2",h:"#FFFFFF",a:"#E4E7DE"} },
+  night:{ bg:"#0C100E", water:"#13241F", line:"#26332D", hill:{s:"#0A0F0D",h:"#22362D",a:"#16241E"} }
 };
 let map, markers = [];
 const KEY = "voltieri-theme", mql = matchMedia("(prefers-color-scheme: dark)");
@@ -141,7 +146,7 @@ map.on("load",()=>{
   applyTheme();
 });
 </script>
-<footer style="display:flex;gap:18px;flex-wrap:wrap;padding:18px 30px;background:var(--paper-deep);border-top:1px solid var(--ink);font-family:var(--font-data);font-size:9px;color:var(--muted)"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a><span>© 2027 Voltieri · Sin cuentas</span></footer>
+<footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
 </body>
 </html>

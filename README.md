@@ -23,9 +23,10 @@
 - [x] Fase 3: simuladores, PWA, contenido, SEO programático y afiliados.
 - [x] Motor de rutas real (OSRM + Open-Meteo) y mapa de autonomía con anillos isócronos por clic.
 - [x] **56 herramientas**: optimizador PVPC, carrera en ruta, V2G solar y 7 herramientas nuevas en el hub.
-- [x] Afiliados Amazon reales: tag `volteri-21` en `web/data/affiliate-config.json`, 23 productos con ASIN en `web/data/amazon-products.json`, 4 comparativas y botones de compra en la portada.
+- [x] Afiliados Amazon reales: tag `volteri-21` en `web/data/affiliate-config.json`, catálogo de equipamiento curado en `web/data/amazon-products.json`, 11 comparativas y botones de compra en la portada.
+- [x] Catálogo de Amazon curado con Chrome headless en local (`scripts/amazon-scrape.py` + `scripts/import-scrape.mjs`): búsqueda, ficha de cada producto, imagen en alta resolución verificada y precios y valoraciones con fecha.
 - [x] Investigación de 200 keywords reales de Google Suggest y plan de 12 artículos (`docs/KEYWORDS.md`).
-- [x] Métricas reales de 40 keywords desde Ubersuggest (`data/keywords-metrics.txt`). 12 artículos de 1.600+ palabras con linter de humanización (`docs/HUMANIZER.md`).
+- [x] Métricas reales de 40 keywords desde Ubersuggest (`data/keywords-metrics.txt`). 17 guías generadas con `scripts/generate-articles.mjs`, cada una con su palabra clave, herramientas, guías relacionadas y equipamiento afiliado.
 - [x] PWA instalable, API JSON pública y alertas sin cuenta.
 
 Las herramientas están en `web/`: seis con página propia y cuarenta en el hub de cinco páginas por categoría (`tools-data.js` + `tools.js`). Cada una tiene URL compartible y funciona sin cuenta.

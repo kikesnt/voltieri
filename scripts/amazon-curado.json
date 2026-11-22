@@ -1,0 +1,103 @@
+{
+  "_nota": "Curado editorial del equipamiento de Amazon.es. El orden de la lista es el orden en el que se muestran (el primero es el mejor valorado, el de más trayectoria). El título es el de Voltieri: marca + modelo + el dato que decide la compra. Los ASIN que no estén en el scrape se avisan y se quedan fuera.",
+  "cables-tipo2": [
+    { "asin": "B0DT6WYJH4", "title": "bokman EV Cable Tipo 2 7,4 kW · 5 m" },
+    { "asin": "B0CKSG4G98", "title": "bokman EV Cable Tipo 2 22 kW · 5 m" },
+    { "asin": "B0CRR369BM", "title": "Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m" },
+    { "asin": "B0CN2Q246Y", "title": "GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico" },
+    { "asin": "B0CN2Q1GDS", "title": "GONEO Cable Tipo 2 11 kW · 5 m · 16 A trifásico" },
+    { "asin": "B0DMNSBF55", "title": "tomons Cable Tipo 2 22 kW · 7 m · 32 A trifásico" },
+    { "asin": "B0CQY54JDW", "title": "MCEVKELN Cable Tipo 2 11 kW · 7 m · trifásico" },
+    { "asin": "B0FK4CP262", "title": "ELEGRP Cable Tipo 2 22 kW · 5 m · 32 A trifásico" }
+  ],
+  "wallbox": [
+    { "asin": "B0DTHYC2RD", "title": "Wallbox 7,4 kW con app · 6 m" },
+    { "asin": "B0DJTYBY2W", "title": "Wallbox 7,4 kW · cable 7,5 m" },
+    { "asin": "B0G7WY45P6", "title": "Wallbox 7,4 kW · 7 m · 6–32 A" },
+    { "asin": "B0CTCL7RRB", "title": "Wallbox 7,4 kW con RCD tipo A + 6 mA CC" },
+    { "asin": "B0FXH4FG2Z", "title": "dé Mobile Wallbox 11 kW · app · cable 7 m" },
+    { "asin": "B0F66SBFVZ", "title": "AIMILER Cargador 11 kW trifásico · app · OLED" },
+    { "asin": "B0F7QL6THK", "title": "dé Wallbox 7,4 kW con app · cable 7,5 m" }
+  ],
+  "adaptadores-ccs2": [
+    { "asin": "B0G5X3LZ95", "title": "Adaptador CCS1 a CCS2 · 1000 V · 400 A" },
+    { "asin": "B0CJ536JSN", "title": "Adaptador CCS2 a CCS1 · 1000 V · 500 A" },
+    { "asin": "B0D1JYR1S9", "title": "Adaptador Tipo 1 a Tipo 2 · SAE J1772" },
+    { "asin": "B0FH597FVT", "title": "Adaptador CCS1 a CCS2 · 1000 V · 250 A" },
+    { "asin": "B0D1G9R7NJ", "title": "Adaptador Tipo 2 a NACS · 60 A" }
+  ],
+  "cargador-portatil": [
+    { "asin": "B0C8SFXJHM", "title": "Cargador Schuko 3,7 kW · 6 m" },
+    { "asin": "B0H33CGXZM", "title": "Junsun Cargador EV portátil 3,6 kW · 6–16 A" },
+    { "asin": "B0DGT8PRHH", "title": "Cargador Schuko 3,7 kW · 7 m con app" },
+    { "asin": "B0FKGT9Q5M", "title": "Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A" },
+    { "asin": "B0FPM7K4TF", "title": "GONEO Schuko 3,68 kW · sensor de temperatura" },
+    { "asin": "B0G7XK241Q", "title": "Cargador 3,7 kW · 7 m · 6–16 A con LCD" },
+    { "asin": "B0G7XX3XR3", "title": "EzGoGo Cargador portátil 3,7 kW · 7 m · 6–16 A" },
+    { "asin": "B0CQK3VXQ4", "title": "Cargador portátil Tipo 2 · 3,6 kW · 6 m con bolsa" }
+  ],
+  "estaciones-22kw": [
+    { "asin": "B0GLP11DQQ", "title": "Wallbox 22 kW · 6–32 A trifásico · app · 6 m" },
+    { "asin": "B0DHQXPM78", "title": "Wallbox 22 kW app · 7,5 m · RFID" },
+    { "asin": "B0DL8P9BRH", "title": "dé Cargador 22 kW · 7 m · 6–32 A trifásico" },
+    { "asin": "B0GN275JWS", "title": "Wallbox 22 kW con app · 400 V · 6–32 A · 8 m" },
+    { "asin": "B0GLPC3PJN", "title": "AIMILER Wallbox 11 kW trifásico · app · 7,6 m" }
+  ],
+  "v2l": [
+    { "asin": "B0GX5ZPSK1", "title": "Adaptador V2L XPeng · 3,5 kW · 16 A · IP54" },
+    { "asin": "B0DYV2BG8D", "title": "JULIK Adaptador V2L Atto 3, Dolphin, Seal · 3,5 kW" },
+    { "asin": "B0D4Z6N488", "title": "Adaptador Tipo 2 a Schuko · 3,5 kW · 16 A · 70 cm" },
+    { "asin": "B0DCJRB2M2", "title": "Adaptador V2L para Smart · 10 A · vehículo a enchufe" },
+    { "asin": "B0DM4TTP6H", "title": "Adaptador de descarga V2L · 3,5 kW · 16 A · 220 V" }
+  ],
+  "inflador-neumaticos": [
+    { "asin": "B0D17RJP1T", "title": "ETENWOLF Zephyr S3 · 7800 mAh · 11,03 bar" },
+    { "asin": "B0CBBP8BQX", "title": "Xiaomi Portable Air Compressor 2 · inflador portátil" },
+    { "asin": "B0GSV4CR98", "title": "Xiaomi Mijia Compact · compresor portátil" },
+    { "asin": "B0DLBGZG3N", "title": "Xiaomi Air Compressor 2 Pro · 11,03 bar" },
+    { "asin": "B0D6BQV9JL", "title": "ETENWOLF T500 · manómetro digital · 0-17,24 bar" },
+    { "asin": "B07D3PVBJ4", "title": "AstroAI Inflador digital · 250 PSI · con manómetro" },
+    { "asin": "B07Y9HS7GT", "title": "AstroAI Manómetro digital · pilas AAA" },
+    { "asin": "B0D3KM6T9T", "title": "Oasser Compresor portátil · 150 PSI · 4000 mAh" }
+  ],
+  "soporte-cable": [
+    { "asin": "B09ZVLQWRW", "title": "Wallbox Soporte de pared · tipo 2 · ahorra espacio" },
+    { "asin": "B0BXXBPSK1", "title": "MCEVKELN Soporte de pared · cable de carga tipo 2" },
+    { "asin": "B0CZLHY8CP", "title": "Soporte de pared tipo 2 · organizador de cable" },
+    { "asin": "B0CB76N7NJ", "title": "Soporte de cargador tipo 2 con candado · IEC 62196-2" },
+    { "asin": "B09XF6HC5N", "title": "igadgitz Xtra U7225 · funda para cable de carga" },
+    { "asin": "B08T1ML1P3", "title": "Green Cell EV PowerCase · funda para cable tipo 2" },
+    { "asin": "B09HL225ZY", "title": "Adiwo Soporte de pared · cable de carga tipo 2" },
+    { "asin": "B07FW3GTXB", "title": "Alex Tech Manguito de cable · auto-cierre · 3,1 m" }
+  ],
+  "maleta-viaje": [
+    { "asin": "B0D7VVD348", "title": "FORTEM Organizador de maletero · 50 L · plegable" },
+    { "asin": "B07Q32LFQ3", "title": "FORTEM Organizador de maletero · 105 L · con bolsa térmica" },
+    { "asin": "B00Q6ZZPP8", "title": "achilles Organizador de maletero · XL · con bolsillo de red" },
+    { "asin": "B0H2J1JY8K", "title": "Oasser Organizador de maletero · 95 L · con bolsa nevera" },
+    { "asin": "B07N142RPC", "title": "Praknu Organizador de maletero · 45 L · 3 compartimentos" },
+    { "asin": "B09ZHVSV9V", "title": "K KNODEL Organizador de maletero · mini" },
+    { "asin": "B0GR8CLV3D", "title": "Einesin Bolsa de herramientas de fieltro · 40 × 15 × 25 cm" },
+    { "asin": "B0999JVT25", "title": "EINESIN Red de almacenamiento · organizador de maletero" }
+  ],
+  "nevera-v2l": [
+    { "asin": "B09WB4112V", "title": "KESSER Nevera de compresor · 50 L · con app" },
+    { "asin": "B0BNVKHBDQ", "title": "AAOBOSI Nevera portátil · 75 L · 12 V/230 V · IPX4" },
+    { "asin": "B0FVLVVSKZ", "title": "AAOBOSI Nevera portátil · 50 L · 12 V/230 V · IPX4" },
+    { "asin": "B0DT4RMS4R", "title": "Berger Nevera termoeléctrica · 25 L · 12/230 V" },
+    { "asin": "B01DHXYHVE", "title": "TZS First Austria Nevera eléctrica · 32 L · 12 V/230 V" },
+    { "asin": "B08HMLNN91", "title": "Alpicool K25 · nevera de viaje · 25 L · 12/24 V" },
+    { "asin": "B0B8W9WHBX", "title": "BINGI Nevera de compresor · 12,8 L · 12 V/220 V" },
+    { "asin": "B0DYV2BG8D", "title": "JULIK Adaptador V2L · Atto 3, Dolphin, Seal · 3,5 kW" }
+  ],
+  "invierno": [
+    { "asin": "B0HDBBZV2Q", "title": "Cubierta de parabrisas de invierno · 240 × 148 cm · 5 capas" },
+    { "asin": "B077RQ6WKQ", "title": "Tevlaphee Protector magnético de parabrisas · 197 × 128 cm" },
+    { "asin": "B0GFCW3ZSR", "title": "Protector de parabrisas antihielo · magnético" },
+    { "asin": "B0DD7MK8LC", "title": "Parasol y protector de parabrisas · 116 × 160 cm" },
+    { "asin": "B0FLQ3KBNC", "title": "Fiskars Raspador de hielo Solid · 26 cm" },
+    { "asin": "B006GD9UWE", "title": "Carpoint Raspador de hielo Vileda" },
+    { "asin": "B0CQ2J1FDV", "title": "NIGRIN Raspador de hielo · mango ergonómico" },
+    { "asin": "B01MTNYWUR", "title": "Raspador de hielo Murska · 2 piezas" }
+  ]
+}

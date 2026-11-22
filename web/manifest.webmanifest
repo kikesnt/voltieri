@@ -2,13 +2,30 @@
   "name": "Voltieri — Copiloto EV",
   "short_name": "Voltieri",
   "description": "Autonomía real, rutas, cargadores y costes para coches eléctricos. Sin cuentas.",
-  "start_url": "hoja.html",
+  "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#EFE7D5",
-  "theme_color": "#C4441E",
+  "background_color": "#F8F7F3",
+  "theme_color": "#0E7A53",
   "lang": "es-ES",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }

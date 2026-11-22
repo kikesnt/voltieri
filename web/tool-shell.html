@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Coste por 100 km de un coche eléctrico con precios reales.">
@@ -54,12 +54,17 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--ink);display:
 }
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body>
 
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button>
     <button type="button" data-mode="day">Día</button>
@@ -98,19 +103,11 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--ink);display:
       </table>
 
       <p class="calc-note">El cálculo usa consumo medido y precio de energía introducidos por ti. Mantenimiento: estimación orientativa. Cambia cualquier dato y vuelve a calcular.</p>
-
-      <div class="affiliate">
-        <span class="thumb"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 1 L4 9 H7 L6 15 L12 6 H9 Z" fill="currentColor"/></svg></span>
-        <span><strong>Cable Tipo 2 · 5 m · 22 kW</strong><span class="meta">Para cargar fuera de casa · 29 €</span></span>
-        <span class="source" style="margin-left:auto">Enlace de afiliado · el precio no cambia</span>
-      </div>
     </div>
   </div>
 
-  <footer>
-    <span class="source">Fuentes: precio PVPC · REE/ESIOS · datos introducidos por el usuario</span>
-    <span class="source">Sin cuentas. Sin cookies.</span>
-  <span class="source"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a></span></footer>
+  <div data-shelf="cables-tipo2" data-title="Para cargar fuera de casa" data-lede="Un cable Tipo 2 de 5 m es lo primero que debes llevar." data-limit="3"></div>
+  <footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
 </main>
 
 <script src="data-live.js"></script>
@@ -148,5 +145,6 @@ calculate();
 loadLivePrices().then(()=>calculate());
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
+<script type="module" src="affiliate.js"></script>
 </body>
 </html>

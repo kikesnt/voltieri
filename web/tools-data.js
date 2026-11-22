@@ -49,6 +49,7 @@ async function loadVehicles() {
   CAR_NAMES.sort((a, b) => a.localeCompare(b, "es"));
 }
 
+const K_WINTER=.80, K_120=.81, K_HILLS=.92; // 0 °C: consumo +24 %. 120 km/h: +23 % (modelo de la herramienta de autonomía)
 const car = id => ({ id, type:"car" });
 const selx = (id, options) => ({ id, type:"select", options, value: options[0] });
 const num = (id, label, value, unit, min, max, step=1) => ({ id, label, value, unit, min, max, step });
@@ -61,7 +62,7 @@ const TOOLS = [
     inputs:[car("a"),car("b")],
     calc:v=>{ const A=CARS[v.a],B=CARS[v.b]; return {
       out:[{l:"Autonomía real",v:`${A.range} / ${B.range} km`},{l:"Consumo",v:`${nf1.format(A.use)} / ${nf1.format(B.use)}`},{l:"Carga DC",v:`${A.dc} / ${B.dc} kW`},{l:"Precio",v:`${A.price?eur(A.price):"Sin dato"} / ${B.price?eur(B.price):"Sin dato"}`}],
-      table:table(["Campo",v.a,v.b],[["Batería",A.battery+" kWh",B.battery+" kWh"],["Autonomía WLTP",A.wltp+" km",B.wltp+" km"],["0–100 km/h",nd(A.accel)+" s",nd(B.accel)+" s"],["Euro NCAP",nd(A.ncap)+" ★",nd(B.ncap)+" ★"]]),
+      table:table(["Campo",v.a,v.b],[["Batería",A.battery+" kWh",B.battery+" kWh"],["Autonomía WLTP",A.wltp+" km",B.wltp+" km"],["0–100 km/h",nd(A.accel)+" s",nd(B.accel)+" s"]]),
       note:"Fichas: OpenEV Data v1.24.0. Autonomía real: ev-database.org cuando existe; si no, WLTP × 0,85. Precio: RRP de Alemania según ev-database.org, no precio español."}; }},
 
   { id:"tamano", cat:"compare", name:"Comparador de tamaño", h1:"¿Cómo caben en tu garaje?",
@@ -76,7 +77,7 @@ const TOOLS = [
     desc:"Litros homologados y una pista sobre la forma de la boca de carga.",
     inputs:[car("a"),car("b")],
     calc:v=>{ const A=CARS[v.a],B=CARS[v.b]; return {
-      out:[{l:v.a,v:nd(A.boot)+" L"},{l:v.b,v:nd(B.boot)+" L"},{l:"Diferencia",v:(A.boot&&B.boot)?Math.abs(A.boot-B.boot)+" L":"Sin dato"},{l:"Con asientos abatidos",v:(A.boot&&B.boot)?Math.round(Math.max(A.boot,B.boot)*2.1)+" L":"Sin dato"}],
+      out:[{l:v.a,v:nd(A.boot)+" L"},{l:v.b,v:nd(B.boot)+" L"},{l:"Diferencia",v:(A.boot&&B.boot)?Math.abs(A.boot-B.boot)+" L":"Sin dato"},{l:"Relación",v:(A.boot&&B.boot)?nf1.format(Math.max(A.boot,B.boot)/Math.min(A.boot,B.boot))+"×":"Sin dato"}],
       note:"Cargo Volume de ev-database.org. El volumen no dice todo: mide también la boca y la altura de carga."}; }},
 
   { id:"seguridad", cat:"compare", name:"Seguridad y ADAS", h1:"Qué te protege cada coche.",
@@ -84,13 +85,13 @@ const TOOLS = [
     inputs:[car("a"),car("b")],
     calc:v=>{ const A=CARS[v.a],B=CARS[v.b]; const S=(typeof LIVE!=="undefined"&&LIVE.safety)?LIVE.safety:{};
       const html=`<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap"><a class="chip" href="${S[v.a]||"https://www.euroncap.com/en/search"}" target="_blank" rel="noopener noreferrer">${v.a} · Euro NCAP ↗</a><a class="chip" href="${S[v.b]||"https://www.euroncap.com/en/search"}" target="_blank" rel="noopener noreferrer">${v.b} · Euro NCAP ↗</a></div>`;
-      return {out:[{l:"Ficha oficial",v:"Euro NCAP"},{l:"Batería",v:A.battery+" / "+B.battery+" kWh"},{l:"Potencia",v:A.power+" / "+B.power+" kW"},{l:"Masas",v:"Según ficha"}],
+      return {out:[{l:"Ficha oficial",v:"Euro NCAP"},{l:"Batería",v:A.battery+" / "+B.battery+" kWh"},{l:"Potencia",v:A.power+" / "+B.power+" kW"},{l:"Año",v:A.year+" / "+B.year}],
         html,note:"Euro NCAP no publica una API abierta de resultados por VIN: mostramos el enlace a su buscador oficial para cada modelo. No inventamos estrellas ni equipamiento ADAS."}; }},
 
   { id:"autonomia-comp", cat:"compare", name:"Comparador de autonomía", h1:"Cuatro escenarios, no una cifra.",
     desc:"WLTP, real, invierno y autovía a 120 km/h para dos modelos.",
     inputs:[car("a"),car("b")],
-    calc:v=>{ const A=CARS[v.a],B=CARS[v.b]; const x=c=>[c.wltp,c.range,Math.round(c.range*.78),Math.round(c.range*.87)];
+    calc:v=>{ const A=CARS[v.a],B=CARS[v.b]; const x=c=>[c.wltp,c.range,Math.round(c.range*K_WINTER),Math.round(c.range*K_120)];
       return {out:[{l:"WLTP",v:`${A.wltp} / ${B.wltp} km`},{l:"Real",v:`${A.range} / ${B.range} km`},{l:"Invierno",v:`${x(A)[2]} / ${x(B)[2]} km`},{l:"A 120 km/h",v:`${x(A)[3]} / ${x(B)[3]} km`}],
       table:table(["Escenario",v.a,v.b],[["WLTP",A.wltp+" km",B.wltp+" km"],["Real",A.range+" km",B.range+" km"],["Invierno",x(A)[2]+" km",x(B)[2]+" km"],["120 km/h",x(A)[3]+" km",x(B)[3]+" km"]]),
       note:"Escenarios calculados con el modelo físico de la herramienta de autonomía."}; }},
@@ -104,37 +105,48 @@ const TOOLS = [
       note:"Cifras de OpenEV Data v1.24.0. La recuperación depende del estado de carga y de la temperatura; no se publica como cifra fija."}; }},
 
   { id:"recomendador", cat:"compare", name:"Recomendador", h1:"Tres coches para tu vida.",
-    desc:"Responde cuatro preguntas y te devuelve tres modelos con su motivo.",
-    inputs:[num("presupuesto","Presupuesto",45000,"€",20000,90000,1000),num("km","Km al año",15000,"km",5000,40000,1000),num("plazas","Plazas",5,"",4,7,1),num("distancia","Viaje largo",400,"km",100,1000,50)],
-    calc:v=>{ const list=Object.entries(CARS).sort((a,b)=>b[1].range-a[1].range).slice(0,3);
-      return {out:[{l:"Modelos",v:String(list.length)},{l:"Mejor autonomía",v:list[0]?list[0][0]:"—"},{l:"Precio máximo",v:eur(v.presupuesto)},{l:"Uso",v:nf0.format(v.km)+" km/año"}],
-        table:table(["Modelo","Autonomía","Precio","Por qué"],list.map(([n,c])=>[n,c.range+" km",nd(c.price?eur(c.price):null),c.range>=v.distancia?"Llega sin parar":"Con una parada"])),
-        note:"Sin cuenta: el resultado se puede compartir por URL."}; }},
+    desc:"Filtra el catálogo por presupuesto y viaje largo, y ordena por lo que gastarás en energía al año.",
+    inputs:[num("presupuesto","Presupuesto",45000,"€",15000,120000,1000),num("km","Km al año",15000,"km",5000,40000,1000),num("distancia","Viaje largo habitual",400,"km",100,1000,50)],
+    calc:v=>{
+      const pvpc=(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?LIVE.pvpcAvg:.212;
+      const fit=Object.entries(CARS).filter(([,c])=>c.price&&c.price<=v.presupuesto);
+      const top=fit.map(([n,c])=>({n,c,reach:c.range>=v.distancia,cost:v.km/100*c.use*pvpc}))
+        .sort((a,b)=>(b.reach-a.reach)||(a.cost-b.cost)||(b.c.dc-a.c.dc)).slice(0,3);
+      if(!top.length) return {out:[{l:"Modelos",v:"0"},{l:"Presupuesto",v:eur(v.presupuesto)},{l:"Uso",v:nf0.format(v.km)+" km/año"},{l:"Viaje largo",v:v.distancia+" km"}],
+        note:"Ningún modelo con precio publicado entra en ese presupuesto. Sube el presupuesto."};
+      return {out:[{l:"Modelos que entran",v:String(fit.length)},{l:"Mejor opción",v:top[0].n},{l:"Energía al año",v:eur(top[0].cost)},{l:"Viaje largo",v:top[0].reach?"Sin parar":"Con una parada"}],
+        table:table(["Modelo","Precio","Autonomía","Energía/año","Viaje largo"],top.map(t=>[t.n,eur(t.c.price),t.c.range+" km",eur(t.cost),t.reach?"Sin parar":"Con parada"])),
+        note:"Solo entran modelos con precio de Autocasion. Primero van los que hacen tu viaje largo sin parar y después los de menor gasto de energía. No filtra por plazas porque no tenemos ese dato."}; }},
 
   // ---------- FINANZAS ----------
+  { id:"wallbox", cat:"finance", name:"¿Qué wallbox necesito?", h1:"La potencia justa para tu garaje.",
+    desc:"Según tu contrato, tus kilómetros diarios y las horas que tienes enchufado, qué potencia de cargador basta.",
+    inputs:[selx("contrato",["Monofásico","Trifásico"]),num("km","Km al día",50,"km",10,300,10),num("use","Consumo",16.8,"kWh/100",10,30,0.1),num("horas","Horas enchufado",8,"h",2,16,1)],
+    calc:v=>{ const kwh=v.km/100*v.use, need=kwh/(v.horas*.9);
+      const opts=v.contrato==="Monofásico"?[7.4]:[7.4,11,22];
+      const rec=opts.find(p=>p>=need)||opts[opts.length-1];
+      const link=rec>7.4?`<a class="chip" href="comparativa-estaciones-22kw.html">Ver estaciones de 22 kW →</a>`:`<a class="chip" href="comparativa-wallbox-7400.html">Ver wallbox de 7,4 kW →</a>`;
+      return {out:[{l:"Energía al día",v:nf1.format(kwh)+" kWh"},{l:"Potencia mínima",v:nf1.format(need)+" kW"},{l:"Recomendado",v:nf1.format(rec)+" kW"},{l:"Tiempo de carga",v:nf1.format(kwh/(rec*.9))+" h"}],
+        html:`<div style="margin-top:16px">${link}</div>`,
+        note:"Supone un 10 % de pérdidas al cargar. 7,4 kW es la potencia más habitual en wallbox y el límite práctico con contrato monofásico. Comprueba también la potencia que admite tu coche en corriente alterna."}; }},
+
   { id:"tarifas", cat:"finance", name:"Tarifas eléctricas", h1:"Qué pagas por cada kWh.",
     desc:"PVPC, tarifa valle y precio medio de carga rápida.",
     inputs:[num("pvc","PVPC medio",0.21,"€/kWh",0.05,0.5,0.01),num("valle","Tarifa valle",0.13,"€/kWh",0.05,0.5,0.01),num("dc","Carga rápida",0.59,"€/kWh",0.2,1,0.01)],
     calc:v=>({out:[{l:"PVPC",v:eur2(v.pvc)+"/kWh"},{l:"Valle",v:eur2(v.valle)+"/kWh"},{l:"Rápida",v:eur2(v.dc)+"/kWh"},{l:"Ahorro valle",v:nf0.format((1-v.valle/v.pvc)*100)+" %"}],
       note:(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?`PVPC real ${LIVE.pvpcDate}: media ${LIVE.pvpcAvg.toFixed(3)} €/kWh, valle ${LIVE.pvpcMin.toFixed(3)}, punta ${LIVE.pvpcMax.toFixed(3)} · ${LIVE.source.pvpc}.`:"El PVPC cambia cada hora. Consulta el valor real en ESIOS antes de decidir."})},
 
-  { id:"ayudas", cat:"finance", name:"Ayudas 2027", h1:"Qué ayudas te corresponden.",
-    desc:"Deducción en IRPF y ayudas autonómicas según precio y comunidad.",
-    inputs:[num("precio","Precio del coche",42000,"€",15000,100000,1000),selx("ccaa",["Madrid","Cataluña","Valencia","Andalucía","País Vasco"])],
-    calc:v=>{ const base=v.precio<=30000?7000:5000; const extra=v.precio<=30000?2000:0; return {
-      out:[{l:"Deducción IRPF",v:eur(base)},{l:"Ayuda CCAA",v:eur(extra)},{l:"Total",v:eur(base+extra)},{l:"Precio efectivo",v:eur(v.precio-base-extra)}],
-      note:"Importes orientativos. Confirma en la sede de tu comunidad y en la AEAT."}; }},
-  { id:"ayudas-ccaa", cat:"finance", name:"Ayudas por CCAA", h1:"Tu comunidad, tus ayudas.",
-    desc:"Comparativa de ayudas autonómicas para particulares y empresas.",
-    inputs:[selx("ccaa",["Madrid","Cataluña","Valencia","Andalucía","País Vasco"])],
-    calc:v=>({out:[{l:"Comunidad",v:v.ccaa},{l:"Particular",v:"Hasta 6.000 €"},{l:"Empresa",v:"Hasta 9.000 €"},{l:"Plazo",v:"Abierto"}],
-      note:"Cada comunidad publica sus propias bases; verifica fecha y requisitos."})},
-
-  { id:"cae", cat:"finance", name:"Certificado de ahorro", h1:"El trámite del CAE, en claro.",
-    desc:"Qué documentación hace falta y cuánto puedes ahorrar al instalarg cargador.",
-    inputs:[num("kwh","Consumo anual",2500,"kWh",500,10000,100)],
-    calc:v=>({out:[{l:"Ahorro anual",v:nf0.format(v.kwh*.18)+" kWh"},{l:"CO₂ evitado",v:nf1.format(v.kwh*.18*.25)+" t"},{l:"Valor estimado",v:eur(v.kwh*.18*.04)},{l:"Trámite",v:"Gestor autorizado"}],
-      note:"El CAE lo emite un gestor autorizado; este cálculo es orientativo."})},
+  { id:"ayudas", cat:"finance", name:"Ayudas y deducciones", h1:"Qué ayudas te corresponden.",
+    desc:"Suma las ayudas que hayas confirmado y mira el precio efectivo. Con enlaces a las fuentes oficiales.",
+    inputs:[selx("ambito",["Todas","Estatal","Autonómicas","Locales"]),num("precio","Precio del coche",42000,"€",15000,120000,1000),num("irpf","Deducción IRPF confirmada",0,"€",0,10000,100),num("ccaa","Ayuda autonómica confirmada",0,"€",0,10000,100),num("cargador","Instalación del cargador",2000,"€",0,6000,100),num("ayudacarga","Ayuda para el cargador",0,"€",0,4000,100)],
+    calc:v=>{ const efectivo=v.precio-v.irpf-v.ccaa+v.cargador-v.ayudacarga;
+      const L=[["AEAT (IRPF)","https://sede.agenciatributaria.gob.es"],["IDAE","https://www.idae.es"],["Madrid","https://www.comunidad.madrid"],["Cataluña","https://web.gencat.cat"],["Valencia","https://www.gva.es"],["Andalucía","https://www.juntadeandalucia.es"],["País Vasco","https://www.euskadi.eus"]];
+      const lv={"Estatal":"ESTADO","Autonómicas":"AUTONOMICA","Locales":"LOCAL"}[v.ambito];
+      const aids=((typeof LIVE!=="undefined"&&LIVE.aids)?LIVE.aids:[]).filter(x=>!lv||x.nivel===lv).slice(0,12);
+      const list=aids.length?`<h3 style="margin-top:20px;font-size:15px;font-weight:600">Convocatorias publicadas en la BDNS</h3><ul style="list-style:none;padding:0;margin-top:8px">${aids.map(x=>`<li style="padding:10px 0;border-bottom:1px solid var(--rule)"><a href="https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/${x.num}" target="_blank" rel="noopener noreferrer" style="color:var(--ink);text-decoration:none;font-weight:500">${x.title}</a><div style="font-size:12px;color:var(--muted);margin-top:2px">${x.date.split("-").reverse().join("/")} · ${x.region}${x.nivel==="ESTADO"?"":""}</div></li>`).join("")}</ul>`:"";
+      const html=`${list}<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">${L.map(([n,u])=>`<a class="chip" href="${u}" target="_blank" rel="noopener noreferrer">${n} ↗</a>`).join("")}</div>`;
+      return {out:[{l:"Precio del coche",v:eur(v.precio)},{l:"Ayudas",v:eur(v.irpf+v.ccaa+v.ayudacarga)},{l:"Cargador",v:eur(v.cargador)},{l:"Precio efectivo",v:eur(efectivo)}],
+        html,note:"No inventamos importes. Las convocatorias salen de la Base de Datos Nacional de Subvenciones (BDNS) y se actualizan cada día: abre cada una para ver cuantías, plazos y requisitos. Escribe lo que te corresponda y verás el precio efectivo."}; }},
 
   { id:"instalacion", cat:"finance", name:"Instalación de cargador", h1:"Cuánto cuesta cargar en casa.",
     desc:"Wallbox, instalación, potencia y subvención.",
@@ -143,24 +155,22 @@ const TOOLS = [
       out:[{l:"Wallbox",v:eur(wall)},{l:"Instalación",v:eur(inst)},{l:"Total",v:eur(wall+inst)},{l:"Con subvención",v:eur((wall+inst)*.7)}],
       note:"Incluye cableado y protecciones básicas. Necesitas proyecto técnico si superas 40 A."}; }},
   { id:"dimensionado", cat:"finance", name:"Dimensionado de la instalación", h1:"La potencia que necesitas.",
-    desc:"Cable, protección y potencia contratada según tu cargador.",
-    inputs:[num("potencia","Potencia",7.4,"kW",3.7,22,3.7)],
-    calc:v=>({out:[{l:"Corriente",v:nf0.format(v.potencia*1000/230)+" A"},{l:"Cable",v:v.potencia<=7.4?"5×6 mm²":"5×10 mm²"},{l:"Protección",v:v.potencia<=7.4?"C40 A":"C63 A"},{l:"Potencia contratada",v:Math.ceil(v.potencia+3)+" kW"}],
-      note:"Siempre con instalador autorizado y según el REBT."})},
-
-  { id:"seguros", cat:"finance", name:"Seguros EV", h1:"Cuánto te cuesta asegurarlo.",
-    desc:"Prima orientativa para un eléctrico frente a un combustible.",
-    inputs:[num("valor","Valor del coche",42000,"€",10000,100000,1000),num("edad","Edad del conductor",35,"años",18,80,1)],
-    calc:v=>{ const base=v.valor*.011*(1+(30-v.edad)*.008); return {
-      out:[{l:"Prima EV",v:eur(base)},{l:"Prima gasolina",v:eur(base*.92)},{l:"Diferencia",v:eur(base*.08)},{l:"Ahorro anual",v:eur(-base*.08)}],
-      note:"Prima orientativa; depende de aseguradora, coberturas y historial."}; }},
+    desc:"Corriente, cable y protecciones orientativas según la potencia de tu cargador.",
+    inputs:[selx("pot",["7,4 kW monofásico","3,7 kW monofásico","11 kW trifásico","22 kW trifásico"])],
+    calc:v=>{ const kw=parseFloat(v.pot.replace(",",".")), tri=/trif/.test(v.pot);
+      const amp=tri?kw*1000/(Math.sqrt(3)*400):kw*1000/230;
+      const brk=[10,16,20,25,32,40,50,63].find(x=>x>=amp-0.5);
+      const sec=brk<=16?"4 mm²":"6 mm²";
+      return {out:[{l:"Corriente",v:nf1.format(amp)+" A"+(tri?" por fase":"")},{l:"Cable",v:(tri?"5×":"3×")+sec},{l:"Magnetotérmico",v:(tri?"4P ":"2P ")+"C"+brk+" A"},{l:"Potencia contratada",v:"≥ "+Math.ceil(kw+3)+" kW"}],
+        table:table(["Elemento","Valor orientativo"],[["Diferencial",(tri?"4P ":"2P ")+"40 A, 30 mA, tipo A con detección de CC o tipo B"],["Línea","Dedicada desde el cuadro, según REBT ITC-BT-52"],["Resto de la casa","Suma unos 3 kW a la potencia contratada o usa gestión dinámica"]]),
+        note:"Cálculo orientativo con tensión 230/400 V. La sección real depende de la distancia y del método de instalación. Siempre con instalador autorizado y según el REBT."}; }},
 
   { id:"residual", cat:"finance", name:"Valor residual", h1:"Qué vale tu coche en 5 años.",
-    desc:"Depreciación estimada por modelo y kilometraje.",
-    inputs:[car("a"),num("km","Km al año",15000,"km",5000,40000,1000),num("anos","Años",5,"",1,10,1)],
-    calc:v=>{ const c=CARS[v.a], dep=Math.pow(.88,v.anos)*(1-Math.min(.2,v.km/150000)); const val=c.price?c.price*dep:null; return {
-      out:[{l:"Precio nuevo",v:nd(c.price?eur(c.price):null)},{l:"Valor final",v:nd(val?eur(val):null)},{l:"Depreciación",v:nf0.format((1-dep)*100)+" %"},{l:"Coste por año",v:nd(val?eur((c.price-val)/v.anos):null)}],
-      note:"La batería y la garantía influyen mucho en el valor de reventa."}; }},
+    desc:"Escenario de depreciación con el porcentaje anual que tú elijas.",
+    inputs:[car("a"),num("anos","Años",5,"",1,10,1),num("dep","Depreciación anual",12,"%",5,25,1)],
+    calc:v=>{ const c=CARS[v.a], p0=c.price||c.priceDe, f=Math.pow(1-v.dep/100,v.anos), val=p0?p0*f:null; return {
+      out:[{l:"Precio nuevo",v:nd(p0?eur(p0):null)},{l:"Valor final",v:nd(val?eur(val):null)},{l:"Depreciación total",v:nf0.format((1-f)*100)+" %"},{l:"Coste por año",v:nd(val?eur((p0-val)/v.anos):null)}],
+      note:(c.price?"Precio: Autocasion España. ":(c.priceDe?"Precio: RRP de Alemania (no hay precio español). ":"Sin precio publicado para este modelo. "))+"Escenario, no una predicción: el porcentaje anual lo eliges tú. La batería y la garantía influyen mucho en el valor de reventa."}; }},
 
   { id:"amortizacion", cat:"finance", name:"Amortización", h1:"¿Cuándo se paga solo?",
     desc:"Años que tardas en compensar la diferencia de precio inicial.",
@@ -176,37 +186,20 @@ const TOOLS = [
       out:[{l:"Renting 3 años",v:eur(rent)},{l:"Compra 3 años",v:eur(buy)},{l:"Diferencia",v:eur(buy-rent)},{l:"Mejor opción",v:buy>rent?"Renting":"Compra"}],
       note:"El renting suele incluir mantenimiento y seguro; la compra, no."}; }},
 
-  { id:"flotas", cat:"finance", name:"Flotas y empresa", h1:"Qué se deducen las empresas.",
-    desc:"IVA, IRPF y deducción por vehículo eléctrico.",
-    inputs:[num("precio","Precio sin IVA",35000,"€",10000,100000,1000),num("km","Km profesionales",20000,"km",0,60000,1000)],
-    calc:v=>({out:[{l:"IVA deducible",v:eur(v.precio*.21)},{l:"Deducción IRPF",v:eur(Math.min(v.precio*.15,5000))},{l:"Coste por km",v:eur2(v.precio*.15/v.km)},{l:"Ahorro fiscal",v:eur(v.precio*.36)}],
-      note:"Sujeto a requisitos de la AEAT; consulta con tu gestor fiscal."})},
-
   { id:"huella", cat:"finance", name:"Huella de carbono", h1:"Cuánto CO₂ evitas.",
     desc:"Emisiones de tu ruta frente a un coche de gasolina.",
-    inputs:[num("km","Distancia",617,"km",10,3000,10),num("kwh","Consumo",16.8,"kWh/100",8,30,0.1),num("mix","Factor eléctrico",0.25,"kg/kWh",0.05,0.6,0.01)],
+    inputs:[num("km","Distancia",617,"km",10,3000,10),num("kwh","Consumo",16.8,"kWh/100",8,30,0.1),num("mix","Factor eléctrico",0.08,"kg/kWh",0.02,0.6,0.01)],
     calc:v=>{ const ev=v.km/100*v.kwh*v.mix, gas=v.km/100*7.5*2.31; return {
       out:[{l:"Eléctrico",v:nf1.format(ev)+" kg"},{l:"Gasolina",v:nf1.format(gas)+" kg"},{l:"Evitado",v:nf1.format(gas-ev)+" kg"},{l:"Por km",v:nf1.format((gas-ev)/v.km*1000)+" g"}],
-      note:"Factor eléctrico de España estimado; varía por hora y fuente."};}},
-
-  { id:"operador", cat:"finance", name:"Coste por operador", h1:"Qué te cuesta cada red.",
-    desc:"Compara la tarifa que pagas con el PVPC real del día.",
-    inputs:[num("kwh","Energía",50,"kWh",10,100,5),num("tarifa","Tu tarifa",0.55,"€/kWh",0.1,1,0.01)],
-    calc:v=>{
-      const pvpc=(typeof LIVE!=="undefined"&&LIVE.pvpcAvg)?LIVE.pvpcAvg:.212;
-      const ref=0.39;
-      const casa=v.kwh*pvpc, ionity=v.kwh*ref, calle=v.kwh*v.tarifa;
-      return {out:[{l:"Tu tarifa",v:eur2(v.tarifa)+"/kWh"},{l:"PVPC real",v:eur2(pvpc)+"/kWh"},{l:"IONITY",v:eur2(ref)+"/kWh"},{l:"Coste carga",v:eur2(calle)}],
-        note:`PVPC de ${typeof LIVE!=="undefined"?LIVE.pvpcDate:"snapshot"} desde ESIOS. IONITY 0,39 €/kWh con plan según su web. El resto de operadores no publican tarifa abierta: introduce la tuya.`};
-    }},
+      note:(typeof LIVE!=="undefined"&&LIVE.grid)?`Factor eléctrico: media de 7 días de la generación en España (${nf0.format(LIVE.grid.ren7)} % renovable), hoy ${LIVE.grid.kg.toFixed(3)} kg/kWh (${LIVE.grid.date}). Fuente: Red Eléctrica (REData). Solo emisiones de generación, sin ciclo de vida ni importaciones.`:"Factor eléctrico de España estimado; varía por día. Con datos en vivo se rellena con la media semanal de Red Eléctrica."};}},
 
   // ---------- SIMULADORES ----------
   { id:"degradacion", cat:"sim", name:"Degradación de batería", h1:"Cómo envejece tu batería.",
     desc:"Estado de salud estimado tras años, kilómetros y clima.",
-    inputs:[num("anos","Años",8,"",1,15,1),num("km","Km al año",15000,"km",5000,40000,1000),selx("clima",["Templado","Frío","Caluroso"])],
-    calc:v=>{ const cl={"Templado":0.012,"Frío":0.018,"Caluroso":0.021}[v.clima]; const soh=1-cl*v.anos-Math.min(.08,v.km*v.anos/500000); return {
-      out:[{l:"Salud estimada",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(75*soh)+" kWh"},{l:"Autonomía",v:nf0.format(580*soh)+" km"},{l:"Años",v:String(v.anos)}],
-      note:"Cargar al 80 % y evitar el calor alarga la vida de la batería."}; }},
+    inputs:[car("a"),num("anos","Años",8,"",1,15,1),num("km","Km al año",15000,"km",5000,40000,1000),selx("clima",["Templado","Frío","Caluroso"])],
+    calc:v=>{ const c=CARS[v.a]; const cl={"Templado":0.012,"Frío":0.018,"Caluroso":0.021}[v.clima]; const soh=1-cl*v.anos-Math.min(.08,v.km*v.anos/500000); return {
+      out:[{l:"Salud estimada",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(c.battery*soh)+" kWh"},{l:"Autonomía real",v:nf0.format(c.range*soh)+" km"},{l:"Años",v:String(v.anos)}],
+      note:"Modelo orientativo de pérdida por años, kilómetros y clima, no una medición. Cargar al 80 % y evitar el calor alarga la vida de la batería."}; }},
 
   { id:"aerodinamico", cat:"sim", name:"Aerodinámica", h1:"El viento también cuenta.",
     desc:"Consumo según velocidad, coeficiente aerodinámico y viento.",
@@ -221,13 +214,6 @@ const TOOLS = [
     calc:v=>{ const penalty={"A":0,"B":0.04,"C":0.09,"D":0.15}[v.clase]; const extra=(2.4-v.presion)*0.03; return {
       out:[{l:"Sobreconsumo",v:nf1.format((penalty+extra)*100)+" %"},{l:"Coste 10.000 km",v:eur2((16.8*(1+penalty+extra)*100)*.24)},{l:"Presión",v:nf1.format(v.presion)+" bar"},{l:"Clase",v:v.clase}],
       note:"Revisa la presión en frío cada mes; afecta a consumo y seguridad."}; }},
-
-  { id:"ruido", cat:"sim", name:"Ruido", h1:"Cuánto suena tu viaje.",
-    desc:"Nivel sonoro estimado a distintas velocidades.",
-    inputs:[car("a"),num("vel","Velocidad",100,"km/h",50,140,10)],
-    calc:v=>{ const db=58+(v.vel-50)*.22; return {
-      out:[{l:"A 50 km/h",v:"58 dB"},{l:"A 100 km/h",v:nf0.format(69)+" dB"},{l:"A 120 km/h",v:nf0.format(73.4)+" dB"},{l:"Tu velocidad",v:nf1.format(db)+" dB"}],
-      note:"El ruido de rodadura crece con la velocidad; el eléctrico elimina el de motor."}; }},
 
   { id:"quimica", cat:"sim", name:"Química de batería", h1:"LFP o NMC, decidido.",
     desc:"Diferencias reales de longevidad, densidad y carga rápida.",
@@ -252,19 +238,11 @@ const TOOLS = [
       note:"Precalentar el coche enchufado reduce la pérdida."}; }},
 
   // ---------- RUTAS ----------
-  { id:"planificador", cat:"routes", name:"Planificador de rutas", h1:"Tu viaje, con paradas.",
-    desc:"Distancia, tiempo, consumo y cargas intermedias.",
-    inputs:[num("km","Distancia",617,"km",50,3000,10),num("vel","Velocidad media",95,"km/h",50,130,5),num("cap","Batería",75,"kWh",30,150,1),num("use","Consumo",16.8,"kWh/100",10,30,0.1)],
-    calc:v=>{ const energy=v.km/100*v.use, stops=Math.max(0,Math.ceil(energy/v.cap)-1), drive=v.km/v.vel, charge=stops*.3; return {
-      out:[{l:"Distancia",v:v.km+" km"},{l:"Conducción",v:nf1.format(drive)+" h"},{l:"Cargas",v:String(stops)},{l:"Tiempo total",v:nf1.format(drive+charge)+" h"}],
-      table:table(["Concepto","Valor"],[["Energía total",nf1.format(energy)+" kWh"],["Paradas",String(stops)],["Tiempo de carga",nf1.format(charge)+" h"]]),
-      note:"Las paradas se estiman con carga del 10 % al 80 %."}; }},
-
   { id:"isocronas", cat:"routes", name:"Mapa de autonomía", h1:"Hasta dónde llegas.",
     desc:"Radio real de autonomía desde tu ciudad, con los escenarios clave.",
     inputs:[car("a"),num("soc","Estado de carga",90,"%",10,100,5)],
     calc:v=>{ const c=CARS[v.a], r=c.range*v.soc/100; return {
-      out:[{l:"Templado",v:nf0.format(r)+" km"},{l:"Invierno",v:nf0.format(r*.78)+" km"},{l:"A 120 km/h",v:nf0.format(r*.87)+" km"},{l:"Con desnivel",v:nf0.format(r*.92)+" km"}],
+      out:[{l:"Templado",v:nf0.format(r)+" km"},{l:"Invierno",v:nf0.format(r*K_WINTER)+" km"},{l:"A 120 km/h",v:nf0.format(r*K_120)+" km"},{l:"Con desnivel",v:nf0.format(r*K_HILLS)+" km"}],
       note:"No es un círculo perfecto: la orografía y el viento deforman el alcance."}; }},
 
   { id:"buscador", cat:"routes", name:"¿Llego sin parar?", h1:"Respuesta en una frase.",
@@ -284,7 +262,7 @@ const TOOLS = [
     desc:"Genera un enlace con origen, destino y coche ya cargados.",
     inputs:[car("a"),num("km","Distancia",617,"km",50,2000,10)],
     calc:v=>({out:[{l:"Coche",v:v.a},{l:"Distancia",v:v.km+" km"},{l:"Estado",v:"Sin cuenta"},{l:"Enlace",v:"Copiable"}],
-      html:`<p class="mono" style="margin-top:16px;padding:10px;border:1px solid var(--rule);word-break:break-all">${location.origin}${location.pathname}#compartir?coche=${encodeURIComponent(v.a)}&km=${v.km}</p>`,
+      html:`<p class="mono" style="margin-top:16px;padding:10px;border:1px solid var(--rule);word-break:break-all">${location.origin}${location.pathname}#compartir?a=${encodeURIComponent(v.a)}&km=${v.km}</p>`,
       note:"El enlace contiene todos los parámetros; no guardamos nada en un servidor."})},
 
   { id:"alertas", cat:"routes", name:"Alertas de precio", h1:"Carga cuando vale la pena.",
@@ -320,7 +298,7 @@ const TOOLS = [
     desc:"Resumen con fuente citada, sin relleno.",
     inputs:[num("dias","Últimos días",7,"días",1,30,1)],
     calc:v=>{
-      const list=(typeof LIVE!=="undefined"&&LIVE.news?LIVE.news:[]).slice(0,Math.min(12,v.dias*2));
+      const list=(typeof LIVE!=="undefined"&&LIVE.news?LIVE.news:[]).filter(n=>{const t=Date.parse(n.date);return isNaN(t)||t>=Date.now()-v.dias*864e5;}).slice(0,12);
       const html=`<div style="margin-top:16px;display:flex;flex-direction:column">${list.map(n=>`<a href="${n.link}" target="_blank" rel="noopener noreferrer" style="display:block;padding:9px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--text);font-size:12px"><strong>${n.title}</strong><span class="k" style="margin-top:2px;display:block">${n.source} · ${n.date}</span></a>`).join("")}</div>`;
       return {out:[{l:"Periodo",v:v.dias+" días"},{l:"Noticias",v:String(list.length)},{l:"Con fuente",v:String(list.filter(n=>n.source).length)},{l:"Sin fuente",v:String(list.filter(n=>!n.source).length)}],
         html,note:"Titulares reales del RSS de Google News España, con medio y fecha. Actualizados por el cron diario."};
@@ -359,7 +337,7 @@ const TOOLS = [
     }},
 
   { id:"mantenimiento", cat:"service", name:"Mantenimiento EV", h1:"Lo que se ahorra en taller.",
-    desc:"Revisions, frenos y fluidos frente a un motor de combustión.",
+    desc:"Revisiones, frenos y fluidos frente a un motor de combustión.",
     inputs:[num("anos","Años",8,"",1,15,1)],
     calc:v=>({out:[{l:"EV (modelo)",v:eur(v.anos*210)},{l:"Gasolina (modelo)",v:eur(v.anos*480)},{l:"Ahorro",v:eur(v.anos*270)},{l:"Por año",v:eur(270)}],
       note:"Estimación de modelo, no tarifa de taller. Se apoya en dos hechos publicados: menos piezas móviles y regeneración de frenos; un estudio de 2026 citado en nuestras noticias sitúa la sustitución de batería en el 0,3 % de los casos."})},
@@ -377,23 +355,13 @@ const TOOLS = [
 
   { id:"soh-usado", cat:"sim", name:"Salud de batería de ocasión", h1:"Qué batería te estás comprando.",
     desc:"Estado de salud estimado de un eléctrico de segunda mano.",
-    inputs:[selx("quim",["NMC","LFP"]),num("anos","Años",6,"",1,15,1),num("km","Km",90000,"km",10000,300000,5000)],
+    inputs:[car("a"),selx("quim",["NMC","LFP"]),num("anos","Años",6,"",1,15,1),num("km","Km",90000,"km",10000,300000,5000)],
     calc:v=>{
       const rate=v.quim==="LFP"?.008:.013;
       const soh=Math.max(.55,1-rate*v.anos-Math.min(.12,v.km/500000));
-      const cap=75*soh, range=Math.round(450*soh);
+      const c=CARS[v.a], cap=c.battery*soh, range=Math.round(c.range*soh);
       return {out:[{l:"Salud",v:nf0.format(soh*100)+" %"},{l:"Capacidad",v:nf1.format(cap)+" kWh"},{l:"Autonomía",v:range+" km"},{l:"Química",v:v.quim}],
         note:"Modelo de degradación por ciclos y calendario. No sustituye a un informe SOH real del vehículo; para comprar pide siempre el certificado."};
-    }},
-
-  { id:"comparador-ccaa", cat:"finance", name:"Ayudas por comunidad", h1:"Tu comunidad, tus ayudas.",
-    desc:"Deducción estatal y ayuda autonómica orientativa por CCAA.",
-    inputs:[selx("ccaa",["Madrid","Cataluña","Valencia","Andalucía","País Vasco"]),num("precio","Precio coche",42000,"€",15000,100000,1000)],
-    calc:v=>{
-      const extra={"Madrid":2500,"Cataluña":2000,"Valencia":1500,"Andalucía":1000,"País Vasco":3000}[v.ccaa]||0;
-      const ded=v.precio<=30000?7000:5000;
-      return {out:[{l:"Comunidad",v:v.ccaa},{l:"Deducción IRPF",v:eur(ded)},{l:"Ayuda CCAA",v:eur(extra)},{l:"Total",v:eur(ded+extra)}],
-        note:"Importes orientativos. Las bases y plazos los publica cada comunidad y la AEAT; verifícalos antes de decidir."};
     }},
 
   { id:"remolque", cat:"sim", name:"Remolque y carga útil", h1:"Lo que pesa de verdad.",
@@ -404,16 +372,6 @@ const TOOLS = [
       const real=v.base*factor;
       return {out:[{l:"Consumo",v:nf1.format(real)+" kWh/100"},{l:"Sobreconsumo",v:nf0.format((factor-1)*100)+" %"},{l:"Autonomía",v:nf0.format(75/real*100)+" km"},{l:"Peso",v:v.peso+" kg"}],
         note:"Modelo físico: la masa afecta a rodadura y gravedad; la velocidad, a aerodinámica. Los remolques empeoran además el Cd."};
-    }},
-
-  { id:"alerta-coche", cat:"service", name:"Alerta de precio del coche", h1:"Avísame cuando baje.",
-    desc:"Sin cuenta: la alerta vive en tu dispositivo y en la URL.",
-    inputs:[car("a"),num("objetivo","Precio objetivo",35000,"€",10000,100000,1000)],
-    calc:v=>{
-      const c=CARS[v.a], precio=c.price;
-      const html=`<div style="margin-top:16px;padding:14px;border:1px solid var(--rule)"><span class="k">Precio RRP Alemania (fuente)</span><span class="v" style="font-size:22px">${precio?eur(precio):"Sin dato"}</span><p class="source" style="margin-top:8px">${precio&&precio<=v.objetivo?"Objetivo alcanzado según la fuente.":"Por encima del objetivo."}</p></div>`;
-      return {out:[{l:"Modelo",v:v.a},{l:"Objetivo",v:eur(v.objetivo)},{l:"Fuente",v:precio?"ev-database":"Sin dato"},{l:"Cuenta",v:"No"}],
-        html,note:"No publicamos precios españoles porque la fuente abierta solo da RRP de Alemania. Compara con ese dato y con el concesionario."};
     }},
 
   { id:"informe", cat:"service", name:"Informe de decisión", h1:"Todo en un solo papel.",

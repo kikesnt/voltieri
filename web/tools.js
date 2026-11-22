@@ -5,9 +5,12 @@ const listHost = document.getElementById("tool-list");
 const own = TOOLS.filter(t => t.cat === cat);
 
 // Las entradas de coche se expanden a select cuando llegan los datos reales.
+const LABELS = { ambito:"Ámbito", pot:"Potencia", contrato:"Contrato", quim:"Química", clima:"Clima", ccaa:"Comunidad", clase:"Clase energética", prov:"Provincia" };
 function inputsOf(t) {
+  const cars = t.inputs.filter(i => i.type === "car").length;
+  const first = CAR_NAMES.includes("Tesla Model 3") ? "Tesla Model 3" : (CAR_NAMES.find(n => CARS[n].price) || CAR_NAMES[0]);
   return t.inputs.map(i => i.type === "car"
-    ? { id:i.id, type:"select", options:CAR_NAMES, value:CAR_NAMES[0] }
+    ? { id:i.id, type:"select", options:CAR_NAMES, value:first, label: i.label || (cars > 1 ? "Coche " + i.id.toUpperCase() : "Coche") }
     : i);
 }
 
@@ -39,9 +42,9 @@ function renderTool() {
   const fields = inputs.map(i => {
     const id = `in-${i.id}`;
     if (i.type === "select") {
-      return `<div class="field"><label class="k" for="${id}">${i.label||i.id}</label><select id="${id}">${i.options.map(o=>`<option${o===i.value?" selected":""}>${o}</option>`).join("")}</select></div>`;
+      return `<div class="field"><label class="k" for="${id}">${i.label||LABELS[i.id]||i.id}</label><select id="${id}">${i.options.map(o=>`<option${o===i.value?" selected":""}>${o}</option>`).join("")}</select></div>`;
     }
-    return `<div class="field"><label class="k" for="${id}">${i.label||i.id}</label><span><input id="${id}" type="number" min="${i.min}" max="${i.max}" step="${i.step}" value="${i.value}"> <span class="k">${i.unit||""}</span></span></div>`;
+    return `<div class="field"><label class="k" for="${id}">${i.label||LABELS[i.id]||i.id}</label><span><input id="${id}" type="number" min="${i.min}" max="${i.max}" step="${i.step}" value="${i.value}"> <span class="k">${i.unit||""}</span></span></div>`;
   }).join("");
 
   host.innerHTML = `
@@ -90,10 +93,25 @@ function renderTool() {
   document.getElementById("run").addEventListener("click", run);
   run();
   renderList();
+  renderToolShelf(t);
+}
+
+const SHELF = {
+  cat: { compare:["wallbox"], finance:["wallbox"], sim:["cargador-portatil"], routes:["cables-tipo2"], service:["cables-tipo2"] },
+  tool: { "casa-publica":["wallbox"], instalacion:["wallbox"], dimensionado:["wallbox"], wallbox:["wallbox"], tarifas:["wallbox"], huella:["wallbox"],
+          invierno:["invierno","cargador-portatil"], degradacion:["cargador-portatil"], remolque:["cables-tipo2"], buscador:["cargador-portatil"],
+          neumaticos:["inflador-neumaticos","cables-tipo2"], aerodinamico:["inflador-neumaticos","cargador-portatil"] }
+};
+function renderToolShelf(t) {
+  let el = document.getElementById("tool-shelf");
+  if (!el) { el = document.createElement("div"); el.id = "tool-shelf"; host.after(el); }
+  el.className = ""; el.innerHTML = "";
+  const list = SHELF.tool[t.id] || SHELF.cat[cat] || [];
+  import("./affiliate.js").then(async m => { for (const c of list) if (await m.renderShelf(el, c, { title:"Equipamiento para este caso", limit:3 })) return; });
 }
 
 window.addEventListener("hashchange", () => { renderList(); if (CAR_NAMES.length) renderTool(); });
-loadVehicles().then(async () => { await loadLivePrices(); renderTool(); applyTheme(); }).catch(async () => { try { await loadLivePrices(); } catch(e) {} renderTool(); applyTheme(); });
+loadVehicles().then(async () => { await loadLivePrices(); renderTool(); applyTheme(); }).catch(async (err) => { console.error("tools.js:", err); try { await loadLivePrices(); } catch(e) {} renderTool(); applyTheme(); });
 
 // Tema compartido
 const KEY = "voltieri-theme";

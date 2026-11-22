@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-21",
-  "source": "Amazon.es · búsqueda pública · precios y valoraciones scrapeados el 21/11/2026",
+  "date": "2026-11-22",
+  "source": "Amazon.es · búsqueda pública con Chrome headless · precios y valoraciones scrapeados el 22/11/2026",
   "categories": [
     {
       "id": "cables-tipo2",
@@ -8,46 +8,68 @@
       "intro": "Cables Mode 3 Tipo 2 a Tipo 2 para cargar en puntos públicos. Longitud, trifásico y protección IP marcan la diferencia.",
       "products": [
         {
+          "asin": "B0CQY54JDW",
+          "title": "MCEVKELN Cable Tipo 2 11 kW · 7 m · trifásico",
+          "price": "98,79 €",
+          "rating": "4,9",
+          "image": "https://m.media-amazon.com/images/I/61+ZRUbBlGL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0FK4CP262",
+          "title": "ELEGRP Cable Tipo 2 22 kW · 5 m · 32 A trifásico",
+          "price": "105,99 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/71Msa2a2E7L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
           "asin": "B0CN2Q246Y",
           "title": "GONEO Cable Tipo 2 22 kW · 5 m · 32 A trifásico",
-          "price": "94,99 €",
-          "rating": "4,6",
+          "price": "84,74 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61Ui1zGJWXL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
         {
-          "asin": "B0CKSG4G98",
-          "title": "bokman EV Cable Tipo 2 22 kW · 5 m",
-          "price": "94,99 €",
+          "asin": "B0CN2Q1GDS",
+          "title": "GONEO Cable Tipo 2 11 kW · 5 m · 16 A trifásico",
+          "price": "85,49 €",
           "rating": "4,7",
-          "best": "Mejor valoración"
-        },
-        {
-          "asin": "B0CRR369BM",
-          "title": "Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m",
-          "price": "99,99 €",
-          "rating": "4,7",
-          "best": "Alternativa"
+          "image": "https://m.media-amazon.com/images/I/612M58WlDiL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0DT6WYJH4",
           "title": "bokman EV Cable Tipo 2 7,4 kW · 5 m",
           "price": "90,24 €",
           "rating": "4,7",
-          "best": "Monofásico"
+          "image": "https://m.media-amazon.com/images/I/610iNoMCZTL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0BNBR336V",
-          "title": "LAPP Mobility Cable Tipo 2 22 kW · 32 A",
-          "price": "168,52 €",
-          "rating": "4,6",
-          "best": "Gama alta"
+          "asin": "B0CKSG4G98",
+          "title": "bokman EV Cable Tipo 2 22 kW · 5 m",
+          "price": "94,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61PBwOEDTxL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0BNBQ8THM",
-          "title": "Lapp Mobility Cable Tipo 2 22 kW · trifásico",
-          "price": "151,64 €",
-          "rating": "4,6",
-          "best": "Gama alta"
+          "asin": "B0CRR369BM",
+          "title": "Ezgogo Cable Tipo 2 32 A · 22 kW · 5 m",
+          "price": "99,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/6133dXojdlL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0DMNSBF55",
+          "title": "tomons Cable Tipo 2 22 kW · 7 m · 32 A trifásico",
+          "price": "110,26 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/71lmwdm74eL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     },
@@ -57,46 +79,60 @@
       "intro": "Puntos de recarga domésticos monofásicos. Fija la potencia, la longitud del cable y si incluye protección RCD.",
       "products": [
         {
-          "asin": "B0G7WY45P6",
-          "title": "Wallbox 7,4 kW · 7 m · 6–32 A",
-          "price": "169,99 €",
-          "rating": "4,4",
-          "best": "Precio"
+          "asin": "B0F7QL6THK",
+          "title": "dé Wallbox 7,4 kW con app · cable 7,5 m",
+          "price": "246,95 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/61QIUItHseL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0FXH4FG2Z",
+          "title": "dé Mobile Wallbox 11 kW · app · cable 7 m",
+          "price": "189,95 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/613TW0vaYZL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0F66SBFVZ",
+          "title": "AIMILER Cargador 11 kW trifásico · app · OLED",
+          "price": "239,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/71IbxJDjXlL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0DTHYC2RD",
-          "title": "dé Wallbox 7,4 kW con app · 6 m",
+          "title": "Wallbox 7,4 kW con app · 6 m",
           "price": "169,95 €",
           "rating": "4,6",
-          "best": "Equilibrio"
-        },
-        {
-          "asin": "B0GLFKVHFK",
-          "title": "Wallbox 7,4 kW monofásico con app",
-          "price": "224,19 €",
-          "rating": "4,3",
-          "best": "App"
+          "image": "https://m.media-amazon.com/images/I/61HXlnFxySL._AC_SL500_.jpg",
+          "best": "Mejor precio"
         },
         {
           "asin": "B0DJTYBY2W",
-          "title": "dé Wallbox 7,4 kW · cable 7,5 m",
+          "title": "Wallbox 7,4 kW · cable 7,5 m",
           "price": "246,95 €",
           "rating": "4,6",
-          "best": "Cable largo"
+          "image": "https://m.media-amazon.com/images/I/61dcCtYuhPL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0G7WY45P6",
+          "title": "Wallbox 7,4 kW · 7 m · 6–32 A",
+          "price": "237,15 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71CIlUDpfqL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0CTCL7RRB",
           "title": "Wallbox 7,4 kW con RCD tipo A + 6 mA CC",
           "price": "246,72 €",
           "rating": "4,4",
-          "best": "Protección"
-        },
-        {
-          "asin": "B0GLP11DQQ",
-          "title": "Wallbox 22 kW trifásico · app · 6 m",
-          "price": "284,05 €",
-          "rating": "4,8",
-          "best": "Trifásico"
+          "image": "https://m.media-amazon.com/images/I/61q5wwlVS9L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     },
@@ -106,39 +142,44 @@
       "intro": "Adaptadores para combinar conectores CCS2, Tipo 2, CCS1 y NACS. Revisa corriente continua, tensión y compatibilidad real.",
       "products": [
         {
-          "asin": "B0FK2JJKDF",
-          "title": "Adaptador CCS2 a Tipo 2 para Tesla",
-          "price": "98,00 €",
-          "rating": "2,6",
-          "best": "Barato · valorar reseñas"
+          "asin": "B0FH597FVT",
+          "title": "Adaptador CCS1 a CCS2 · 1000 V · 250 A",
+          "price": "43,83 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/61gRKSAHyqL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
         },
         {
-          "asin": "B0CJ536JSN",
-          "title": "Adaptador CCS2 a CCS1 · 1000 V · 500 A",
-          "price": "139,99 €",
-          "rating": "4,7",
-          "best": "DC"
-        },
-        {
-          "asin": "B0HKJ6MC58",
-          "title": "Adaptador CCS2 a NACS · 250 A",
-          "price": "155,13 €",
-          "rating": "",
-          "best": "NACS"
-        },
-        {
-          "asin": "B0FL25Z4P4",
-          "title": "MCEVKELN CCS2 a Tesla 250 kW",
-          "price": "159,99 €",
-          "rating": "4,1",
-          "best": "Tesla"
+          "asin": "B0D1JYR1S9",
+          "title": "Adaptador Tipo 1 a Tipo 2 · SAE J1772",
+          "price": "58,36 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/61clYpH2MTL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0G5X3LZ95",
           "title": "Adaptador CCS1 a CCS2 · 1000 V · 400 A",
           "price": "109,86 €",
           "rating": "4,8",
-          "best": "CCS1"
+          "image": "https://m.media-amazon.com/images/I/61PX9wiR9mL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0D1G9R7NJ",
+          "title": "Adaptador Tipo 2 a NACS · 60 A",
+          "price": "79,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/6130eB2ueYL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0CJ536JSN",
+          "title": "Adaptador CCS2 a CCS1 · 1000 V · 500 A",
+          "price": "139,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61bszGAnNXL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     },
@@ -148,46 +189,68 @@
       "intro": "Cargadores Tipo 2 con enchufe Schuko para llevar en el coche. Útiles como respaldo, no como sustituto de un wallbox.",
       "products": [
         {
+          "asin": "B0G7XX3XR3",
+          "title": "EzGoGo Cargador portátil 3,7 kW · 7 m · 6–16 A",
+          "price": "112,25 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/71-28K5OLTL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0CQK3VXQ4",
+          "title": "Cargador portátil Tipo 2 · 3,6 kW · 6 m con bolsa",
+          "price": "99,70 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/616CdcEpA3L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0C8SFXJHM",
+          "title": "Cargador Schuko 3,7 kW · 6 m",
+          "price": "119,95 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/711HVsqznhL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
           "asin": "B0H33CGXZM",
           "title": "Junsun Cargador EV portátil 3,6 kW · 6–16 A",
           "price": "89,99 €",
           "rating": "4,6",
-          "best": "Precio"
+          "image": "https://m.media-amazon.com/images/I/61L7JxjC0wL._AC_SL500_.jpg",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B0DGT8PRHH",
+          "title": "Cargador Schuko 3,7 kW · 7 m con app",
+          "price": "118,70 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61+4fRX1sOL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0FKGT9Q5M",
           "title": "Cargador EV Tipo 2 portátil 3,6 kW · 8–16 A",
           "price": "99,99 €",
           "rating": "4,5",
-          "best": "Ajustable"
-        },
-        {
-          "asin": "B0G7XK241Q",
-          "title": "Cargador 3,7 kW · 7 m · 6–16 A con LCD",
-          "price": "109,99 €",
-          "rating": "4,4",
-          "best": "Pantalla"
+          "image": "https://m.media-amazon.com/images/I/61juNzMDxpL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
           "asin": "B0FPM7K4TF",
           "title": "GONEO Schuko 3,68 kW · sensor de temperatura",
           "price": "113,99 €",
           "rating": "4,5",
-          "best": "Protección"
+          "image": "https://m.media-amazon.com/images/I/61egDPb8u4L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0DGT8PRHH",
-          "title": "dé Cargador Schuko 3,7 kW · 7 m con app",
-          "price": "118,70 €",
-          "rating": "4,6",
-          "best": "App"
-        },
-        {
-          "asin": "B0C8SFXJHM",
-          "title": "dé Cargador Schuko 3,7 kW · 6 m",
-          "price": "119,95 €",
-          "rating": "4,7",
-          "best": "Cable corto"
+          "asin": "B0G7XK241Q",
+          "title": "Cargador 3,7 kW · 7 m · 6–16 A con LCD",
+          "price": "109,99 €",
+          "rating": "4,4",
+          "image": "https://m.media-amazon.com/images/I/71iy02YR3xL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     },
@@ -201,35 +264,40 @@
           "title": "Wallbox 22 kW · 6–32 A trifásico · app · 6 m",
           "price": "284,05 €",
           "rating": "4,8",
-          "best": "Mejor valoración"
+          "image": "https://m.media-amazon.com/images/I/61Np9Pu1JIL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
         },
         {
-          "asin": "B0DZX5W94K",
-          "title": "Wallbox 22 kW trifásico · 7 m · 6–32 A con app",
-          "price": "207,57 €",
-          "rating": "4,1",
+          "asin": "B0DL8P9BRH",
+          "title": "dé Cargador 22 kW · 7 m · 6–32 A trifásico",
+          "price": "279,95 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61Qq-QrkKCL._AC_SL500_.jpg",
           "best": "Mejor precio"
         },
         {
+          "asin": "B0GLPC3PJN",
+          "title": "AIMILER Wallbox 11 kW trifásico · app · 7,6 m",
+          "price": "369,00 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/71ScT7g5aHL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
           "asin": "B0DHQXPM78",
-          "title": "dé Wallbox 22 kW app · 7,5 m · RFID",
+          "title": "Wallbox 22 kW app · 7,5 m · RFID",
           "price": "319,95 €",
           "rating": "4,5",
-          "best": "RFID"
+          "image": "https://m.media-amazon.com/images/I/61Jqa4F-JaL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0C8H7YR6V",
-          "title": "Tera EV Wallbox 22 kW · 32 A · CE y TÜV",
-          "price": "409,01 €",
-          "rating": "4,3",
-          "best": "Certificado"
-        },
-        {
-          "asin": "B0BPDGY9ZV",
-          "title": "Wallbox Pulsar MAX 22 kW · cable 5 m",
-          "price": "594,15 €",
-          "rating": "4,0",
-          "best": "Gama alta"
+          "asin": "B0GN275JWS",
+          "title": "Wallbox 22 kW con app · 400 V · 6–32 A · 8 m",
+          "price": "339,99 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71JYfcGiMLL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     },
@@ -239,41 +307,404 @@
       "intro": "Descarga desde el coche a un enchufe Schuko útiles para camping o emergencias. Comprueba potencia, compatibilidad y protección.",
       "products": [
         {
+          "asin": "B0GX5ZPSK1",
+          "title": "Adaptador V2L XPeng · 3,5 kW · 16 A · IP54",
+          "price": "41,99 €",
+          "rating": "5",
+          "image": "https://m.media-amazon.com/images/I/61qHtmc3s3L._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0D4Z6N488",
+          "title": "Adaptador Tipo 2 a Schuko · 3,5 kW · 16 A · 70 cm",
+          "price": "45,99 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/612TxAgxhQL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
           "asin": "B0DYV2BG8D",
           "title": "JULIK Adaptador V2L Atto 3, Dolphin, Seal · 3,5 kW",
           "price": "49,99 €",
           "rating": "4,7",
-          "best": "Mejor valoración"
+          "image": "https://m.media-amazon.com/images/I/61yuosrz57L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0GX5ZPSK1",
-          "title": "Adaptador V2L XPeng · 3,5 kW · 16 A · IP54",
-          "price": "41,99 €",
-          "rating": "5,0",
-          "best": "IP54"
+          "asin": "B0DCJRB2M2",
+          "title": "Adaptador V2L para Smart · 10 A · vehículo a enchufe",
+          "price": "46,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61RHA1iIpeL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0HN4CNXTX",
-          "title": "Adaptador V2L Tipo 2 a Schuko para MG",
-          "price": "45,19 €",
-          "rating": "",
-          "best": "MG"
+          "asin": "B0DM4TTP6H",
+          "title": "Adaptador de descarga V2L · 3,5 kW · 16 A · 220 V",
+          "price": "67,99 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/61kyzF4qx6L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        }
+      ]
+    },
+    {
+      "id": "inflador-neumaticos",
+      "name": "Infladores y medidores de presión",
+      "intro": "Inflador portátil y manómetro para revisar la presión de los neumáticos, la comprobación más barata para no perder autonomía.",
+      "products": [
+        {
+          "asin": "B0D17RJP1T",
+          "title": "ETENWOLF Zephyr S3 · 7800 mAh · 11,03 bar",
+          "price": "62,26 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/61SERB7ZHPL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
         },
         {
-          "asin": "B0H82NMG21",
-          "title": "BOROCO V2L Tipo 2 a Schuko · 3,5 kW · 16 A",
-          "price": "36,49 €",
-          "rating": "",
-          "best": "Precio"
+          "asin": "B0D6BQV9JL",
+          "title": "ETENWOLF T500 · manómetro digital · 0-17,24 bar",
+          "price": "26,16 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71wiG98cmPL._SL500_.jpg",
+          "best": "Selección Voltieri"
         },
         {
-          "asin": "B0DPLZ29YL",
-          "title": "Adaptador descarga 3,5 kW · 220 V para Atto 3 y ZS EV",
-          "price": "58,98 €",
-          "rating": "3,5",
-          "best": "Alternativa"
+          "asin": "B0GSV4CR98",
+          "title": "Xiaomi Mijia Compact · compresor portátil",
+          "price": "39,01 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61BeDIlka-L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0CBBP8BQX",
+          "title": "Xiaomi Portable Air Compressor 2 · inflador portátil",
+          "price": "48,39 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61Vv7YKRjUL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0DLBGZG3N",
+          "title": "Xiaomi Air Compressor 2 Pro · 11,03 bar",
+          "price": "54,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/51BLV70c1DL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B07Y9HS7GT",
+          "title": "AstroAI Manómetro digital · pilas AAA",
+          "price": "14,52 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71Fwc55sf-L._SL500_.jpg",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B0D3KM6T9T",
+          "title": "Oasser Compresor portátil · 150 PSI · 4000 mAh",
+          "price": "21,99 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71hgeHoJWwL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B07D3PVBJ4",
+          "title": "AstroAI Inflador digital · 250 PSI · con manómetro",
+          "price": "23,73 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71htdGAkASL._SL500_.jpg",
+          "best": "Selección Voltieri"
+        }
+      ]
+    },
+    {
+      "id": "soporte-cable",
+      "name": "Bolsas, soportes y candados para el cable",
+      "intro": "Para guardar el cable de carga ordenado, colgarlo junto al wallbox o dejarlo asegurado en un punto público.",
+      "products": [
+        {
+          "asin": "B0CZLHY8CP",
+          "title": "Soporte de pared tipo 2 · organizador de cable",
+          "price": "14,99 €",
+          "rating": "4,9",
+          "image": "https://m.media-amazon.com/images/I/61bEFijN5uL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B09XF6HC5N",
+          "title": "igadgitz Xtra U7225 · funda para cable de carga",
+          "price": "13,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/716CWxcg+RL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B09ZVLQWRW",
+          "title": "Wallbox Soporte de pared · tipo 2 · ahorra espacio",
+          "price": "37,29 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/71zqjafBDQL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B07FW3GTXB",
+          "title": "Alex Tech Manguito de cable · auto-cierre · 3,1 m",
+          "price": "8,54 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71t6eXtVD6L._AC_SL500_.jpg",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B09HL225ZY",
+          "title": "Adiwo Soporte de pared · cable de carga tipo 2",
+          "price": "8,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/31l1NG-pB5L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0BXXBPSK1",
+          "title": "MCEVKELN Soporte de pared · cable de carga tipo 2",
+          "price": "14,24 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/610BU2YJ-XL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B08T1ML1P3",
+          "title": "Green Cell EV PowerCase · funda para cable tipo 2",
+          "price": "31,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/91CxkUYj7XL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0CB76N7NJ",
+          "title": "Soporte de cargador tipo 2 con candado · IEC 62196-2",
+          "price": "42,60 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61O9WdwJcxL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        }
+      ]
+    },
+    {
+      "id": "maleta-viaje",
+      "name": "Maletas y organizadores de viaje",
+      "intro": "Para llevar en el maletero el cable, los adaptadores y el cargador portátil sin que rueden ni se ensucien.",
+      "products": [
+        {
+          "asin": "B09ZHVSV9V",
+          "title": "K KNODEL Organizador de maletero · mini",
+          "price": "11,99 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/81M7ozfn2DL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B00Q6ZZPP8",
+          "title": "achilles Organizador de maletero · XL · con bolsillo de red",
+          "price": "15,15 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/91Jvks3ggzL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B07N142RPC",
+          "title": "Praknu Organizador de maletero · 45 L · 3 compartimentos",
+          "price": "22,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/81bvuLCGeZL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0D7VVD348",
+          "title": "FORTEM Organizador de maletero · 50 L · plegable",
+          "price": "28,49 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/51GNNFlV3xL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0H2J1JY8K",
+          "title": "Oasser Organizador de maletero · 95 L · con bolsa nevera",
+          "price": "37,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71Q5N1HRbyL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B07Q32LFQ3",
+          "title": "FORTEM Organizador de maletero · 105 L · con bolsa térmica",
+          "price": "55,09 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/81o4Ki59eOL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0GR8CLV3D",
+          "title": "Einesin Bolsa de herramientas de fieltro · 40 × 15 × 25 cm",
+          "price": "15,08 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71KIE5Mn0HL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0999JVT25",
+          "title": "EINESIN Red de almacenamiento · organizador de maletero",
+          "price": "8,49 €",
+          "rating": "4,4",
+          "image": "https://m.media-amazon.com/images/I/811rvIWHE4L._AC_SL500_.jpg",
+          "best": "Mejor precio"
+        }
+      ]
+    },
+    {
+      "id": "nevera-v2l",
+      "name": "Neveras de 12 V y accesorios V2L",
+      "intro": "Neveras eléctricas y accesorios pensados para viajes y camping, para usar con la batería del coche o el adaptador V2L.",
+      "products": [
+        {
+          "asin": "B0DYV2BG8D",
+          "title": "JULIK Adaptador V2L · Atto 3, Dolphin, Seal · 3,5 kW",
+          "price": "49,99 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61yuosrz57L._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0DT4RMS4R",
+          "title": "Berger Nevera termoeléctrica · 25 L · 12/230 V",
+          "price": "79,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/41J-DjSZhfL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B09WB4112V",
+          "title": "KESSER Nevera de compresor · 50 L · con app",
+          "price": "187,80 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/91pIt17JPGL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0FVLVVSKZ",
+          "title": "AAOBOSI Nevera portátil · 50 L · 12 V/230 V · IPX4",
+          "price": "309,00 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/81uvVXEQRBL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0BNVKHBDQ",
+          "title": "AAOBOSI Nevera portátil · 75 L · 12 V/230 V · IPX4",
+          "price": "350,55 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71Z8fiQXkKL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B01DHXYHVE",
+          "title": "TZS First Austria Nevera eléctrica · 32 L · 12 V/230 V",
+          "price": "92,95 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/61X2aNAZuzL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B08HMLNN91",
+          "title": "Alpicool K25 · nevera de viaje · 25 L · 12/24 V",
+          "price": "162,89 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/61AFnGlubsL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0B8W9WHBX",
+          "title": "BINGI Nevera de compresor · 12,8 L · 12 V/220 V",
+          "price": "166,05 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/715W8pNGa3L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        }
+      ]
+    },
+    {
+      "id": "invierno",
+      "name": "Cubiertas y raspadores de invierno",
+      "intro": "Lo básico para el parabrisas y el coche en invierno, junto con precalentar el coche enchufado.",
+      "products": [
+        {
+          "asin": "B0HDBBZV2Q",
+          "title": "Cubierta de parabrisas de invierno · 240 × 148 cm · 5 capas",
+          "price": "18,99 €",
+          "rating": "4,8",
+          "image": "https://m.media-amazon.com/images/I/710ieiFHbCL._AC_SL500_.jpg",
+          "best": "Mejor valorado"
+        },
+        {
+          "asin": "B0FLQ3KBNC",
+          "title": "Fiskars Raspador de hielo Solid · 26 cm",
+          "price": "11,36 €",
+          "rating": "4,7",
+          "image": "https://m.media-amazon.com/images/I/61EnI6E0R8L._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0CQ2J1FDV",
+          "title": "NIGRIN Raspador de hielo · mango ergonómico",
+          "price": "6,58 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61LBseO12ML._AC_SL500_.jpg",
+          "best": "Mejor precio"
+        },
+        {
+          "asin": "B006GD9UWE",
+          "title": "Carpoint Raspador de hielo Vileda",
+          "price": "7,29 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/61N2B5xvylL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0GFCW3ZSR",
+          "title": "Protector de parabrisas antihielo · magnético",
+          "price": "13,52 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71vMwnYloyL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B0DD7MK8LC",
+          "title": "Parasol y protector de parabrisas · 116 × 160 cm",
+          "price": "13,99 €",
+          "rating": "4,6",
+          "image": "https://m.media-amazon.com/images/I/71RAlZmwHLL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B01MTNYWUR",
+          "title": "Raspador de hielo Murska · 2 piezas",
+          "price": "14,67 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71BYrV9wtkL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
+        },
+        {
+          "asin": "B077RQ6WKQ",
+          "title": "Tevlaphee Protector magnético de parabrisas · 197 × 128 cm",
+          "price": "25,26 €",
+          "rating": "4,5",
+          "image": "https://m.media-amazon.com/images/I/71n3D5vEyZL._AC_SL500_.jpg",
+          "best": "Selección Voltieri"
         }
       ]
     }
-  ]
+  ],
+  "showPrices": false,
+  "curated": "2026-11-22",
+  "criteria": "Valoración mínima 4,4 ★. Orden: valoración y, a igualdad, precio."
 }

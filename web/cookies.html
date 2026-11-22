@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es" data-skin="2027" data-theme="day">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Política de cookies | Voltieri</title>
+<meta name="description" content="Qué cookies y almacenamiento usa Voltieri: ninguna cookie propia, almacenamiento técnico local y los servicios de terceros que intervienen.">
+<link rel="canonical" href="https://kikesnt.github.io/voltieri/cookies.html">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="components.css"><link rel="stylesheet" href="blog.css">
+<script src="theme.js"></script>
+<script src="cookies.js" defer></script>
+</head>
+<body>
+<header><a class="brand" href="index.html">Voltieri</a><nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav></header>
+<main class="post">
+<h1>Política de cookies</h1>
+<p class="meta">Actualizada el 22 de noviembre de 2026</p>
+<p class="lede">Voltieri no instala cookies propias ni herramientas de analítica o publicidad. Esta página explica qué se guarda en tu navegador, qué servicios de terceros intervienen y cómo cambiar tu elección.</p>
+
+<section><h2>Qué son las cookies</h2><p>Las cookies son pequeños archivos que un sitio web guarda en tu navegador. El almacenamiento local (<code>localStorage</code>) cumple una función parecida. La Ley 34/2002 (LSSI) exige informarte de su uso y pedir tu consentimiento para las que no son estrictamente necesarias.</p></section>
+
+<section><h2>Qué guardamos nosotros</h2>
+<div class="table-wrap"><table><thead><tr><th>Nombre</th><th>Para qué sirve</th><th>Tipo</th></tr></thead><tbody>
+<tr><td><code>voltieri-theme</code></td><td>Recuerda tu modo de pantalla: automático, día o noche</td><td>Técnico</td></tr>
+<tr><td><code>voltieri-consent</code></td><td>Recuerda tu elección sobre cookies y contenidos de terceros</td><td>Técnico</td></tr>
+<tr><td><code>voltieri-alert</code></td><td>Guarda en tu dispositivo la alerta de precio de la luz, si la creas</td><td>Técnico</td></tr>
+<tr><td>Caché del service worker</td><td>Permite usar la web sin conexión</td><td>Técnico</td></tr>
+</tbody></table></div>
+<p>Es almacenamiento técnico y local: no sale de tu navegador, no se envía a nuestros servidores y no necesita consentimiento.</p></section>
+
+<section><h2>Servicios de terceros</h2>
+<ul>
+<li><strong>Amazon.</strong> Los enlaces a productos son de afiliado. Al hacer clic, Amazon.es puede instalar sus cookies para atribuir la compra. Las imágenes de producto se descargan de servidores de Amazon, que pueden usar cookies propias, y por eso solo se cargan si aceptas.</li>
+<li><strong>Google Fonts.</strong> La tipografía se descarga de los servidores de Google, que reciben tu dirección IP.</li>
+<li><strong>Mapas y datos.</strong> Los mapas usan teselas de CARTO y OpenStreetMap y la librería MapLibre desde unpkg. Las rutas y los precios consultan OSRM, Open-Meteo, Nominatim, ESIOS y MITECO. Reciben tu IP y, en su caso, la ruta o la coordenada que pides.</li>
+</ul>
+<p>Cada tercero aplica su propia política de privacidad. Nosotros no recibimos esa información.</p></section>
+
+<section><h2>Analítica y publicidad</h2><p>Actualmente no hay analítica ni publicidad. Si se añade, se indicará aquí y se pedirá tu consentimiento antes de activarla.</p></section>
+
+<section><h2>Cómo cambiar tu elección</h2>
+<p>Puedes volver a ver el aviso y elegir otra vez con este botón. También puedes borrar los datos del sitio desde los ajustes de tu navegador.</p>
+<p><button type="button" class="btn" id="reset-consent">Cambiar mi elección</button></p></section>
+<script>document.getElementById("reset-consent").addEventListener("click",()=>{localStorage.removeItem("voltieri-consent");location.reload();});</script>
+
+<footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
+</main>
+</body>
+</html>

@@ -134,8 +134,11 @@ try {
     if(title) p.title = String(title).slice(0,120);
     if(price){ p.price = price; priced++; }
     if(rating) p.rating = Number(rating).toFixed(1);
+    const image = it.Images?.Primary?.Medium?.URL || it.images?.primary?.medium?.url;
+    if(image) p.image = image;
     updated++;
   }
+  data.showPrices = priced > 0; // la web solo muestra precios si vienen de la API
   data.date = priced ? new Date().toISOString().slice(0,10) : data.date;
   data.source = priced ? "Amazon Creators API · GetItems + OffersV2" : "Amazon Creators API · metadatos + instantánea 21/11/2026";
   await fs.writeFile(PRODUCTS, JSON.stringify(data,null,2));

@@ -89,8 +89,9 @@ function energyFor(legs, batteryKwh, speedKmh, temp, windKmh){
     e+=.30*(dKm/speedKmh);
     total+=e;
   }
-  const cold=Math.max(0,(20-temp)*.012)*batteryKwh*.02;
-  return { total:total+cold, legs };
+  // Frío: la batería rinde menos y la calefacción gasta (hasta +24 %). Calor: aire acondicionado (+0,4 % por grado sobre 20 °C).
+  const adj=temp>=20?(temp-20)*.004:Math.min(.24,(20-temp)*.014);
+  return { total:total*(1+adj), legs };
 }
 
 function nearestChargers(coords, chargers, maxKm=12){
@@ -137,15 +138,21 @@ async function planRoute(fromName, toName, opts={}){
       .sort((a,b)=>b.kw-a.kw||a.detour-b.detour)[0];
     if(cand) chosen.push(cand);
   }
-  const chargeMin=chosen.reduce((a,c)=>a+Math.round(car.battery*.7/c.kw*60)+8,0);
+  // Potencia efectiva: la menor entre cargador y coche, y un 70 % de la punta de media entre el 10 y el 80 %. +8 min de llegada y conexión.
+  const peak=car.dc||150;
+  chosen.forEach(c=>{ c.minutes=Math.round(car.battery*.7/(Math.min(c.kw,peak)*.7)*60)+8; });
+  const chargeMin=chosen.reduce((a,c)=>a+c.minutes,0);
+  // Tiempo al volante a la velocidad elegida (OSRM da su propia media, que incluye tramos urbanos).
+  const osrmAvg=route.km/route.hours;
+  const driveHours=Math.max(route.km/130,route.hours*(osrmAvg/speed));
   return {
     from:fromName, to:toName, km:+route.km.toFixed(1),
-    driveHours:+route.hours.toFixed(2), coords:route.coords, legs,
+    driveHours:+driveHours.toFixed(2), stopsNeeded:stops, coords:route.coords, legs,
     climb:legs.reduce((a,p,i)=>i?a+Math.max(0,p.e-legs[i-1].e):0,0),
     descent:legs.reduce((a,p,i)=>i?a+Math.max(0,legs[i-1].e-p.e):0,0),
     maxAlt:Math.max(...legs.map(p=>p.e)),
     weather:w, energy:+energy.total.toFixed(1), use:+(energy.total/route.km*100).toFixed(1),
-    stops:chosen, chargeMin, hours:+(route.hours+chargeMin/60).toFixed(2),
+    stops:chosen, chargeMin, hours:+(driveHours+chargeMin/60).toFixed(2),
     car:car.name, real:true, computedAt:new Date().toISOString()
   };
 }

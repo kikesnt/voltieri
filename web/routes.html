@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-skin="2027" data-theme="night">
+<html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="description" content="Planificador, isócronas, perfil de elevación y alertas de precio sin cuenta.">
@@ -22,11 +22,16 @@ h1{font-size:46px;line-height:1.04;letter-spacing:-.04em;font-weight:500}
 @media(max-width:760px){h1{font-size:32px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0E7A53">
+<meta property="og:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<meta name="twitter:image" content="https://kikesnt.github.io/voltieri/og-image.png">
+<script src="cookies.js" defer></script>
 </head>
 <body data-cat="routes">
 <header>
-  <span class="brand">VOLTIERI</span>
-  <nav><a href="hoja.html">Rutas</a><a href="planificador.html">Planificador</a><a href="mapa-autonomia.html">Autonomía</a><a href="chargers.html">Cargadores</a><a href="catalog.html">Coches</a><a href="tco.html">Costes</a></nav>
+  <a class="brand" href="index.html">Voltieri</a>
+  <nav><a href="catalog.html">Coches</a><a href="planificador.html">Rutas</a><a href="range.html">Autonomía</a><a href="tco.html">Costes</a><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a class="nav-pill" href="productos.html">Equipamiento</a></nav>
   <div class="head-right modes" role="group" aria-label="Modo de pantalla">
     <button type="button" data-mode="auto">Auto</button><button type="button" data-mode="day">Día</button><button type="button" data-mode="night">Noche</button>
   </div>
@@ -37,10 +42,7 @@ h1{font-size:46px;line-height:1.04;letter-spacing:-.04em;font-weight:500}
     <h1>Rutas</h1>
     <p class="lede" id="tool-desc">Planificación, isócronas, perfil y enlaces compartibles.</p>
     <div class="workspace" id="tool-host"></div>
-    <footer>
-      <span class="source">Datos abiertos · sin cuentas · enlaces compartibles</span>
-      <span class="source"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="afiliados.html">Afiliados</a> · © 2027 Voltieri</span>
-    </footer>
+    <footer class="site-footer"><span>© 2026 Voltieri · Datos abiertos, sin cuentas</span><span class="links"><a href="herramientas.html">Herramientas</a><a href="blog/index.html">Guías</a><a href="productos.html">Equipamiento</a><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a><a href="afiliados.html">Afiliados</a></span></footer>
   </main>
 </div>
 <script src="tools-data.js"></script><script src="data-live.js"></script><script src="tools.js"></script>
