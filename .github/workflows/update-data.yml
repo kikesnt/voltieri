@@ -21,6 +21,12 @@ jobs:
       - name: Regenerar datos desde fuentes reales
         run: node scripts/update-data.mjs
 
+      # Fotos de los coches en Wikimedia Commons. El script es reanudable: sólo
+      # busca los modelos que aún no tienen foto, así que en cada pasada hace
+      # muy pocas peticiones.
+      - name: Actualizar fotos de los coches (Wikimedia Commons)
+        run: node scripts/coches-fotos.mjs
+
       - name: Publicar cambios
         run: |
           git config user.name "voltieri-bot"

@@ -23,7 +23,7 @@ Lo más relevante:
 | planificador ruta coche eléctrico | 210 | 17 | Comercial | 1,32 € |
 | coche eléctrico 7 plazas | 260 | 34 | Transaccional | 0,48 € |
 
-**Prioridad editorial revisada**: 1) coche eléctrico barato (8,1K + catálogo con 45 precios ES); 2) cargador coche eléctrico (22,2K, KD 17); 3) wallbox (14,8K aunque KD 66, con afiliados); 4) mantenimiento (CPC 1,89 €, el más caro); 5) planificador (KD 17, baja competencia y herramienta propia).
+**Prioridad editorial revisada**: 1) coche eléctrico barato (8,1K + catálogo con 92 precios ES y fotos de 106 modelos); 2) cargador coche eléctrico (22,2K, KD 17); 3) wallbox (14,8K aunque KD 66, con afiliados); 4) mantenimiento (CPC 1,89 €, el más caro); 5) planificador (KD 17, baja competencia y herramienta propia).
 
 Las keywords marcadas con `-` en `data/keywords-metrics.txt` no tienen volumen en Ubersuggest: no se inventa cifra.
 
@@ -42,7 +42,7 @@ Decisión: usamos Google Suggest (gratis, sin key) para las keywords y hacemos e
 
 | Cluster | Keywords | Intención | Herramienta nuestra |
 |---|---|---|---|
-| Coche eléctrico barato | 19 | Comercial | Catálogo con 45 precios ES |
+| Coche eléctrico barato | 19 | Comercial | Catálogo con 92 precios ES |
 | Autonomía | 10 | Informacional → comercial | `range.html`, `mapa-autonomia.html` |
 | Batería | 10 | Informacional | `sim.html#degradacion`, `quimica` |
 | Carga en casa | 10 | Comercial | `instalacion`, `productos.html` |
@@ -65,7 +65,7 @@ Cada artículo se escribe con datos propios del proyecto, lleva un enlace a la h
 
 | # | Título propuesto | Keyword principal | Herramienta vinculada | Dato propio |
 |---|---|---|---|---|
-| 1 | Los 10 coches eléctricos más baratos de España en 2026 | coche eléctrico barato España | `catalog.html` | 45 precios reales de Autocasion |
+| 1 | Los 10 coches eléctricos más baratos de España en 2026 | coche eléctrico barato España | `catalog.html` | 92 precios reales de Autocasión |
 | 2 | Autonomía real a 120 km/h: por qué WLTP engaña | autonomía coche eléctrico a 120 km/h | `range.html` | física con desglose |
 | 3 | Cómo planificar un viaje largo en eléctrico sin miedo | planificador ruta coche eléctrico | `planificador.html` | OSRM + clima + 2.500 cargadores |
 | 4 | Mapa de autonomía: hasta dónde llegas desde tu ciudad | mapa autonomía coche eléctrico | `mapa-autonomia.html` | anillos isócronos reales |

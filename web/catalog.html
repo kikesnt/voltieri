@@ -2,10 +2,10 @@
 <html lang="es" data-skin="2027" data-theme="day">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="113 coches eléctricos con autonomía real, consumo y 45 precios españoles. Sin registro.">
+<meta name="description" content="113 coches eléctricos con autonomía real, consumo, precios de coches nuevos en España y fotos con atribución. Sin registro.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Voltieri — Catálogo de coches eléctricos">
-<meta property="og:description" content="113 coches eléctricos con autonomía real, consumo y 45 precios españoles. Sin registro.">
+<meta property="og:description" content="113 coches eléctricos con autonomía real, consumo, precios de coches nuevos en España y fotos con atribución. Sin registro.">
 <meta property="og:url" content="https://kikesnt.github.io/voltieri/catalog.html">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://kikesnt.github.io/voltieri/catalog.html">
@@ -29,13 +29,25 @@ h1{font-size:clamp(44px,4.8vw,58px);line-height:1.04;letter-spacing:-.05em;font-
 .filters .group{display:flex;flex-direction:column;gap:6px}
 .filters input{width:110px;padding:7px 8px;border:1px solid var(--rule);background:transparent;color:var(--text);font-family:var(--font-data);font-size:12px}
 .results{margin-top:24px}
+/* La tabla no cabe en un móvil: se deja deslizar en horizontal en vez de
+   ensanchar la página entera. */
+.table-scroll{overflow-x:auto;overscroll-behavior-x:contain}
 .results-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 0 10px;border-bottom:1px solid var(--ink)}
 .table td strong{font-weight:500}
-.table .model{display:flex;flex-direction:column;gap:2px}
+.table .model{display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:2px;align-items:start}
+.table .model .thumb{grid-column:1;grid-row:1 / span 3}
+.table .model strong{grid-column:2;grid-row:1}
+.table .model .meta{grid-column:2;grid-row:2}
+.table .model .credit{grid-column:2;grid-row:3}
 .table .model span{font-size:12px;color:var(--muted)}
+.thumb{display:block;width:104px;height:66px;object-fit:cover;border:1px solid var(--rule);background:var(--paper-deep);font-family:var(--font-data);font-size:12px;color:var(--muted)}
+.thumb--vacia{display:flex;align-items:center;justify-content:center}
+.table .model .credit{margin-top:2px;font-family:var(--font-data);font-size:10px;line-height:1.55}
+.table .model .credit a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.table .model .credit a:hover{color:var(--text)}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
-@media(max-width:820px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.filters{padding:16px}.table th:nth-child(5),.table td:nth-child(5){display:none}}
-@media(max-width:520px){.table th:nth-child(4),.table td:nth-child(4){display:none}}
+@media(max-width:820px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.filters{padding:16px}.table th:nth-child(5),.table td:nth-child(5){display:none}.thumb{width:76px;height:48px}}
+@media(max-width:520px){.table th:nth-child(4),.table td:nth-child(4){display:none}.thumb{width:64px;height:42px}.table .model .credit{font-size:9px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -70,11 +82,14 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--ink);display:
       <h2 style="font-size:20px;font-weight:500;letter-spacing:-.02em">Resultados</h2>
       <span class="k" id="count">—</span>
     </div>
+    <div class="table-scroll">
     <table class="table">
       <thead><tr><th>Modelo</th><th>Autonomía real</th><th>Consumo*</th><th>Carga DC</th><th>Maletero</th><th>Precio ES**</th></tr></thead>
       <tbody id="rows"></tbody>
     </table>
-    <p class="source" style="margin-top:12px">Autonomía real de ev-database.org cuando existe; si no, WLTP × 0,85 (modelo declarado). * Consumo derivado de batería útil y WLTP. ** Precio de venta en España de Autocasion; si no hay dato, RRP de Alemania o “Sin dato”.</p>
+    </div>
+    <p class="source" style="margin-top:12px">Autonomía real de ev-database.org cuando existe; si no, WLTP × 0,85 (modelo declarado). * Consumo derivado de batería útil y WLTP. ** Precio de venta en España de Autocasión, consultado el <span id="fecha-precios">—</span>: <span id="n-precios">—</span> de <span id="n-modelos">—</span> modelos tienen precio. Los que no se venden nuevos en España con ese nombre salen como “Sin dato”, sin inventar un precio.</p>
+    <p class="source">Fotos de Wikimedia Commons (dominio público, CC0, CC BY o CC BY-SA). Cada imagen lleva el autor y su licencia debajo, con enlace a su ficha en Commons. Los modelos sin foto quedan sin imagen, no con una rota.</p>
   </section>
 
   <div data-shelf="wallbox" data-title="Cuando elijas coche, piensa en cómo cargarlo" data-lede="La wallbox es la compra que más cambia el día a día de un eléctrico." data-limit="3"></div>
@@ -89,9 +104,36 @@ function applyTheme(){const r=resolve(),p=localStorage.getItem(KEY)||"auto";docu
 document.querySelectorAll(".modes button").forEach(b=>b.addEventListener("click",()=>{localStorage.setItem(KEY,b.dataset.mode);applyTheme();}));
 applyTheme();mql.addEventListener?.("change",applyTheme);
 
+// Fotos de Wikimedia Commons y metadatos de la fuente de precios. Si alguno
+// de los dos ficheros no está, el catálogo sigue funcionando: sin fotos y
+// sin fecha, pero sin romperse.
+const FOTOS={},META={};
+const esc=s=>String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+async function loadFotos(){
+  try{
+    const r=await fetch("data/coches-fotos.json");
+    if(r.ok) Object.assign(FOTOS,(await r.json()).fotos||{});
+  }catch(e){ /* sin fotos */ }
+  try{
+    const r=await fetch("data/prices-es-meta.json");
+    if(r.ok) Object.assign(META,await r.json());
+  }catch(e){ /* sin metadatos */ }
+}
+function fechaES(iso){
+  const p=String(iso||"").split("-");
+  return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:"";
+}
+
 function init(){
   const money=new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:0});
   document.getElementById("n-models").textContent=CAR_NAMES.length;
+  const conPrecio=CAR_NAMES.filter(n=>CARS[n].price).length;
+  const elNP=document.getElementById("n-precios");
+  if(elNP) elNP.textContent=conPrecio;
+  const elNM=document.getElementById("n-modelos");
+  if(elNM) elNM.textContent=CAR_NAMES.length;
+  const elFP=document.getElementById("fecha-precios");
+  if(elFP) elFP.textContent=fechaES(META.fecha)||"sin fecha";
   const makes=[...new Set(CAR_NAMES.map(n=>n.split(" ")[0]))].sort((a,b)=>a.localeCompare(b,"es"));
   document.getElementById("make").innerHTML='<option value="">Todas</option>'+makes.map(m=>`<option>${m}</option>`).join("");
   const render=()=>{
@@ -104,14 +146,27 @@ function init(){
     }).sort((a,b)=>CARS[b].range-CARS[a].range);
     document.getElementById("rows").innerHTML=list.map(n=>{
       const c=CARS[n];
-      return `<tr><td><span class="model"><strong>${n}</strong><span>${c.year} · ${c.battery} kWh · ${c.power} kW</span></span></td><td class="num">${c.range} km</td><td class="num">${c.use.toLocaleString("es-ES")} kWh/100</td><td class="num">${c.dc} kW</td><td class="num">${c.boot?c.boot+" L":"Sin dato"}</td><td class="num">${c.price?money.format(c.price):"Sin dato"}</td></tr>`;
+      const f=FOTOS[n];
+      // Modelo sin foto: se deja el hueco con un guion, nunca una imagen rota.
+      const thumb=f
+        ?`<img class="thumb" src="${esc(f.miniatura)}" alt="${esc(n)}" width="104" height="66" loading="lazy" decoding="async">`
+        :`<span class="thumb thumb--vacia" aria-hidden="true">—</span>`;
+      // Atribución: autor, licencia y enlace a la ficha de Commons.
+      const cred=f
+        ?`<span class="credit">Foto: <a href="${esc(f.autorUrl||f.pagina)}" target="_blank" rel="noopener">${esc(f.autor)}</a> · `
+          +(f.licenciaUrl
+            ?`<a href="${esc(f.licenciaUrl)}" target="_blank" rel="noopener">${esc(f.licencia)}</a>`
+            :esc(f.licencia))
+          +` · <a href="${esc(f.pagina)}" target="_blank" rel="noopener">Commons</a></span>`
+        :"";
+      return `<tr><td><span class="model">${thumb}<strong>${n}</strong><span class="meta">${c.year} · ${c.battery} kWh · ${c.power} kW</span>${cred}</span></td><td class="num">${c.range} km</td><td class="num">${c.use.toLocaleString("es-ES")} kWh/100</td><td class="num">${c.dc} kW</td><td class="num">${c.boot?c.boot+" L":"Sin dato"}</td><td class="num">${c.price?money.format(c.price):"Sin dato"}</td></tr>`;
     }).join("");
     document.getElementById("count").textContent=`${list.length} de ${CAR_NAMES.length} modelos`;
   };
   document.getElementById("apply").addEventListener("click",render);
   render();
 }
-loadVehicles().then(init).catch(e=>{document.getElementById("count").textContent="Error al cargar datos";});
+Promise.all([loadVehicles(),loadFotos()]).then(([,])=>init()).catch(e=>{document.getElementById("count").textContent="Error al cargar datos";});
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}</script>
 <script type="module" src="affiliate.js"></script>

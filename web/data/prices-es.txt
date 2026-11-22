@@ -1,45 +1,92 @@
+Audi A6 e-tron|57001
 Audi e-tron GT|93902
-BMW iX|44264
-BMW i4|53325
-BMW iX1|44264
-Audi Q6 e-tron|54051
-BMW iX2|45584
-BYD Dolphin|21498
 Audi Q4 e-tron|43901
+Audi Q6 e-tron|54051
+BMW i4|53325
+BMW i5|68508
+BMW i7|114116
+BMW iX|82432
+BMW iX1|44264
+BMW iX2|45584
 BMW iX3|57285
-BYD Seal|29605
+BYD Dolphin|21498
+BYD Seal|33465
+BYD Song Plus|44290
 BYD Tang|54125
+BYD Yuan Plus|28888
+Citroën ë-Berlingo|32762
+Citroën ë-C3|16275
+Citroën ë-C4 X|28939
+Citroën ë-C4|30879
+Citroën ë-Jumpy|41448
+Citroën ë-Spacetourer|44880
 Cupra Born|30800
-Fiat 500e|22434
-Dacia Spring|11726
-Ford Mustang Mach-E|42090
-Hyundai IONIQ 5|30457
-Hyundai IONIQ 9|61579
 Cupra Raval|29820
 Cupra Tavascan|36900
+Dacia Spring|11726
+Fiat 500e|22434
+Fiat 600e|29231
+Ford Capri EV|36476
+Ford E-Tourneo Courier|31871
+Ford E-Transit|51971
+Ford Explorer EV|34370
+Ford Mustang Mach-E|42090
+Ford Puma Gen-E|28175
+GAC Aion Aion V|37995
+Hyundai IONIQ 5|30457
 Hyundai IONIQ 6|30437
+Hyundai IONIQ 9|61579
+Hyundai Kona Electric|25268
 Jaguar I-PACE|91200
-Leapmotor C10|31395
-Nissan LEAF|30354
+Leapmotor C10|33590
+Lexus ES 350e|56269
+Lexus ES 500e|63455
+Mercedes-Benz CLA EV|44423
+Mercedes-Benz EQB|53877
+Mercedes-Benz EQE SUV|68986
+Mercedes-Benz EQE|67017
+Mercedes-Benz EQS SUV|106901
+Mercedes-Benz EQS|106901
+Mercedes-Benz EQV|84919
+Mercedes-Benz G 580 EQ|159117
+Mini Cooper SE|31040
+Mini Countryman|35272
 Nissan Ariya|59350
-Mini Countryman|32889
+Nissan LEAF|30354
+Nissan Micra EV|25172
+Peugeot e-2008|33545
+Peugeot e-208|26900
+Peugeot e-3008|36200
+Peugeot e-408|37700
+Peugeot e-5008|38600
+Polestar Polestar 2|48200
+Polestar Polestar 3|81900
+Polestar Polestar 4|55600
+Polestar Polestar 5|121899
 Porsche Macan|85392
+Porsche Taycan|106252
+Renault 4 E-Tech|26701
+Renault 5 E-Tech|24941
+Renault Kangoo E-Tech|35263
+Renault Megane E-Tech Electric|37955
+Renault Scenic E-Tech|39900
+Škoda Elroq RS|48183
 Škoda Elroq|35211
-Smart #3|30870
+Škoda Enyaq Coupé iV|42726
 Škoda Enyaq iV|40566
+Smart #1|22880
+Smart #3|30870
 Tesla Model 3|36990
 Tesla Model S|109990
-Smart #1|22880
 Tesla Model X|114990
 Tesla Model Y|40990
-Toyota C-HR+|30035
 Toyota bZ4X|37655
-Volkswagen ID.3|30693
-Volkswagen ID.7|51470
-Volkswagen ID.4|40484
+Toyota C-HR+|37095
 Volkswagen ID. Buzz|50483
+Volkswagen ID.3|30693
+Volkswagen ID.4|40484
+Volkswagen ID.7|51470
 Volvo EC40|41149
+Volvo EX30|32500
 Volvo EX40|43194
 Volvo EX90|83379
-Porsche Taycan|106252
-Volvo EX30|32500

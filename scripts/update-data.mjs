@@ -201,27 +201,17 @@ async function safety(){
   await save("safety.txt", rows.join("\n"));
 }
 
-// 8b. Precios de coches nuevos en España — Autocasion (scraping con Scrapling como referencia)
-async function pricesES(){
-  const norm = s => String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
-  const vehicles = (await fs.readFile(path.join(OUT,"vehicles.txt"),"utf8")).trim().split("\n");
-  const out=[]; let i=0;
-  const worker=async()=>{
-    while(i<vehicles.length){
-      const line=vehicles[i++], c=line.split("|"), name=`${c[0]} ${c[1]}`, tok=norm(name).split(" ");
-      const slug=`${tok[0]}/${tok.slice(1).join("-")}`;
-      try{
-        const html=await (await get(`https://www.autocasion.com/coches-nuevos/${slug}`)).text();
-        const items=[...html.matchAll(/itemprop="name">\s*([^<]{1,90})\s*<\/h2>[\s\S]{0,400}?<p class="precio">\s*(?:<span>[^<]*<\/span>)?\s*([\d.,]+)\s*€/gi)]
-          .map(m=>({name:norm(m[1]),price:+m[2].replace(/\./g,"").replace(",",".")}));
-        const model=tok.slice(1).join(" ");
-        const good=items.filter(a=>a.name.includes(tok[0])&&a.name.includes(model)&&a.price>10000);
-        if(good.length) out.push(`${name}|${Math.min(...good.map(a=>a.price))}`);
-      }catch(e){ /* un modelo no rompe el lote */ }
-    }
-  };
-  await Promise.all(Array.from({length:10},worker));
-  await save("prices-es.txt", out.join("\n"));
+// 8b. Precios de coches nuevos en España — Autocasión.
+//
+// El script vive aparte (scripts/coches-precios.mjs) porque necesita su
+// propia salvaguarda: si la fuente falla, conserva el fichero anterior en
+// vez de vaciarlo, y contrasta cada precio con el RRP de ev-database antes
+// de aceptarlo. La versión anterior de esta función iba al detalle de cada
+// modelo con una URL inventada y sólo sacaba 45 precios de 113 modelos; con
+// el listado por marca filtrado a eléctrico salen 92.
+async function preciosES(){
+  const mod = await import("./coches-precios.mjs");
+  await mod.main();
 }
 
 // 9. API pública — JSON estático servido desde el CDN
@@ -301,5 +291,5 @@ async function subsidies(){
 }
 
 const vehiclesLines = await vehicles();
-await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api(), pricesES(), grid(), subsidies(), market()]);
+await Promise.allSettled([curves(vehiclesLines), specs(vehiclesLines), chargers(), pvpc(), fuel(), news(), safety(), api(), preciosES(), grid(), subsidies(), market()]);
 console.log("Datos actualizados.");

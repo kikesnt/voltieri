@@ -1,0 +1,16 @@
+{
+  "fuente": "Autocasión",
+  "fuenteUrl": "https://www.autocasion.com/coches-nuevos",
+  "licenciaFuente": "Dato de tercero citado con enlace a la fuente; se publica la cifra, no la página.",
+  "fecha": "2026-11-22",
+  "peticiones": 56,
+  "marcasConsultadas": 28,
+  "modelos": 113,
+  "conPrecio": 92,
+  "conservados": [],
+  "porAlias": [
+    "BYD Song Plus -> BYD Seal U",
+    "BYD Yuan Plus -> BYD Atto 3"
+  ],
+  "metodo": "Listado por marca filtrado a eléctrico (/coches-nuevos/<marca>/electrico), paginado con ?page=N; emparejado por tokens de modelo y contraste de precio con el RRP de Alemania de ev-database."
+}
