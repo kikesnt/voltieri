@@ -14,6 +14,12 @@
   --route: #B23A17;
   --rule: rgba(41, 36, 34, .16);
 
+  /* Texto sobre superficies de acento: de noche el acento es claro, así que
+     el blanco no vale. Sin estos tokens el texto se quedaba ilegible. */
+  --on-ion: #FFFFFF;
+  --on-route: #FFFFFF;
+  --surface: #FFFFFF;
+
   /* Tipografía */
   --font-display: "Archivo", sans-serif;
   --font-map: "Newsreader", serif;
@@ -54,6 +60,10 @@
   --water: #143830;
   --route: #E0953A;
   --rule: rgba(242, 237, 223, .13);
+
+  --on-ion: #080B09;
+  --on-route: #080B09;
+  --surface: #12181A;
 }
 
 /* 2027 — sobrio y legible: papel cálido, tinta casi negra, un solo acento verde */
@@ -75,6 +85,10 @@
   --font-display:"Geist",system-ui,sans-serif;
   --font-map:"Instrument Serif",serif;
   --radius:10px;
+
+  --on-ion:#FFFFFF;
+  --on-route:#FFFFFF;
+  --surface:#FFFFFF;
 }
 :root[data-skin="2027"][data-theme="night"]{
   color-scheme:dark;
@@ -91,6 +105,10 @@
   --ion-2:#7BE8B8;
   --amber:#FF8A4C;
   --mint:#3DDC97;
+
+  --on-ion:#080B09;
+  --on-route:#080B09;
+  --surface:#12181A;
 }
 
 /* Superficies del navegador: señal barata de que el tema está diseñado */

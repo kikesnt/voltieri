@@ -48,14 +48,31 @@ for (const [name, v] of [["día", day], ["noche", night]]) {
   }
 }
 
+// Reglas del sistema de diseño (docs/DESIGN.md). Se comprueban sobre el
+// HTML y el CSS sin los <script>, porque lo que se ve es lo que cuenta.
 const banned = [
   ["backdrop-filter (cristal)", /backdrop-filter\s*:/],
   ["eyebrow/kicker", /class="[^"]*\b(eyebrow|kicker)\b/],
   ["gradiente de texto", /-webkit-background-clip\s*:\s*text/],
-  ["box-shadow decorativa", /box-shadow\s*:\s*(?!none)\S/],
   ["Inter como única voz", /font-family\s*:\s*['"]Inter['"]/],
-  ["radio redondeado", /border-radius\s*:\s*(?!0|50%|999px)\d/],
 ];
+
+// El radio va en tokens: 0 por defecto, 10-16 px en el skin 2027 y 999 px
+// para las píldoras. Lo que no vale es el radio gigante de plantilla.
+const radioOk = v => {
+  if (/%/.test(v)) return true;                     // 50%: círculo o óvalo
+  const n = parseFloat(v);
+  if (!Number.isFinite(n)) return true;             // var(--radio) y compañía
+  return n <= 24 || n === 999;                      // píldora
+};
+// Una sombra corta asienta el elemento; una difusa (blur grande) es la
+// "cristal difuminado" que el diseño rechaza.
+const shadowOk = v => {
+  if (/^none/i.test(v.trim())) return true;
+  const nums = v.match(/(-?\d+(?:\.\d+)?)px/g) || [];
+  const blur = nums.length >= 3 ? parseFloat(nums[2]) : 0;
+  return blur <= 24;
+};
 
 for (const f of files) {
   let src = fs.readFileSync(path.join(dir, f), "utf8");
@@ -63,18 +80,32 @@ for (const f of files) {
   for (const [label, re] of banned) {
     report(!re.test(withoutScripts), `${f}: sin ${label}`);
   }
+  const radios = [...withoutScripts.matchAll(/border-radius\s*:\s*([^;}\n]+)/g)]
+    .map(m => m[1].trim()).filter(v => !radioOk(v));
+  report(radios.length === 0, `${f}: sin radio fuera de rango`, radios.slice(0,4).join(" "));
+  const sombras = [...withoutScripts.matchAll(/box-shadow\s*:\s*([^;}\n]+)/g)]
+    .map(m => m[1].trim()).filter(v => !shadowOk(v));
+  report(sombras.length === 0, `${f}: sin sombra difusa`, sombras.slice(0,4).join(" "));
   if (f.endsWith(".html")) {
-    report(/tokens\.css/.test(src), `${f}: enlaza tokens.css`);
-    report(/components\.css/.test(src), `${f}: enlaza components.css`);
-    report((src.match(/<h1[\s>]/g) || []).length === 1, `${f}: un solo h1`);
-    const localCss = [...src.matchAll(/href="([^"]+\.css)"/g)].map(m=>m[1]).filter(h=>!/^https?:/.test(h));
-    let styled = src;
-    for (const h of localCss) {
-      const p = path.join(dir, h);
-      if (fs.existsSync(p)) styled += fs.readFileSync(p, "utf8");
+    // Las páginas de solo redirección (meta refresh) no son pantallas: no
+    // llevan skin, ni un h1, ni breakpoint. Se comprueban solo los hex.
+    const soloRedireccion = /<meta[^>]+http-equiv=["']?refresh/i.test(src);
+    if (!soloRedireccion) {
+      report(/tokens\.css/.test(src), `${f}: enlaza tokens.css`);
+      report(/components\.css/.test(src), `${f}: enlaza components.css`);
+      report((src.match(/<h1[\s>]/g) || []).length === 1, `${f}: un solo h1`);
+      const localCss = [...src.matchAll(/href="([^"]+\.css)"/g)].map(m=>m[1]).filter(h=>!/^https?:/.test(h));
+      let styled = src;
+      for (const h of localCss) {
+        const p = path.join(dir, h);
+        if (fs.existsSync(p)) styled += fs.readFileSync(p, "utf8");
+      }
+      report(/@media\s*\(max-width/.test(styled), `${f}: tiene breakpoint móvil`);
     }
-    report(/@media\s*\(max-width/.test(styled), `${f}: tiene breakpoint móvil`);
-    const hexes = [...withoutScripts.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map(m => m[0]);
+    // El <meta name="theme-color"> es la excepción: no admite variables CSS,
+    // así que su color va en hexadecimal aunque el resto del sitio use tokens.
+    const sinThemeColor = withoutScripts.replace(/<meta[^>]+name=["']theme-color["'][^>]*>/gi, "");
+    const hexes = [...sinThemeColor.matchAll(/#[0-9a-fA-F]{3,8}\b/g)].map(m => m[0]);
     report(hexes.length === 0, `${f}: sin hexadecimales sueltos`, hexes.slice(0,4).join(" "));
   }
 }

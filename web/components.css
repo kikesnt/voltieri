@@ -180,6 +180,7 @@ body { background: var(--paper); color: var(--text); font-family: var(--font-dis
 .product .badge { font-size: 12px; font-weight: 500; color: var(--ion); }
 .product h3 { flex: 1; font-size: 15px; font-weight: 500; line-height: 1.4; margin: 0; }
 .product .pmeta { display: flex; gap: 12px; align-items: baseline; font-size: 13px; color: var(--muted); }
+.product .pmeta .rev { font-size: 11px; opacity: .75; }
 .product .price { color: var(--ink); font-size: 20px; font-weight: 600; letter-spacing: -.02em; }
 .product .buy { display: block; text-align: center; padding: 12px; border-radius: 10px; background: var(--ion); color: #fff; font-size: 14px; font-weight: 500; text-decoration: none; transition: background var(--t-fast); }
 .product .buy:hover { background: var(--ink); color: var(--paper); }

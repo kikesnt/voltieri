@@ -28,7 +28,7 @@
 body{background:var(--paper);color:var(--text)}
 a{color:inherit}
 
-header{position:sticky;top:0;z-index:30;height:68px;display:flex;align-items:center;gap:40px;padding:0 40px;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+header{position:sticky;top:0;z-index:30;height:68px;display:flex;align-items:center;gap:40px;padding:0 40px;background:var(--paper);border-bottom:1px solid var(--rule)}
 .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;letter-spacing:-.02em;text-decoration:none}
 .brand .mark{width:12px;height:12px;border-radius:4px;background:var(--ion)}
 nav{display:flex;gap:28px;font-size:15px}
@@ -45,8 +45,7 @@ h1 em{font-style:normal;color:var(--ion)}
 .lede{margin-top:24px;font-size:18px;line-height:1.55;color:var(--muted);max-width:500px}
 .lede b{color:var(--ink);font-weight:500}
 
-.command{margin-top:36px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:14px;background:#fff;overflow:hidden}
-:root[data-theme="night"] .command{background:var(--paper-deep)}
+.command{margin-top:36px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:1px solid var(--rule);border-radius:14px;background:var(--surface);overflow:hidden}
 .command .f{padding:14px 18px;border-right:1px solid var(--rule)}
 .command .f:nth-of-type(3){border-right:0}
 .command .k{display:block;font-size:12px;color:var(--muted)}
@@ -56,18 +55,24 @@ h1 em{font-style:normal;color:var(--ion)}
 .command .v{display:block;font-size:16px;font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .command .v i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ion);margin-right:8px;vertical-align:1px}
 .command button{grid-column:1/-1;border:0;border-top:1px solid var(--rule);background:var(--ink);color:var(--paper);font-family:var(--font-display);font-size:15px;font-weight:500;padding:16px;cursor:pointer;transition:background var(--t-fast)}
-.command button:hover{background:var(--ion);color:#fff}
+.command button:hover{background:var(--ion);color:var(--on-ion)}
 .command button:active{transform:translateY(1px)}
 
 .kpis{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:36px;margin-top:40px}
 .kpi .n{font-size:32px;font-weight:500;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .kpi .n small{font-size:14px;color:var(--muted);margin-left:3px;letter-spacing:0;font-weight:400}
 .kpi .l{font-size:13px;color:var(--muted);margin-top:2px}
+.stops{margin-top:32px;max-width:560px;border-top:1px solid var(--rule);padding-top:20px}
+.stops .k{font-size:13px;color:var(--muted)}
+.stops ol{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.stops li{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500}
+.stops li b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--route);color:var(--on-route);font:500 12px/1 var(--font-display);flex:0 0 auto}
+.stops li i{font-style:normal;color:var(--muted);font-size:13px;font-weight:400;margin-left:auto;white-space:nowrap}
 .edition{display:none}
 
-.mapwrap{position:relative;overflow:hidden;border-radius:24px;border:1px solid var(--rule);min-height:600px;background:var(--paper-deep)}
+.mapwrap{position:relative;overflow:hidden;border-radius:20px;border:1px solid var(--rule);min-height:600px;background:var(--paper-deep)}
 #map{position:absolute;inset:0;background:var(--paper-deep)}
-.hud{position:absolute;left:20px;bottom:20px;z-index:12;width:288px;background:var(--paper);border:1px solid var(--rule);border-radius:16px;box-shadow:0 12px 32px rgba(15,21,18,.12);overflow:hidden}
+.hud{position:absolute;left:20px;bottom:20px;z-index:12;width:288px;background:var(--paper);border:1px solid var(--rule);border-radius:16px;box-shadow:0 6px 16px rgba(15,21,18,.14);overflow:hidden}
 .hud .top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--rule);font-size:13px;color:var(--muted)}
 .hud .top .live{display:flex;align-items:center;gap:6px;color:var(--ion);font-size:12px;font-weight:500}
 .hud .top .live i{width:6px;height:6px;border-radius:50%;background:var(--ion)}
@@ -78,15 +83,25 @@ h1 em{font-style:normal;color:var(--ion)}
 .soc .fill{position:absolute;inset:0 18% 0 0;border-radius:3px;background:var(--ion)}
 .soc .stop{position:absolute;top:50%;left:62%;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--route);transform:translate(-50%,-50%)}
 .soc-l{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--muted)}
-.hud .stopcard{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
-.hud .stopcard .bolt{width:32px;height:32px;border-radius:50%;background:var(--paper-deep);display:grid;place-items:center;color:var(--route);font-size:14px}
+.hud .stopcard{display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
+.hud .stopcard .bolt{width:32px;height:32px;border-radius:50%;background:var(--paper-deep);display:grid;place-items:center;color:var(--route);font-size:14px;flex:0 0 auto}
 .hud .stopcard strong{display:block;font-size:14px;font-weight:500}
 .hud .stopcard span span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
-.hud .stopcard .price{margin-left:auto;white-space:nowrap;font-size:15px;font-weight:500}
+.hud .stopcard span span b{display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--route);color:var(--on-route);font:500 10px/1 var(--font-display);margin-right:4px;vertical-align:-2px}
+.hud .stopcard .price{margin-left:auto;white-space:nowrap;font-size:15px;font-weight:500;text-align:right}
+.hud .stopcard .price i{display:block;font-style:normal;font-size:10px;font-weight:400;color:var(--muted);margin-top:1px}
 .hud .foot{display:flex;justify-content:space-between;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted)}
 .hud .foot b{color:var(--ink);font-weight:500}
 .hud .foot i{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);font-size:11px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend .dot{width:7px;height:7px;border-radius:50%;background:var(--ion);opacity:.6}
+.legend .num{display:grid;place-items:center;width:16px;height:16px;border-radius:50%;background:var(--route);color:var(--on-route);font:500 10px/1 var(--font-display)}
 .city{font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap;text-shadow:0 0 3px var(--paper),0 0 7px var(--paper),0 0 11px var(--paper)}
+.chg{width:7px;height:7px;border-radius:50%;background:var(--ion);opacity:.5;box-shadow:0 0 0 1.5px var(--paper)}
+.stopmark{position:relative;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--route);color:var(--on-route);font:500 13px/1 var(--font-display);box-shadow:0 6px 16px rgba(15,21,18,.22)}
+.stopmark span{position:absolute;top:34px;left:50%;transform:translateX(-50%);font-size:12px;font-weight:500;color:var(--ink);white-space:nowrap;text-shadow:0 0 3px var(--paper),0 0 7px var(--paper),0 0 11px var(--paper)}
+.stopmark span i{font-style:normal;color:var(--route)}
 
 .page .strip{margin:40px 0 0;padding:0;display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:0;border-top:1px solid var(--rule)}
 .strip .cell{padding:24px 24px 24px 0;margin-right:24px;border-right:1px solid var(--rule)}
@@ -104,7 +119,7 @@ h1 em{font-style:normal;color:var(--ion)}
 .shop-head .k{font-size:14px;color:var(--ion);font-weight:500}
 .shop-head h2{font-size:clamp(32px,3.4vw,48px);letter-spacing:-.04em;font-weight:500;margin-top:10px;line-height:1.05}
 .cta-link{display:inline-block;margin-top:18px;font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}.cta-link:hover{border-color:var(--ink)}
-.nav-pill{background:var(--ion);color:#fff!important;padding:8px 16px;border-radius:999px;font-weight:500}.nav-pill:hover{background:var(--ink)}
+.nav-pill{background:var(--ion);color:var(--on-ion)!important;padding:8px 16px;border-radius:999px;font-weight:500}.nav-pill:hover{background:var(--ink)}
 .paths{max-width:1360px;margin:0 auto;padding:72px 40px 0}
 .paths h2{font-size:clamp(28px,3vw,40px);letter-spacing:-.04em;font-weight:500;line-height:1.05}
 .paths ul{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
@@ -191,6 +206,11 @@ h1 em{font-style:normal;color:var(--ion)}
       <div class="kpi"><div class="n">16,8<small>kWh/100</small></div><div class="l">Consumo real</div></div>
     </div>
 
+    <div class="stops" id="stops-panel" hidden>
+      <span class="k">Paradas de carga de esta ruta</span>
+      <ol id="stop-list"></ol>
+    </div>
+
   </aside>
 
   <section class="mapwrap">
@@ -204,9 +224,10 @@ h1 em{font-style:normal;color:var(--ion)}
         <div class="soc-l"><span>Salida 100%</span><span>Llegada 18%</span></div>
         <div class="stopcard">
           <span class="bolt">⚡</span>
-          <span><strong>Zaragoza · Supercharger</strong><span>250 kW · 42 kWh · 18 min</span></span>
-          <span class="price">24,80 €</span>
+          <span><strong id="stop-title">Zaragoza · Supercharger</strong><span id="stop-sub">250 kW · 42 kWh · 18 min</span></span>
+          <span class="price" id="stop-price">24,80 €<i>coste de carga</i></span>
         </div>
+        <div class="legend" id="legend" hidden><span><i class="dot"></i>Otros cargadores en la ruta</span><span><i class="num">1</i>Parada prevista (1, 2, 3…)</span></div>
         <div class="foot"><span><i></i>Llegada <b>08:27</b></span><span><i></i>Trayecto <b>104</b> kWh</span></div>
       </div>
     </div>
@@ -314,12 +335,29 @@ async function showRoute(r,from,to,c){
   map.getSource("route").setData({type:"Feature",geometry:{type:"LineString",coordinates:r.coords}});
   const lons=r.coords.map(p=>p[0]),lats=r.coords.map(p=>p[1]);
   const compact=innerWidth<=760;
-  map.fitBounds([[Math.min(...lons),Math.min(...lats)],[Math.max(...lons),Math.max(...lats)]],{padding:{top:50,bottom:compact?40:60,left:compact?40:80,right:compact?40:60},duration:1400});
   routeMarkers.forEach(m=>m.remove());
   routeMarkers=[[from,r.coords[0]],[to,r.coords[r.coords.length-1]]].map(([n,p])=>{
     const el=document.createElement("div");el.className="city";el.textContent=n;
     return new maplibregl.Marker({element:el,anchor:"bottom",offset:[0,-6]}).setLngLat(p).addTo(map);
   });
+  // Dónde cargar: la parada prevista, marcada con su número, y los cargadores
+  // que quedan al lado de la ruta como alternativas.
+  const planned=new Set(r.stops.map(s=>`${s.name}|${s.lat}|${s.lon}`));
+  for(const c of (r.nearby||[])){
+    if(planned.has(`${c.name}|${c.lat}|${c.lon}`))continue;
+    const el=document.createElement("div");el.className="chg";
+    routeMarkers.push(new maplibregl.Marker({element:el}).setLngLat([c.lon,c.lat]).addTo(map));
+  }
+  r.stops.forEach((s,i)=>{
+    const el=document.createElement("div");el.className="stopmark";el.textContent=String(i+1);
+    const lab=document.createElement("span");
+    lab.innerHTML=`${s.name.slice(0,22)} · <i>${s.kw} kW</i>`;
+    el.appendChild(lab);
+    routeMarkers.push(new maplibregl.Marker({element:el,anchor:"center"}).setLngLat([s.lon,s.lat]).addTo(map));
+  });
+  // El HUD ocupa la esquina inferior izquierda: si alguna parada prevista cae
+  // debajo, se sube el mapa hasta que todas queden a la vista. Marcar la
+  // parada sin que se vea no vale de nada.
   const kpis=document.querySelectorAll(".kpi .n");
   kpis[0].innerHTML=`${Math.round(r.km)}<small>km</small>`;
   kpis[1].innerHTML=`${Math.floor(r.hours)}h${String(Math.round((r.hours%1)*60)).padStart(2,"0")}<small>m</small>`;
@@ -332,13 +370,18 @@ async function showRoute(r,from,to,c){
   document.querySelector(".soc .fill").style.right=`${100-arrival}%`;
   const eta=new Date(Date.now()+r.hours*3600e3);
   document.querySelector(".hud .foot").innerHTML=`<span>Llegada <b>${eta.toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"})}</b></span><span>Trayecto <b>${Math.round(r.energy)}</b> kWh</span>`;
+  // El panel y el mapa tienen que contar lo mismo: todas las paradas, con su
+  // número, en los dos sitios.
   const s0=r.stops[0];
-  document.querySelector(".stopcard strong").textContent=s0?`${s0.name.slice(0,26)} · ${s0.kw} kW`:"Sin parada necesaria";
-  document.querySelector(".stopcard span span").textContent=s0?`${c.name} · ${s0.minutes} min`:"Llegas con la batería que tienes";
+  document.getElementById("stop-title").textContent=r.stops.length?`${r.stops.length} parada${r.stops.length===1?"":"s"} de carga`:"Sin parada de carga";
+  document.getElementById("stop-sub").textContent=r.stops.length?"las marcadas con número en el mapa":"Llegas con la batería que tienes";
+  document.getElementById("stop-list").innerHTML=r.stops.map((s,i)=>`<li><b>${i+1}</b>${s.name.slice(0,26)}<i>${s.kw} kW · ${s.minutes} min</i></li>`).join("");
+  document.getElementById("stops-panel").hidden=!r.stops.length;
+  document.getElementById("legend").hidden=false;
   const pv=await (await fetch("data/pvpc.txt")).text();
   const pvpc=pv.split("|")[1].split(",").map(Number).reduce((a,b)=>a+b,0)/24/1000;
   const eur=n=>new Intl.NumberFormat("es-ES",{style:"currency",currency:"EUR",maximumFractionDigits:2}).format(n);
-  document.querySelector(".stopcard .price").textContent=s0?eur(r.energy*.7*pvpc):"—";
+  document.querySelector(".stopcard .price").firstChild.nodeValue=s0?eur(r.energy*.7*pvpc):"—";
   const gas=+(await (await fetch("data/fuel.txt")).text()).trim().split("|")[2]||1.6;
   const save=Math.round((1-(r.energy*pvpc)/(r.km/100*7.5*gas))*100);
   document.getElementById("s-energy").innerHTML=`${nf1.format(r.energy)}<small>kWh</small>`;
@@ -351,6 +394,13 @@ async function showRoute(r,from,to,c){
   document.getElementById("p-area").setAttribute("d",`${line} L${W-P},${H-P} L${P},${H-P} Z`);
   document.getElementById("p-dot").setAttribute("cx",x(r.km*.5));document.getElementById("p-dot").setAttribute("cy",y(r.legs[Math.floor(r.legs.length/2)].e));
   document.querySelector(".profile .k").textContent=`Perfil real · +${Math.round(r.climb)} m / −${Math.round(r.descent)} m · máx ${r.maxAlt} m`;
+  // La ruta se encaja en el hueco que deja el HUD, para que ninguna de las
+  // paradas quede debajo del panel. Se mide el HUD ya con su contenido final.
+  const hudH=document.querySelector(".hud").offsetHeight+24;
+  map.fitBounds([[Math.min(...lons),Math.min(...lats)],[Math.max(...lons),Math.max(...lats)]],{
+    padding:{top:50,bottom:Math.min(hudH,map.getContainer().offsetHeight*.45),left:compact?40:80,right:compact?40:60},
+    duration:1400
+  });
 }
 
 async function runRoute(){

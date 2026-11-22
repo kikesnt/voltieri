@@ -18,6 +18,10 @@
 .post h3 { font-size: 18px; font-weight: 600; margin-top: 22px; }
 .post section p, .post section li { font-size: 17px; line-height: 1.7; margin-top: 14px; }
 .post section ul, .post section ol { padding-left: 22px; }
+/* FAQ: la pregunta manda y la respuesta va por debajo, sin caja ni adorno. */
+.post .faq { margin-top: 18px; border-top: 1px solid var(--rule); }
+.post .faq dt { font-size: 16px; font-weight: 500; padding-top: 18px; }
+.post .faq dd { margin: 6px 0 0; font-size: 16px; line-height: 1.7; color: var(--muted); padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
 .post a { color: var(--ion); }
 .table-wrap { overflow-x: auto; margin-top: 20px; }
 .post table { width: 100%; border-collapse: collapse; font-size: 15px; }
@@ -47,7 +51,7 @@
 }
 
 /* Cabecera de las guías */
-header { position: sticky; top: 0; z-index: 30; height: 68px; display: flex; align-items: center; gap: 40px; padding: 0 40px; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--rule); }
+header { position: sticky; top: 0; z-index: 30; height: 68px; display: flex; align-items: center; gap: 40px; padding: 0 40px; background: var(--paper); border-bottom: 1px solid var(--rule); }
 header .brand { font-size: 18px; font-weight: 600; letter-spacing: -.02em; text-decoration: none; color: var(--ink); }
 header nav { display: flex; align-items: center; gap: 26px; font-size: 15px; margin-left: auto; }
 header nav a { color: var(--muted); text-decoration: none; }

@@ -129,6 +129,9 @@ async function planRoute(fromName, toName, opts={}){
   const energy=energyFor(legs,car.battery,speed,w.temp,w.wind);
   const chargers=await loadChargers();
   const near=nearestChargers(route.coords,chargers,opts.maxDetour||15);
+  // Los cargadores que quedan a menos de 6 km de la ruta: son las alternativas
+  // reales a la parada prevista y los que se marcan en el mapa.
+  const nearby=near.filter(c=>c.detour<=6).slice(0,120);
   const window=car.battery*.70;
   const stops=Math.max(0,Math.ceil((energy.total-car.battery*.92)/window));
   const chosen=[];
@@ -152,7 +155,7 @@ async function planRoute(fromName, toName, opts={}){
     descent:legs.reduce((a,p,i)=>i?a+Math.max(0,legs[i-1].e-p.e):0,0),
     maxAlt:Math.max(...legs.map(p=>p.e)),
     weather:w, energy:+energy.total.toFixed(1), use:+(energy.total/route.km*100).toFixed(1),
-    stops:chosen, chargeMin, hours:+(driveHours+chargeMin/60).toFixed(2),
+    stops:chosen, nearby, chargeMin, hours:+(driveHours+chargeMin/60).toFixed(2),
     car:car.name, real:true, computedAt:new Date().toISOString()
   };
 }
