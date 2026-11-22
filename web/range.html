@@ -32,13 +32,13 @@ h1{font-size:46px;line-height:1.04;letter-spacing:-.03em;font-weight:500;max-wid
 .result .data-grid{margin:0 -24px 24px;border-bottom:1px solid var(--rule)}
 .bars{margin-top:20px;display:flex;flex-direction:column;gap:10px}
 .barrow{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center;font-size:11px}
-.barrow .track{height:8px;background:var(--rule)}
-.barrow .fill{height:8px;background:var(--contour)}
+.barrow .track{display:block;height:8px;background:var(--rule)}
+.barrow .fill{display:block;height:8px;background:var(--contour)}
 .barrow .num{font-family:var(--font-data);text-align:right;color:var(--muted)}
 .barrow:first-child .fill{background:var(--route)}
 .calc-note{margin-top:20px;font-size:12px;line-height:1.6;color:var(--muted)}
 footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px}
-@media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}}
+@media(max-width:860px){header{padding:14px 18px}nav{display:none}main{padding:34px 18px 64px}h1{font-size:34px}.workspace{grid-template-columns:1fr}.barrow{grid-template-columns:86px 1fr 42px;gap:8px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
